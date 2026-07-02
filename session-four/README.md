@@ -1,8 +1,8 @@
-# Session Four — Multi-Agent Systems
+# Session Four — Business Case Logic
 
-> One agent can reason. A team of agents can coordinate, specialise, check each
-> other's work, and handle workflows too large for a single context window.
-> Session Four covers how to design and orchestrate agent teams.
+> This is where frameworks become features. Session Four implements real business
+> logic patterns: approval workflows, pricing engines, routing rules, and
+> data validation — all driven by an agent.
 
 **Status: Coming after Session Three**
 
@@ -10,9 +10,9 @@
 
 ## What This Session Covers
 
-Session Four moves from single-agent to multi-agent architecture. The patterns
-here are used in production systems where tasks are too complex, too long, or
-too sensitive to trust to a single agent turn.
+Session Four takes the infrastructure from Session One, the security posture from
+Session Two, and the prompt design from Session Three, and applies them to concrete
+business cases. Every document includes a full worked example with runnable code.
 
 ---
 
@@ -20,36 +20,38 @@ too sensitive to trust to a single agent turn.
 
 ```
 session-four/
-├── 01-multi-agent-mental-model.md
-│     How multiple agents communicate, what an orchestrator does,
-│     and when multi-agent is the right choice vs single-agent.
+├── 01-approval-workflow.md
+│     Building an agent that routes requests through approval chains.
+│     Multi-step human-in-the-loop (HITL) pattern.
+│     Example: expense approval with tier-based routing.
 │
-├── 02-orchestrator-pattern.md
-│     The orchestrator receives a task, delegates sub-tasks to specialist
-│     agents, collects results, and synthesises a final output.
-│     Full implementation with the Anthropic Agent SDK.
+├── 02-pricing-engine.md
+│     Agent-driven pricing decisions with business rules.
+│     Discount eligibility, tier pricing, dynamic adjustments.
+│     Example: B2B SaaS pricing agent.
 │
-├── 03-specialist-agents.md
-│     Designing agents with narrow, deep capability.
-│     Why specialists outperform generalists on scoped tasks.
-│     Example: a team of research, analysis, and writing agents.
+├── 03-data-validation.md
+│     Using an agent to validate incoming data against business rules.
+│     When rules are complex enough to need reasoning, not just regex.
+│     Example: contract data validation before CRM entry.
 │
-├── 04-human-in-the-loop.md
-│     When to pause the agent loop and ask a human for approval.
-│     HITL state machine, approval request format, resume pattern.
-│     Example: financial approval workflow with HITL gate.
+├── 04-routing-and-triage.md
+│     Classifying and routing incoming requests to the correct handler.
+│     Multi-label classification, confidence thresholds, escalation.
+│     Example: support ticket triage agent.
 │
-├── 05-agent-to-agent-trust.md
-│     What one agent should and should not trust from another.
-│     Validation between agents, signed outputs, scope containment.
+├── 05-document-extraction.md
+│     Extracting structured fields from unstructured business documents.
+│     Invoices, contracts, forms, emails.
+│     Example: invoice processing agent.
 │
-├── 06-parallel-agent-execution.md
-│     Running multiple agents concurrently for speed.
-│     Fan-out and fan-in patterns. Handling partial failures.
+├── 06-decision-audit-trail.md
+│     Recording every agent decision for compliance and audit purposes.
+│     What to store, how to store it, how to query it.
 │
 └── starter-code/
-      Orchestrator + two specialist agents, fully wired.
-      HITL approval workflow with state machine.
+      One complete business case implementation per document.
+      Each is a standalone, runnable Python agent.
 ```
 
 ---
@@ -57,8 +59,8 @@ session-four/
 ## Prerequisites
 
 Complete Sessions One through Three.
-Multi-agent systems are built from single agents. You must be able to design,
-prompt, and evaluate a single agent reliably before coordinating multiple.
+Session Four assumes you can write, run, evaluate, and secure a basic agent.
+The code here is more complex — it builds on everything in sessions one through three.
 
 ---
 

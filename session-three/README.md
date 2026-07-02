@@ -1,8 +1,7 @@
-# Session Three — Business Case Logic
+# Session Three — Task Design, Prompt Engineering, and Evaluation
 
-> This is where frameworks become features. Session Three implements real business
-> logic patterns: approval workflows, pricing engines, routing rules, and
-> data validation — all driven by an agent.
+> Before you write prompts, you need to know what task you are actually solving,
+> whether your prompts are working, and how to measure improvement.
 
 **Status: Coming after Session Two**
 
@@ -10,9 +9,10 @@
 
 ## What This Session Covers
 
-Session Three takes the infrastructure from Session One and the prompt design
-from Session Two and applies them to concrete business cases. Every document
-includes a full worked example with runnable code.
+Session Three picks up where Sessions One and Two end. Session One built the
+internal infrastructure. Session Two hardened it against attack. Session Three
+builds the intelligence layer — the prompts, task definitions, and evaluation
+methods that make the agent perform reliably.
 
 ---
 
@@ -20,47 +20,44 @@ includes a full worked example with runnable code.
 
 ```
 session-three/
-├── 01-approval-workflow.md
-│     Building an agent that routes requests through approval chains.
-│     Multi-step human-in-the-loop (HITL) pattern.
-│     Example: expense approval with tier-based routing.
+├── 01-task-decomposition.md
+│     Breaking a business requirement into agent-sized tasks.
+│     What one agent should and should not try to do in a single turn.
 │
-├── 02-pricing-engine.md
-│     Agent-driven pricing decisions with business rules.
-│     Discount eligibility, tier pricing, dynamic adjustments.
-│     Example: B2B SaaS pricing agent.
+├── 02-prompt-engineering-principles.md
+│     How to write prompts that produce consistent, correct output.
+│     Instruction clarity, chain-of-thought, few-shot examples.
 │
-├── 03-data-validation.md
-│     Using an agent to validate incoming data against business rules.
-│     When rules are complex enough to need reasoning, not just regex.
-│     Example: contract data validation before CRM entry.
+├── 03-few-shot-examples.md
+│     When and how to include examples in the prompt.
+│     How many examples, what format, what makes a good example.
 │
-├── 04-routing-and-triage.md
-│     Classifying and routing incoming requests to the correct handler.
-│     Multi-label classification, confidence thresholds, escalation.
-│     Example: support ticket triage agent.
+├── 04-output-format-control.md
+│     Controlling what the agent returns: plain text, JSON, structured
+│     fields, constrained vocabulary. When to use each.
 │
-├── 05-document-extraction.md
-│     Extracting structured fields from unstructured business documents.
-│     Invoices, contracts, forms, emails.
-│     Example: invoice processing agent.
+├── 05-evaluation-methods.md
+│     How to measure whether your agent is working.
+│     Human eval, LLM-as-judge, regression suites, golden datasets.
 │
-├── 06-decision-audit-trail.md
-│     Recording every agent decision for compliance and audit purposes.
-│     What to store, how to store it, how to query it.
+├── 06-iteration-workflow.md
+│     How to improve prompts systematically without breaking what works.
+│     Version-controlled prompts, test suites, diff-driven changes.
 │
 └── starter-code/
-      One complete business case implementation per document.
-      Each is a standalone, runnable Python agent.
+      Prompt templates, evaluation harness, golden test dataset template.
 ```
 
 ---
 
 ## Prerequisites
 
-Complete Session One and Session Two.
-Session Three assumes you can write, run, and evaluate a basic agent.
-The code here is more complex — it builds on everything in sessions one and two.
+Complete Sessions One and Two before starting Session Three.
+Specifically, have a working `starter-code/` agent running with your own tools
+and system message, and have read the security threat model in Session Two.
+
+You cannot engineer a prompt for a task you have not defined.
+You cannot evaluate a prompt without a working, secured agent to evaluate.
 
 ---
 

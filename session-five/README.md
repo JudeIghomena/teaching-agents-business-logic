@@ -1,8 +1,8 @@
-# Session Five — Production
+# Session Five — Multi-Agent Systems
 
-> Getting an agent working locally is 20% of the work. Getting it running
-> reliably in production — at scale, with real users, real costs, and real
-> failures — is the other 80%. Session Five covers that gap.
+> One agent can reason. A team of agents can coordinate, specialise, check each
+> other's work, and handle workflows too large for a single context window.
+> Session Five covers how to design and orchestrate agent teams.
 
 **Status: Coming after Session Four**
 
@@ -10,8 +10,9 @@
 
 ## What This Session Covers
 
-Session Five is the deployment and operations layer. Every document addresses
-a problem that only appears once you leave the development environment.
+Session Five moves from single-agent to multi-agent architecture. The patterns
+here are used in production systems where tasks are too complex, too long, or
+too sensitive to trust to a single agent turn.
 
 ---
 
@@ -19,38 +20,37 @@ a problem that only appears once you leave the development environment.
 
 ```
 session-five/
-├── 01-deployment-patterns.md
-│     How to host an agent backend: serverless functions, long-running
-│     servers, containers, managed platforms (Railway, AWS, GCP).
-│     Tradeoffs: cold start vs always-on, stateless vs stateful.
+├── 01-multi-agent-mental-model.md
+│     How multiple agents communicate, what an orchestrator does,
+│     and when multi-agent is the right choice vs single-agent.
 │
-├── 02-cost-management.md
-│     How to predict, monitor, and control API costs at scale.
-│     Token budgeting in production. Cost per session calculation.
-│     Caching strategies that reduce spend without hurting quality.
+├── 02-orchestrator-pattern.md
+│     The orchestrator receives a task, delegates sub-tasks to specialist
+│     agents, collects results, and synthesises a final output.
+│     Full implementation with the Anthropic Agent SDK.
 │
-├── 03-rate-limiting-and-quotas.md
-│     Per-user and per-endpoint rate limits for agent APIs.
-│     Anthropic tier limits and how to work within them.
-│     Queue-based architectures for burst workloads.
+├── 03-specialist-agents.md
+│     Designing agents with narrow, deep capability.
+│     Why specialists outperform generalists on scoped tasks.
+│     Example: a team of research, analysis, and writing agents.
 │
-├── 04-error-handling-in-production.md
-│     What happens when the model returns an unexpected stop reason.
-│     How to handle 529 (overloaded), 400 (bad request), timeout.
-│     Graceful degradation: what the user sees when the agent fails.
+├── 04-human-in-the-loop.md
+│     When to pause the agent loop and ask a human for approval.
+│     HITL state machine, approval request format, resume pattern.
+│     Example: financial approval workflow with HITL gate.
 │
-├── 05-prompt-versioning.md
-│     Managing prompt changes in production without breaking live users.
-│     Feature flags for prompts, canary deployments, rollback strategy.
+├── 05-agent-to-agent-trust.md
+│     What one agent should and should not trust from another.
+│     Validation between agents, signed outputs, scope containment.
+│     Security implications of multi-agent trust (links to Session Two).
 │
-├── 06-monitoring-and-alerting.md
-│     What to monitor: error rate, p95 latency, token usage, tool
-│     failure rate, cost per day. How to set up alerts that fire on
-│     the right signals without alert fatigue.
+├── 06-parallel-agent-execution.md
+│     Running multiple agents concurrently for speed.
+│     Fan-out and fan-in patterns. Handling partial failures.
 │
 └── starter-code/
-      Docker deployment config, Railway config, cost tracking module,
-      production-grade error handler.
+      Orchestrator + two specialist agents, fully wired.
+      HITL approval workflow with state machine.
 ```
 
 ---
@@ -58,8 +58,8 @@ session-five/
 ## Prerequisites
 
 Complete Sessions One through Four.
-Production concerns are meaningless until you have a working, evaluated,
-multi-capable agent to deploy. Do not skip ahead.
+Multi-agent systems are built from single agents. You must be able to design,
+prompt, evaluate, and secure a single agent reliably before coordinating multiple.
 
 ---
 
