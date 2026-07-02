@@ -24,7 +24,7 @@ without a repeatable test suite. This session covers all three in order.
 ## Planned Documents
 
 ```
-session-02/
+Session-02 (Task Design)/
 ├── 01-task-decomposition.md
 │     Breaking a business requirement into agent-sized tasks.
 │     What one agent should and should not try to do in a single turn.

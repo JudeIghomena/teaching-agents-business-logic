@@ -1,6 +1,6 @@
 # Session One: Starter Code
 
-This folder is the hands-on companion to the 11 framework documents in `session-01/`.
+This folder is the hands-on companion to the 11 framework documents in `Session-01 (Frameworks)/`.
 
 The documents explain the *why* and the *what*.
 This code is the *how*, a complete, runnable Python agent you copy, customise, and run.
@@ -40,7 +40,7 @@ Each file maps directly to a framework document:
 ### Step 1: Copy the folder to your project
 
 ```bash
-cp -r session-01/starter-code/ your-project-name/
+cp -r Session-01 (Frameworks)/starter-code/ your-project-name/
 cd your-project-name/
 ```
 
@@ -60,10 +60,10 @@ cp .env.example .env
 ### Step 4: Customise the two files that describe your agent
 
 **`agent/tool_registry.py`**: Replace the example tools with your own.
-Follow the tool design rules in `session-01/06-tool-design.md`.
+Follow the tool design rules in `Session-01 (Frameworks)/06-tool-design.md`.
 
 **`main.py`**: Replace the system message with your agent's role.
-Use the template in `session-01/07-system-prompt-skeleton.md`.
+Use the template in `Session-01 (Frameworks)/07-system-prompt-skeleton.md`.
 
 ### Step 5: Run it
 

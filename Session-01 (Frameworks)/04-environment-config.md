@@ -217,7 +217,7 @@ source code. The source code reads from the environment.
 # ── Required ──────────────────────────────────────────────────────────
 ANTHROPIC_API_KEY=
 
-# Model selection (see session-01/03-model-selection.md)
+# Model selection (see Session-01 (Frameworks)/03-model-selection.md)
 # Options: claude-haiku-4-5-20251001 | claude-sonnet-5 | claude-opus-4-8 | claude-fable-5
 AGENT_MODEL=
 
@@ -257,7 +257,7 @@ rule in CLAUDE.md stops this at the suggestion stage, before any code is written
 
 **Step 1: Create your .env.example**
 
-Copy the file at `session-01/starter-code/.env.example` into your project root.
+Copy the file at `Session-01 (Frameworks)/starter-code/.env.example` into your project root.
 Then add any project-specific variables below the base set:
 
 ```bash
