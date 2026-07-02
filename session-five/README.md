@@ -42,7 +42,7 @@ session-five/
 ├── 05-agent-to-agent-trust.md
 │     What one agent should and should not trust from another.
 │     Validation between agents, signed outputs, scope containment.
-│     Security implications of multi-agent trust (links to Session Two).
+│     Security implications of multi-agent trust (links to Session Four).
 │
 ├── 06-parallel-agent-execution.md
 │     Running multiple agents concurrently for speed.

@@ -65,21 +65,22 @@ model, project structure, model selection, environment setup, context budgeting,
 tool design, system prompt anatomy, memory tiers, observability, and the
 minimum security baseline.
 
-**Session Two: Security**
-A dedicated session on agent security, the one topic most courses treat as
-an afterthought. Covers the full agent threat model, prompt injection attacks
-and defences, tool permission scoping, authentication, data privacy, output
-sanitisation, secrets management, abuse prevention, adversarial testing,
-and incident response.
+**Session Two: Task Design, Prompt Engineering, and Evaluation**
+How to define exactly what the agent should do, write prompts that do it
+consistently, and build evaluation methods that tell you whether it is working.
+You cannot build reliable business logic until you can measure your prompts.
 
-**Session Three: Task Design, Prompt Engineering, and Evaluation**
-How to define what the agent should do, write prompts that do it consistently,
-and build evaluation methods that tell you whether it is working.
-
-**Session Four: Business Case Logic**
+**Session Three: Business Case Logic**
 Concrete implementations of the most common agent-driven business patterns:
 approval workflows, pricing engines, routing and triage, document extraction,
 and decision audit trails. Every document includes runnable code.
+
+**Session Four: Security**
+A dedicated session on agent security, studied after you have built something
+real to protect. Covers the full agent threat model, prompt injection attacks
+and defences, tool permission scoping, authentication, data privacy, output
+sanitisation, secrets management, abuse prevention, adversarial testing,
+and incident response.
 
 **Session Five: Multi-Agent Systems**
 Orchestrators, specialist agents, human-in-the-loop gates, agent-to-agent trust,
