@@ -318,4 +318,88 @@ LOGGING
 
 ---
 
+## Apply to Your Coding Agent
+
+**Task:** Add a security rules section to your CLAUDE.md that defines what
+your coding agent must never do, what it must verify before every commit, and
+which checks it must refuse to skip even if you ask it to.
+
+**Why this matters:** Coding agents are fast and helpful, which means they can
+introduce security vulnerabilities quickly and helpfully. A security rules
+section in CLAUDE.md is a code review checklist that runs before every commit
+inside every session, without you having to ask.
+
+**Step 1: Copy this template into CLAUDE.md**
+
+```
+## Security Rules
+
+These rules are non-negotiable. Apply them to every change, every session.
+If I ask you to skip one, explain why it exists and ask me to confirm first.
+
+### Secrets: zero tolerance
+- Never hardcode any secret in source code, even in a comment or a test file
+- Never add print() or logging calls that output a variable that might hold a secret
+- Before proposing any commit, run:
+  grep -rE "(sk-ant-|password\s*=\s*['\"]|api_key\s*=\s*['\"])" . --include="*.py"
+  Expected output: zero matches. Fix any hits before proceeding.
+
+### Prompt injection: mandatory separation
+- User input is never interpolated into the system message role, not even partially
+- Dynamic data from user input goes into the user turn only, never system or assistant role
+- The system message is built from trusted data only (config, DB, env vars)
+- Every system message must include a rule blocking instruction override from user turns
+
+### Tool security: dispatcher is the only entry point
+- All tool calls go through dispatch_tool() in agent/tool_registry.py
+- No direct calls to tool functions that bypass the dispatcher
+- No eval(), exec(), os.system(), or subprocess.run(shell=True) in any tool
+- SQL queries use parameterised placeholders (%s or ?) never string concatenation
+
+### Output sanitisation
+- sanitise_response() in agent/sanitiser.py must wrap all model output before
+  it is returned to any user or downstream system
+- Error messages returned to users are generic: no stack traces, no internal IDs
+- The EM_DASH_VARIANTS list in sanitiser.py is the authoritative list of
+  banned characters: never modify the string values in that list
+
+### Pre-commit security checklist (run before every commit)
+- Zero secrets in source files (grep confirms, see Secrets rule)
+- User input not in system role (check build_system_message in context.py)
+- dispatch_tool is the only tool entry point (no direct calls in runner.py)
+- sanitise_response applied before every return in runner.py
+- At least one test covers the happy path for any new tool added this session
+```
+
+**Step 2: Adapt the grep patterns to your project**
+
+If your project handles financial records, medical data, or specific PII fields
+with known names, add grep patterns for those under the Secrets section. The
+patterns in the template catch Anthropic API keys and generic password patterns.
+Your project may need more.
+
+**Step 3: Paste into CLAUDE.md**
+
+Open your project CLAUDE.md. Add this block under `## Security Rules`. This
+should be the last major section, after all other rules.
+
+**Step 4: Apply to your coding tool**
+
+For Claude Code: these rules are in CLAUDE.md and run at every session start.
+Claude Code will follow them without prompting. To trigger a manual security
+sweep at any time, ask "run the security checklist from CLAUDE.md."
+
+For Cursor: paste into `.cursorrules`. Cursor will apply the security rules
+before suggesting any commit-ready code.
+
+For Codex: add to the workspace system prompt.
+
+**What you now have:** A coding agent with a non-negotiable security checklist
+embedded in its operating instructions. The checklist mirrors the five controls
+from this document: secrets, prompt injection, tool security, output
+sanitisation, and pre-commit verification. Every change your coding agent makes
+is reviewed against these rules before it declares the task complete.
+
+---
+
 Copyright Janna AI Research Labs

@@ -586,17 +586,74 @@ This is the correct ratio.
 
 ---
 
-## Your Turn: Define the Tool Dispatcher
+## Apply to Your Coding Agent
 
-The `dispatch_tool` function in `agent/tool_registry.py` is the security chokepoint
-for your entire agent. Its current implementation covers the two example tools above.
+**Task:** Add a tool permission block to your CLAUDE.md that tells your coding
+agent exactly which commands and file operations are allowed, which are blocked,
+and that the dispatcher is the only safe entry point for tool calls.
 
-For the next exercise, you will extend `TOOLS`, `TOOL_DISPATCH`, and the matching
-implementation functions for a business case of your choice.
+**Why this matters:** Claude Code, Cursor, and Codex can run shell commands and
+edit files. Without explicit permission rules, they use reasonable defaults that
+may not match your security posture. A permission block in CLAUDE.md makes the
+rules permanent and session-proof.
 
-Consider: what real business functions would this agent need access to?
-What parameters should be constrained with `enum`? What inputs should be validated
-before the function executes?
+**Step 1: Copy this template**
+
+```
+## Tool and Command Permissions
+
+### Allowed shell commands
+- pip install (only packages already in requirements.txt or explicitly requested)
+- python -m pytest (run tests, never skip with -k or --ignore without my instruction)
+- python main.py (run the agent for testing)
+- grep, find, cat, ls (read-only inspection)
+
+### Allowed file operations
+- Read any file in this project
+- Edit files in: agent/, prompts/, tests/, tools/
+- Create new files in: agent/, prompts/, tests/, tools/
+- Edit .env.example (never .env itself)
+
+### Blocked: do not run without explicit instruction
+- git push or git push --force (I push manually)
+- rm, rmdir (ask before deleting anything)
+- pip install for packages not in requirements.txt
+- Any command that writes to .env
+- Any command that sends data to an external URL not listed below
+
+### Dispatcher rule
+- The only entry point for agent tool calls is dispatch_tool() in agent/tool_registry.py
+- Do not add direct function calls that bypass TOOL_DISPATCH
+- If you add a new tool function, register it in TOOL_DISPATCH in the same change
+- Never use eval(), exec(), subprocess with shell=True, or os.system() in any tool
+```
+
+**Step 2: Fill in your actual allowed commands**
+
+Replace the lists above with commands that apply to your project. If you use
+Docker, add the Docker commands you permit. If you have a database migration
+command, add it. If you want to block npm or any other tool, add it to the
+blocked list explicitly.
+
+**Step 3: Paste into CLAUDE.md**
+
+Open your project CLAUDE.md (created in doc 01). Add this block under a heading
+`## Tool and Command Permissions` after the `## Agent Architecture` section.
+
+**Step 4: Apply to your coding tool**
+
+For Claude Code: save CLAUDE.md and the permissions take effect at the next
+session start. The dispatcher rule is especially important: Claude Code will
+not route tool calls outside TOOL_DISPATCH.
+
+For Cursor: paste into `.cursorrules`. Cursor reads this before suggesting
+any command.
+
+For Codex: add to your workspace system prompt.
+
+**What you now have:** Your coding agent has an explicit allowlist and blocklist.
+It will not run shell commands outside the allowed list. It knows TOOL_DISPATCH
+is the only safe entry point for all tool calls in this project.
 
 ---
 

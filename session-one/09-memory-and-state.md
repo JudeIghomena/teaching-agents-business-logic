@@ -309,4 +309,88 @@ TIER 3: PERSISTENT
 
 ---
 
+## Apply to Your Coding Agent
+
+**Task:** Add memory rules to your CLAUDE.md that tell your coding agent what
+it should carry across sessions, what it must not retain, and how the three
+memory tiers map to what it should and should not change in your codebase.
+
+**Why this matters:** Coding agents maintain continuity through CLAUDE.md and
+conversation context. Without memory rules, an agent tries to retain everything
+(filling context with stale session details) or retains nothing (making you
+repeat project decisions every session). Written rules calibrate the right
+boundary.
+
+**Step 1: Identify what each tier means for your coding agent**
+
+Tier 1 (in-context, this session only):
+- The specific task you gave it this session
+- Errors encountered and fixes tried this session
+- Test results from this session
+
+Tier 2 (working context, within one long session):
+- The file currently being worked on
+- The current bug being debugged
+- What tests have passed so far this session
+
+Tier 3 (persisted across sessions, what lives in CLAUDE.md):
+- Architecture decisions that do not change between sessions
+- Security rules that apply to every session permanently
+- The tool allowlist and which tools are excluded
+- Model routing decisions and why
+
+**Step 2: Copy this template into CLAUDE.md**
+
+```
+## Memory Rules
+
+### What to remember across sessions (permanent, lives in CLAUDE.md)
+- Project structure and file placement rules (see Project Structure section)
+- Tool allowlist and addition policy (see Registered Tools section)
+- Security rules (see Security Rules section)
+- Model routing decision and reason (see Model Routing Rules section)
+- Context budget targets (see Context Management Rules section)
+
+### What to remember within this session only
+- The specific task requested in this conversation
+- Errors encountered and their resolutions this session
+- Test results from this session
+Discard all of these at session end. Do not write them back to CLAUDE.md.
+
+### What to never retain or store
+- Contents of .env or any secret value seen during the session
+- Customer names, IDs, or account data (this is agent runtime data)
+- API responses from test runs (these are ephemeral)
+- Step-by-step reasoning traces (remember the outcome, not the path)
+
+### When to update CLAUDE.md during a session
+If we make a decision that should apply to all future sessions
+(e.g. "we decided to move to Redis for session store"), propose adding it
+to the relevant section of CLAUDE.md and wait for my approval before writing.
+Do not write directly to CLAUDE.md without telling me first.
+```
+
+**Step 3: Paste into CLAUDE.md**
+
+Open your project CLAUDE.md. Add this block under `## Memory Rules`. It should
+come after the tool allowlist and before the output format rules.
+
+**Step 4: Apply to your coding tool**
+
+For Claude Code: this is native to CLAUDE.md. The most important line is the
+one about not writing session-specific details back to CLAUDE.md. Claude Code
+will keep CLAUDE.md clean and authoritative, not polluted with per-session notes.
+
+For Cursor: paste into `.cursorrules`. Cursor will apply the tier rules when
+deciding what context to carry forward.
+
+For Codex: add to the workspace system prompt.
+
+**What you now have:** A coding agent that knows the difference between what
+belongs in CLAUDE.md (permanent architectural decisions) and what belongs only
+in this session's context (current task, current errors). CLAUDE.md stays
+clean. Session context stays relevant. You do not repeat yourself every session.
+
+---
+
 Copyright Janna AI Research Labs

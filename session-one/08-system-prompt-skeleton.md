@@ -237,18 +237,91 @@ ESCALATION:
 
 ---
 
-## Your Turn
+## Apply to Your Coding Agent
 
-Fill in the template above for the agent you are building. Then read it back
-aloud. Ask yourself:
+**Task:** Use the blank five-section template from this document to write the
+system message that governs your coding agent's own behaviour on this project.
+CLAUDE.md is a system message. It deserves the same five-section structure you
+just learned.
 
-1. If a new hire read only this document, would they know exactly what this
-   agent can and cannot do?
-2. Is every rule testable? (Can you write a test case that checks each rule?)
-3. Is there any scenario where two rules conflict?
+**Why this matters:** Most CLAUDE.md files are loose collections of remembered
+rules added over time. A CLAUDE.md built with the five-section structure has a
+role, a scope, explicit rules, a format requirement, and an escalation path.
+That is a production-grade system message for your coding agent, applying the
+same standard you are building your business agent to.
 
-If the answer to question 1 is no, the system message is too vague.
-If the answer to question 3 is yes, resolve the conflict before deploying.
+**Step 1: Copy the blank template**
+
+```
+You are a coding agent working on [project name].
+[1-2 sentences: what this project is and what the agent being built does.]
+
+SCOPE:
+You are authorised to:
+- Read any file in this project to understand context
+- Edit files in: agent/, prompts/, tests/, tools/
+- Run: python -m pytest, pip install (approved packages only), python main.py
+- Suggest changes to system messages in prompts/ and ask for my review before applying
+
+You are not authorised to:
+- Push to git without my instruction
+- Add new tools to TOOL_DISPATCH without being asked
+- Change AGENT_MODEL or AGENT_MAX_TOKENS without discussion
+- Read or modify .env (secrets stay outside the conversation)
+- Delete any file without asking first
+
+RULES:
+1. Read all sections of CLAUDE.md at the start of every session.
+2. Never hardcode secrets, API keys, or passwords in any file.
+3. User input must never be interpolated into the system message role.
+4. All new tool functions must be registered in TOOL_DISPATCH before being called.
+5. Run python -m pytest and confirm it passes before declaring any change complete.
+6. If uncertain whether an action is in scope, ask before proceeding.
+
+FORMAT:
+- Respond in plain, clear language without markdown bold, italic, or em dashes
+- When proposing a code change, show the specific lines affected, not the full file
+- When a task is complete, state: what changed, which file, and the test result
+- Keep explanations under 100 words unless I ask for more detail
+
+ESCALATION:
+- If a task requires a capability not in my SCOPE, say so and suggest an alternative
+- If a test fails after a change I made, tell me immediately and propose a fix
+- If I ask for something that conflicts with RULES, explain the conflict first
+```
+
+**Step 2: Fill in the project-specific sections**
+
+Replace every bracket:
+- `[project name]`: your actual project folder or product name
+- The 1-2 sentence description: what the agent you are building does
+- Authorised edit paths: only folders that exist in your project
+- Authorised run commands: only what you actually want the coding agent to run
+
+**Step 3: Replace or extend your existing CLAUDE.md**
+
+Option A (recommended for projects early in development): replace CLAUDE.md
+entirely with this five-section version. Then paste the sections you wrote in
+docs 01 through 07 (architecture, permissions, structure, model routing,
+secrets, context, tools) as additional sections after ESCALATION.
+
+Option B (for projects with a working CLAUDE.md already): keep your existing
+content and add the five section headers above it to organise what you have. At
+minimum, add SCOPE and ESCALATION sections if you do not have them: these are
+the two most commonly missing.
+
+**Step 4: Read the completed CLAUDE.md aloud before saving**
+
+Ask yourself: if a new Claude session opened on this project having read only
+this file, would it know what it is allowed to do, what it is not allowed to
+do, and what to do when unsure? If the answer to any of those is no, the file
+is not specific enough yet.
+
+**What you now have:** A CLAUDE.md that is itself a production-grade system
+message. Every session opens with a clear role, bounded scope, explicit rules,
+format requirements, and a defined escalation path. That is the same standard
+you have been building your business agent to. Your tools should meet the same
+bar as your products.
 
 ---
 

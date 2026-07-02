@@ -169,11 +169,80 @@ Invest in Layers 2-5 before you write a single word of Layer 1.
 
 ---
 
-## What Comes Next
+## Apply to Your Coding Agent
 
-The next document (`02-internal-setup.md`) translates this mental model into
-concrete code. You will build each of the five layers from scratch, with
-annotated examples in Python using the Anthropic SDK.
+**Task:** Add a layer ownership map to your CLAUDE.md that tells your coding
+agent which five layers your project uses, which it controls, and what is
+off-limits without your instruction.
+
+**Why this matters:** Without this, your coding agent will make decisions about
+infrastructure, model settings, or tool permissions that it should not be making.
+This map is the first thing any coding agent should read about your project.
+
+**Step 1: Copy this template into a text editor**
+
+```
+## Agent Architecture
+
+Layer 5 - Infrastructure
+  Handled by: [Claude Code / Cursor handles the API client, retry logic, and auth]
+  I configure: ANTHROPIC_API_KEY in .env, max_retries and timeout in agent/infrastructure.py
+  You must not: change the API key, alter retry counts, or modify the client init
+
+Layer 4 - Model Configuration
+  Handled by: .env file
+  I configure: AGENT_MODEL, AGENT_MAX_TOKENS, AGENT_TEMPERATURE, AGENT_MAX_ITERATIONS
+  You must not: hardcode model IDs or token values in any Python file
+
+Layer 3 - Tool Registry
+  Handled by: agent/tool_registry.py (TOOL_DISPATCH dict is the allowlist)
+  I configure: which tools are registered, their schemas, their permission scope
+  You must not: add tools to TOOL_DISPATCH without explicit instruction
+  You must never: call eval(), exec(), os.system(), or subprocess in any tool
+
+Layer 2 - Context Architecture
+  Handled by: agent/context.py
+  I configure: system message structure, history trimming threshold
+  You must not: inject user input into the system message role
+
+Layer 1 - The Prompt
+  Handled by: me (the developer)
+  You help by: suggesting improvements when I ask, never overwriting CLAUDE.md unilaterally
+```
+
+**Step 2: Fill in the right column for each layer**
+
+For each layer, write what you have already built or configured. If you are
+using the starter-code from this session, most of the right column is already
+determined by the files you have. Write the actual file names and variable names.
+
+**Step 3: Open or create your CLAUDE.md**
+
+In your project root:
+
+```bash
+touch CLAUDE.md
+```
+
+Paste the completed layer map under a heading `## Agent Architecture` at the top
+of the file. This is section one of what will become a complete coding agent
+configuration by the end of this session.
+
+**Step 4: Apply to your coding tool**
+
+For Claude Code: CLAUDE.md is loaded automatically at every session start. Save
+the file and open a new Claude Code session. Your agent will read the layer map
+before doing anything else in this project.
+
+For Cursor: rename the block's heading to match your style and paste into
+`.cursorrules` at the project root.
+
+For Codex: paste into the system prompt configuration for this project workspace.
+
+**What you now have:** Your coding agent opens every session with a complete
+picture of which five layers your project uses, what it is allowed to change,
+and what is off-limits. When something behaves unexpectedly, both you and the
+coding agent know exactly which layer to inspect first.
 
 ---
 

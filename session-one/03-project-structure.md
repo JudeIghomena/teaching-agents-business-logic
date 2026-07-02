@@ -152,16 +152,76 @@ Copy this tree and replace the placeholders:
 
 ---
 
-## Your Turn
+## Apply to Your Coding Agent
 
-Before moving to the next document, sketch your agent's folder layout:
+**Task:** Add a project structure map to your CLAUDE.md so your coding agent
+always knows where every type of file belongs and never creates files in the
+wrong location.
 
-1. What domain does your agent operate in? (HR, finance, logistics, support?)
-2. How many tools will it need? (Under 5 stays in `tool_registry.py`. Over 5 gets `tools/`.)
-3. Does it have one role or multiple roles? (One role = one prompt file. Multiple = one file each.)
+**Why this matters:** A coding agent without a structure map places new files
+wherever seems reasonable in the moment. Over several sessions, your project
+drifts from the intended layout. Every future Claude session then has to
+reverse-engineer where things live. A structure map in CLAUDE.md prevents this
+permanently.
 
-Answering these three questions gives you your complete folder layout before
-you write a single function.
+**Step 1: Copy this template**
+
+```
+## Project Structure
+
+[your-agent-name]/
+├── agent/                  # Core package: do not add business logic here
+│   ├── infrastructure.py   # API client and logger
+│   ├── model_config.py     # Model ID and limits: configure via .env
+│   ├── tool_registry.py    # Tool schemas, implementations, dispatcher
+│   ├── context.py          # Context dataclass, system message, history
+│   └── runner.py           # Agentic loop: the only file that calls the API
+├── tools/                  # Extended tool implementations (create when agent/ grows)
+│   └── [domain].py         # e.g. hr.py, billing.py, logistics.py
+├── prompts/                # System message templates, one file per agent role
+│   └── [role].py           # e.g. customer_support.py, sales_agent.py
+├── tests/                  # One test file per module
+│   └── test_[module].py
+├── .env                    # Secrets: never read or modify, never commit
+├── .env.example            # Template only: safe to edit and commit
+├── requirements.txt        # Pinned dependencies
+└── main.py                 # Entry point: thin, wires modules, no logic here
+
+Placement rules (apply every time a new file is created):
+- New business logic goes in tools/ not agent/
+- New system messages go in prompts/ not inline in main.py
+- New tests go in tests/ mirroring the module they test
+- Configuration changes go in .env, not hardcoded in any Python file
+- main.py stays thin: if it grows past 50 lines, something belongs elsewhere
+```
+
+**Step 2: Update with your actual project name and domain**
+
+Replace `[your-agent-name]` with your project folder name. Replace `[domain]`
+with your business domain (e.g. `hr`, `finance`, `logistics`). If you do not
+yet have a `tools/` folder, keep the entry but note "create when agent has 5+
+tools."
+
+**Step 3: Paste into CLAUDE.md**
+
+Open your project CLAUDE.md. Add the completed structure under `## Project
+Structure`. This should be the third section, after Architecture and Permissions.
+
+**Step 4: Apply to your coding tool**
+
+For Claude Code: paste into CLAUDE.md. When you ask Claude Code to create a
+new file, it will check the structure map first. If you ask it to add a new
+business rule, it will place it in `tools/` not in `agent/`.
+
+For Cursor: paste into `.cursorrules`. Cursor will follow the placement rules
+when suggesting where to create new files.
+
+For Codex: add to the workspace system prompt so file placement decisions
+follow the map.
+
+**What you now have:** Every future coding agent session on this project opens
+with a complete picture of where everything belongs. New files go in the right
+place the first time, and the project stays navigable as it grows.
 
 ---
 

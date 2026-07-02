@@ -248,4 +248,91 @@ number surprises you, the budget worksheet caught the problem early.
 
 ---
 
+## Apply to Your Coding Agent
+
+**Task:** Fill in your context budget numbers and add context management rules
+to your CLAUDE.md that tell your coding agent what the budget targets are, what
+must never enter the context window, and in what order to cut when the budget
+is tight.
+
+**Why this matters:** A coding agent working on your codebase may suggest
+changes to how context is managed. Without written rules, those suggestions
+may contradict your budget decisions, injecting more data than your model can
+reason well about. With rules in CLAUDE.md, the coding agent reinforces your
+context design instead of undermining it.
+
+**Step 1: Fill in your budget numbers**
+
+Use the worksheet from this document. The four numbers you need:
+
+```
+Model: [e.g. claude-sonnet-5, 200,000 token limit]
+System message target: [e.g. 800 tokens]
+Tool schemas total: [e.g. 600 tokens across 3 tools]
+History window limit: [e.g. trim when estimated_tokens_used exceeds 80,000]
+Response budget: [e.g. AGENT_MAX_TOKENS=2048]
+Alert threshold: [e.g. flag if a single turn exceeds 60,000 input tokens]
+```
+
+**Step 2: Copy this template into CLAUDE.md**
+
+```
+## Context Management Rules
+
+### Budget targets for this project
+Model: [your model and context limit]
+System message: keep under [N] tokens. Tighten if it grows beyond this.
+Tool schemas: [N] tools registered, estimated [N] tokens total.
+History window: trim when estimated_tokens_used exceeds [N].
+Response budget: AGENT_MAX_TOKENS=[N] (do not reduce this).
+
+### What must never enter the context window
+- .env values or secrets (load via os.environ, never pass to the model)
+- Auth tokens or session cookies (pass user_id only, resolve server-side)
+- Bulk records fetched in advance (use a tool to retrieve specific records on demand)
+- Unvalidated user input in the system message role (user input goes in user turn only)
+
+### History trimming rule (from agent/context.py)
+When estimated_tokens_used exceeds the limit, trim using this pattern:
+- Keep the first 2 messages (original user intent)
+- Keep the last 10 messages (recent state)
+- Drop the middle
+Do not truncate from the beginning only: losing original intent causes
+the model to answer confidently about the wrong thing.
+
+### Cut order when budget is tight
+1. Reduce history window first (most elastic, least impact on reasoning)
+2. Reduce dynamic injection second (inject only what this specific turn needs)
+3. Tighten the system message third (remove redundant or repeated rules)
+4. Never reduce AGENT_MAX_TOKENS (truncated responses are worse than shorter history)
+```
+
+**Step 3: Fill in your actual numbers**
+
+Replace every bracket with the real numbers from your completed worksheet. If
+you have not filled in the worksheet yet, measure your system message and tool
+schemas now using the token counting code from this document. It takes under
+five minutes and prevents expensive surprises when the agent runs at scale.
+
+**Step 4: Paste into CLAUDE.md**
+
+Open your project CLAUDE.md. Add the completed block under `## Context
+Management Rules`.
+
+**Step 5: Apply to your coding tool**
+
+For Claude Code: paste into CLAUDE.md. When Claude Code suggests adding data
+to the context, it will check these rules first. The cut order is especially
+useful: Claude Code will reduce history before touching the system message.
+
+For Cursor: paste into `.cursorrules`.
+
+For Codex: add to the workspace system prompt.
+
+**What you now have:** A coding agent that respects your context budget. It
+will not suggest injecting large datasets into context, it knows the correct
+trim order, and it will never suggest reducing `max_tokens` as a first move.
+
+---
+
 Copyright Janna AI Research Labs

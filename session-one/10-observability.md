@@ -296,4 +296,84 @@ OBSERVABILITY CHECKLIST: [YOUR AGENT NAME]
 
 ---
 
+## Apply to Your Coding Agent
+
+**Task:** Add structured output rules to your CLAUDE.md that tell your coding
+agent how to format completions, what to say when a test fails, and what your
+logging code must and must never output.
+
+**Why this matters:** A coding agent that narrates every step is slow to scan
+and hard to act on. One that makes changes silently is hard to trust. Written
+format rules calibrate the right balance: structured summaries for completions,
+brief explanations for reasoning, and explicit log hygiene to prevent accidental
+PII exposure in your agent's own logging code.
+
+**Step 1: Copy this template into CLAUDE.md**
+
+```
+## Output Format Rules
+
+### When completing a task
+Always end with a structured completion summary in this exact format:
+  Changed: [filename:line range or function name]
+  What changed: [one sentence describing the change]
+  Test result: [passed N/N tests | failed: test name and error | not run]
+  Next: [what should be done next, or "nothing, task complete"]
+
+Do not narrate the implementation steps. Show the completion summary only.
+
+### When explaining code
+Plain language only. No markdown bold (**text**) or italic (*text*).
+No em dashes. If structure is needed, use a numbered list.
+Keep explanations under 100 words unless I ask for more detail.
+
+### When proposing a change
+Show only the lines that change, not the entire file.
+Format: filename.py, lines N-M, then the specific change.
+State the reason in one sentence before showing the change.
+
+### Logging code rules
+When writing or modifying logging calls in this project:
+- Never log full user message content (may contain PII)
+- Never log tool inputs that include customer names, emails, or account IDs
+- Safe to log: token counts, durations, tool names, stop reasons, session IDs
+- Log response preview at 80 characters maximum, never the full response
+- Log level in production must be WARNING or above, never DEBUG in production
+
+### When a test fails
+1. State the failing test name exactly as printed
+2. State the error message exactly as printed
+3. Propose one specific fix with the file and line number
+4. Do not proceed with other changes until the test passes
+```
+
+**Step 2: Adjust the completion summary format**
+
+If you prefer different fields in the completion summary, change them now. The
+structure matters more than the exact words. What you need in every completion:
+what changed, where it changed, whether tests passed, and what is next.
+
+**Step 3: Paste into CLAUDE.md**
+
+Open your project CLAUDE.md. Add this block under `## Output Format Rules`. It
+should come after the memory rules section.
+
+**Step 4: Apply to your coding tool**
+
+For Claude Code: format rules are honoured from CLAUDE.md natively. Claude Code
+will apply the completion summary format after every task and follow the logging
+code rules when writing observability code for your agent.
+
+For Cursor: paste into `.cursorrules`. Cursor will apply the format to its
+responses and follow the logging hygiene rules.
+
+For Codex: add to the workspace system prompt.
+
+**What you now have:** A coding agent that produces consistent, scannable output.
+Every task ends with a structured summary. Every explanation is brief. Every
+logging change it makes to your codebase follows the PII hygiene rules from
+this document. You spend less time reading and more time reviewing what changed.
+
+---
+
 Copyright Janna AI Research Labs

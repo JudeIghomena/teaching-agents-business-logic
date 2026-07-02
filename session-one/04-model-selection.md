@@ -163,16 +163,89 @@ AGENT_TEMPERATURE=0.7          # Creative variance is desired here
 
 ---
 
-## Your Turn
+## Apply to Your Coding Agent
 
-For the agent you are building, answer these before moving to document 05:
+**Task:** Add a model routing rule to your CLAUDE.md so your coding agent knows
+which model to use for which type of task, and never suggests changing the model
+without a clear engineering reason.
 
-1. What is the primary task? (classify / reason / synthesise / create)
-2. What is the expected volume? (10 requests/day vs 10,000/day changes the model choice)
-3. What does a wrong answer cost? (low cost = Haiku acceptable; high cost = use Sonnet or Opus)
+**Why this matters:** Without routing rules, a coding agent asked to "make this
+faster" might suggest switching to Haiku when the task requires Sonnet-level
+reasoning, or suggest Opus when Haiku would do. Written routing rules anchor
+every model suggestion to your actual requirements.
+
+**Step 1: Answer the four questions first**
+
+Before writing the rule, answer these:
+1. What is your agent's primary task? (classify / reason / synthesise / create)
+2. What is the expected request volume? (10/day vs 10,000/day changes the choice)
+3. What does a wrong answer cost in your domain? (low cost = Haiku acceptable)
 4. Does correctness or creativity matter more?
 
-Write these down. They justify your model choice in code review.
+**Step 2: Copy this template**
+
+```
+## Model Routing Rules
+
+### Primary model for this project
+AGENT_MODEL=claude-sonnet-5
+Reason: [write your reason: e.g. "multi-step reasoning with tool use"]
+
+### When to suggest a model change (propose to me, do not change unilaterally)
+
+Change to claude-haiku-4-5-20251001 if:
+- The task is purely classification or extraction (no multi-step reasoning)
+- Volume exceeds [your threshold] requests per day (cost matters at scale)
+- Output is a label, flag, or structured field (not a full explanation)
+
+Change to claude-opus-4-8 if:
+- Input is more than 50,000 tokens (many documents to synthesise)
+- Task requires nuanced legal, ethical, or domain-expert judgment
+- Latency tolerance is high and accuracy is critical
+
+Change to claude-fable-5 if:
+- Task is creative: marketing copy, narrative, brand-voice writing
+- Style matters more than factual precision
+
+### When NOT to suggest a model change
+- Do not suggest downgrading to save cost without confirming task requirements
+- Do not suggest upgrading without showing why the current model is insufficient
+- Never change AGENT_MODEL in .env or model_config.py without my instruction
+
+### Temperature rule
+- Business logic tasks: AGENT_TEMPERATURE=0.0 (deterministic, always)
+- Creative tasks: AGENT_TEMPERATURE=0.7 (only when model is claude-fable-5)
+- Never raise temperature for reasoning tasks: wrong answers with variance
+  are worse than correct answers without it
+```
+
+**Step 3: Fill in the brackets**
+
+In the "primary model" section, write the actual reason for your choice, using
+the four answers you wrote in Step 1. In the Haiku condition, write your actual
+volume threshold.
+
+**Step 4: Paste into CLAUDE.md**
+
+Open your project CLAUDE.md. Add the completed block under `## Model Routing
+Rules`. It should come after the project structure section.
+
+**Step 5: Apply to your coding tool**
+
+For Claude Code: the model routing rules are now session context. When you ask
+Claude Code to optimise the agent or reduce costs, it will check these rules
+before suggesting any model change.
+
+For Cursor: paste into `.cursorrules`. Cursor will reference the routing rules
+when you ask about performance or cost.
+
+For Codex: add to the workspace system prompt as a constraint on model
+recommendations.
+
+**What you now have:** Your coding agent has written justification for the
+current model choice and explicit conditions under which a change is appropriate.
+Model suggestions become engineering proposals backed by your requirements, not
+guesses based on what sounds better.
 
 ---
 

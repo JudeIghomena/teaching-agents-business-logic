@@ -244,4 +244,99 @@ RATE_LIMIT_REQUESTS_PER_MINUTE=60
 
 ---
 
+## Apply to Your Coding Agent
+
+**Task:** Copy the .env.example template from this session's starter-code into
+your project and add a secrets handling rule to your CLAUDE.md that prevents
+your coding agent from ever touching, logging, or hardcoding a secret value.
+
+**Why this matters:** Secrets leaks in AI-assisted development rarely happen
+because a developer commits a secret intentionally. They happen because a coding
+agent suggests "for simplicity, just hardcode the key here for now." A written
+rule in CLAUDE.md stops this at the suggestion stage, before any code is written.
+
+**Step 1: Create your .env.example**
+
+Copy the file at `session-one/starter-code/.env.example` into your project root.
+Then add any project-specific variables below the base set:
+
+```bash
+# .env.example: copy this to .env and fill in values. Never commit .env.
+
+# Core (required: agent will not start without these)
+ANTHROPIC_API_KEY=
+AGENT_MODEL=
+AGENT_MAX_TOKENS=4096
+AGENT_TEMPERATURE=0.0
+AGENT_MAX_ITERATIONS=10
+
+# Optional
+LOG_LEVEL=INFO
+APP_ENV=development
+RATE_LIMIT_REQUESTS_PER_MINUTE=60
+
+# Project-specific (add yours below)
+# DATABASE_URL=
+# REDIS_URL=
+# WEBHOOK_SECRET=
+```
+
+**Step 2: Add this secrets rule to your CLAUDE.md**
+
+```
+## Secrets and Configuration Rules
+
+### The rule
+All secrets and configuration values live in .env only.
+No secret ever appears in any Python file, any config file, or any log output.
+
+### What counts as a secret
+- ANTHROPIC_API_KEY and any other API keys
+- Database connection strings (they contain passwords)
+- JWT signing secrets or HMAC keys
+- Webhook secrets
+- Any value starting with sk-, pk-, tok-, or Bearer
+
+### What you (coding agent) must never do
+- Suggest hardcoding any secret in source code, even temporarily or for testing
+- Add print() or logging calls that output a variable holding a secret
+- Read .env directly: use os.environ.get() or the require_env() helper
+- Suggest committing .env (the file must stay local always)
+
+### What to do when a new secret is needed
+1. Add the variable name with no value to .env.example
+2. Add a require_env("VAR_NAME") call in agent/infrastructure.py
+3. Tell me what value to set in my .env
+4. Never ask me to put the value in the source code
+
+### Verification: run this before every commit
+grep -rE "(sk-ant-|password\s*=\s*['\"]|api_key\s*=\s*['\"])" . --include="*.py"
+Expected output: zero matches.
+If you see any: stop, fix before committing.
+```
+
+**Step 3: Paste into CLAUDE.md**
+
+Open your project CLAUDE.md. Add this block under `## Secrets and Configuration
+Rules`. It should come after the project structure section and before context
+budget rules.
+
+**Step 4: Apply to your coding tool**
+
+For Claude Code: this rule is now in CLAUDE.md. Claude Code will follow it
+without being reminded. If it ever suggests hardcoding a value, ask it to
+"check the secrets rule in CLAUDE.md."
+
+For Cursor: paste into `.cursorrules`. Cursor will apply it when generating
+code that reads configuration values.
+
+For Codex: add to the workspace system prompt.
+
+**What you now have:** A coding agent that treats secrets correctly from the
+first session. The .env.example documents every variable that exists. The
+CLAUDE.md rule prevents the most common class of AI-assisted secret leak
+before it can happen.
+
+---
+
 Copyright Janna AI Research Labs

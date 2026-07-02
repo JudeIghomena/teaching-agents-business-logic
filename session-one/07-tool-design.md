@@ -288,4 +288,85 @@ Before registering any tool, verify:
 
 ---
 
+## Apply to Your Coding Agent
+
+**Task:** Add an explicit tool allowlist to your CLAUDE.md that documents every
+tool your agent is registered to use, every tool that is deliberately excluded,
+and the conditions under which a new tool may be added.
+
+**Why this matters:** Every tool you register in TOOL_DISPATCH is a capability
+you give the model. A coding agent working on your project may suggest adding
+tools to make the agent "more capable." Without a written allowlist and addition
+policy, that happens without review. With one, every new tool is a deliberate
+engineering decision.
+
+**Step 1: List your current tools**
+
+Open `agent/tool_registry.py`. For each function in TOOL_DISPATCH, write one
+line describing what it does and whether it reads or writes:
+
+**Step 2: Copy this template into CLAUDE.md**
+
+```
+## Registered Tools (allowlist)
+
+### Currently registered in TOOL_DISPATCH
+- get_customer_record: reads a customer row from DB by ID (read-only)
+- apply_discount: writes a discount record, returns a confirmation code (write)
+[replace with your actual tools]
+
+### Explicitly NOT registered (do not add without my review)
+- process_refund: not yet implemented, requires finance approval flow
+- delete_customer_account: destructive, not approved for automated use
+[add your own exclusions here]
+
+### Tool addition policy
+A new tool may only be added when ALL of the following are true:
+1. I have explicitly asked for it in this session
+2. The tool schema includes a description that says WHEN to call it
+3. The implementation uses parameterised queries (no string concatenation into SQL)
+4. The implementation returns a structured dict on both success and error
+5. The function is registered in TOOL_DISPATCH in the same change that adds it
+
+### Description rule
+Every tool description must say WHEN to call it, not just WHAT it does.
+Bad: "Gets customer data."
+Good: "Retrieves a customer profile. Call this before any decision that
+depends on the customer's eligibility, tier, or history. Do not guess."
+
+### Forbidden in any tool implementation
+- eval(), exec(), os.system(), or subprocess with shell=True
+- String concatenation into SQL queries (use %s or ? placeholders)
+- HTTP requests to URLs derived from user input without scheme and IP validation
+- File operations on paths from user input without a path traversal check
+```
+
+**Step 3: Fill in your actual tool list**
+
+Replace the example tools with the ones you have implemented. The "not
+registered" list is as important as the registered list: it documents
+deliberate decisions about what the model cannot do, not just current state.
+
+**Step 4: Paste into CLAUDE.md**
+
+Open your project CLAUDE.md. Add this block under `## Registered Tools
+(allowlist)`.
+
+**Step 5: Apply to your coding tool**
+
+For Claude Code: the allowlist is now in CLAUDE.md. Claude Code will not add
+tools to TOOL_DISPATCH without being asked, and will follow the addition policy
+when it does.
+
+For Cursor: paste into `.cursorrules`.
+
+For Codex: add to the workspace system prompt.
+
+**What you now have:** A written record of every tool your agent can call, every
+tool that is deliberately excluded, and the five conditions a new tool must meet
+before being added. New tools become deliberate decisions, not accidental feature
+additions.
+
+---
+
 Copyright Janna AI Research Labs
