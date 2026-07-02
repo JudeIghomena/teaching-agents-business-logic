@@ -1,131 +1,103 @@
-# Teaching: Business Case Logic with AI Coding Agents
+# Business Case Logic with AI Coding Agents
 
-A living reference library for building business-grade logic and agent workflows
-using Claude Code and the Anthropic Agent SDK.
+A practical course on building AI agents that do real work — not demos,
+not chatbots, not toys. Agents that make decisions, enforce business rules,
+coordinate workflows, and run in production.
 
 Maintained by Jude Ighomena / Janna AI Research Labs.
 
 ---
 
-## How This Repo Works
+## What This Course Is
 
-Content is organised into six sessions. Read them in order.
-Each session has:
-- **Documents (MD files)** — the explanation, the why, the concepts
-- **Starter code** — a runnable Python project you copy and customise immediately
+Most AI agent tutorials teach you how to call an API and print a response.
+This course teaches you how to build an agent you would trust with your business.
 
-Security gets its own dedicated session (Session Two) because it applies to
-everything that follows. It is not a checkbox — it is a discipline.
+There is a wide gap between a working demo and a production agent. The demo
+runs on your laptop with one happy-path input. The production agent handles
+thousands of users, enforces role-based permissions, validates every tool call,
+logs every decision, resists manipulation through natural language, and recovers
+gracefully when things go wrong.
 
----
-
-## Sessions
-
-### Session One — Frameworks
-Everything you build and understand before writing a single prompt.
-
-| # | Document | What you learn |
-|---|---|---|
-| 01 | [agent-mental-model](session-one/01-agent-mental-model.md) | The 5-layer model and execution cycle |
-| 02 | [internal-setup](session-one/02-internal-setup.md) | All 5 layers in annotated Python |
-| 03 | [project-structure](session-one/03-project-structure.md) | Folder layout and structural rules |
-| 04 | [model-selection](session-one/04-model-selection.md) | Decision tree: Haiku vs Sonnet vs Opus vs Fable |
-| 05 | [environment-config](session-one/05-environment-config.md) | Env vars, secrets, pre-run checklist |
-| 06 | [context-window-budget](session-one/06-context-window-budget.md) | Token budget worksheet |
-| 07 | [tool-design](session-one/07-tool-design.md) | Schema design, enum, error returns, dispatcher |
-| 08 | [system-prompt-skeleton](session-one/08-system-prompt-skeleton.md) | 5-section anatomy and fill-in template |
-| 09 | [memory-and-state](session-one/09-memory-and-state.md) | 3-tier memory model with code |
-| 10 | [observability](session-one/10-observability.md) | Structured logging and alert thresholds |
-| 11 | [security-baseline](session-one/11-security-baseline.md) | Minimum security controls every agent needs |
-
-Starter code: [session-one/starter-code/](session-one/starter-code/)
-
-**Status: Complete**
+This course covers that gap — from the first line of setup code to a deployed,
+monitored, and secured multi-agent system.
 
 ---
 
-### Session Two — Security
-The dedicated security session. Covers every agent-specific attack surface,
-defence pattern, testing method, and incident response playbook.
-Baked into every session that follows — and studied on its own here first.
+## Who It Is For
 
-See [session-two/README.md](session-two/README.md) for the full plan.
+Developers who know how to code and want to build AI agents that are actually
+fit for production. You do not need prior experience with AI or the Anthropic SDK.
+You do need to be comfortable reading and writing Python.
 
-Planned documents: threat model, prompt injection deep-dive, tool security,
-auth and authorisation, data privacy, output security, secrets management,
-rate limiting and abuse prevention, security testing, incident response.
-
-Starter code: adversarial prompt suite, sanitiser, rate limiter, auth middleware.
-
-**Status: Coming next**
+It is also designed for teams building agent-powered products on top of platforms
+like Janna AI Research Labs — where agents handle business logic, approvals,
+data workflows, and customer-facing decisions at scale.
 
 ---
 
-### Session Three — Task Design, Prompt Engineering, and Evaluation
-How to define what the agent should do, write prompts that do it reliably,
-and measure whether it is working.
+## What You Will Be Able to Do
 
-See [session-three/README.md](session-three/README.md) for the full plan.
-**Status: Coming after Session Two**
+By the end of this course you will be able to:
 
----
-
-### Session Four — Business Case Logic
-Approval workflows, pricing engines, routing rules, data validation.
-Real business logic patterns with complete worked examples and runnable code.
-
-See [session-four/README.md](session-four/README.md) for the full plan.
-**Status: Coming after Session Three**
+- Design the full internal setup of an agent before writing a single prompt
+- Choose the right model for the task and budget your context window deliberately
+- Build tool registries that are secure, typed, and dispatcher-controlled
+- Write system prompts with clear role, scope, rules, format, and escalation
+- Understand and defend against every agent-specific attack surface
+- Implement real business logic: approvals, pricing, routing, data validation
+- Design and orchestrate multi-agent systems with human-in-the-loop controls
+- Deploy, monitor, and manage costs for a production agent system
 
 ---
 
-### Session Five — Multi-Agent Systems
-Orchestrators, specialist agents, human-in-the-loop, parallel execution.
-How to coordinate a team of agents on workflows too complex for one agent.
+## How the Course Is Structured
 
-See [session-five/README.md](session-five/README.md) for the full plan.
-**Status: Coming after Session Four**
+Six sessions, each building on the last. Read them in order.
+
+Every session contains explanation documents and starter code you can run
+and customise immediately. The documents explain the why. The starter code
+is the how — working Python you copy into your own project.
+
+**Session One — Frameworks**
+The internal foundation every agent is built on. Covers the 5-layer agent
+model, project structure, model selection, environment setup, context budgeting,
+tool design, system prompt anatomy, memory tiers, observability, and the
+minimum security baseline.
+
+**Session Two — Security**
+A dedicated session on agent security — the one topic most courses treat as
+an afterthought. Covers the full agent threat model, prompt injection attacks
+and defences, tool permission scoping, authentication, data privacy, output
+sanitisation, secrets management, abuse prevention, adversarial testing,
+and incident response.
+
+**Session Three — Task Design, Prompt Engineering, and Evaluation**
+How to define what the agent should do, write prompts that do it consistently,
+and build evaluation methods that tell you whether it is working.
+
+**Session Four — Business Case Logic**
+Concrete implementations of the most common agent-driven business patterns:
+approval workflows, pricing engines, routing and triage, document extraction,
+and decision audit trails. Every document includes runnable code.
+
+**Session Five — Multi-Agent Systems**
+Orchestrators, specialist agents, human-in-the-loop gates, agent-to-agent trust,
+and parallel execution. How to coordinate a team of agents on tasks too complex
+for a single agent turn.
+
+**Session Six — Production**
+Deployment patterns, cost management, rate limiting, production error handling,
+prompt versioning, and monitoring. Everything that only matters once real users
+and real money are involved.
 
 ---
 
-### Session Six — Production
-Deployment, cost management, rate limiting, error handling, monitoring.
-Everything that only matters once real users are involved.
+## The Underlying Principle
 
-See [session-six/README.md](session-six/README.md) for the full plan.
-**Status: Coming after Session Five**
-
----
-
-## Learning Path
-
-```
-Session One    Build the foundation correctly
-      │
-      ▼
-Session Two    Understand and apply security before building anything real
-      │
-      ▼
-Session Three  Write and evaluate prompts that work reliably
-      │
-      ▼
-Session Four   Apply to real business cases with production-ready code
-      │
-      ▼
-Session Five   Scale to multi-agent systems and complex workflows
-      │
-      ▼
-Session Six    Ship to production with confidence
-```
-
----
-
-## Principles
-
-- Every concept is grounded in working code
-- Every design decision is explained, not assumed
-- Security is a first-class session, not a footnote
-- Each session builds on the previous — read in order
+An agent is only as good as the infrastructure it runs on.
+Most developers write the prompt first. This course teaches you to build everything
+else first — and write the prompt last.
 
 ---
 
