@@ -23,7 +23,7 @@ agents you can copy and adapt to your own domain.
 ## Planned Documents
 
 ```
-session-three/
+session-03/
 ├── 01-approval-workflow.md
 │     Building an agent that routes requests through approval chains.
 │     Multi-step human-in-the-loop (HITL) pattern.

@@ -19,7 +19,7 @@ too sensitive to trust to a single agent turn.
 ## Planned Documents
 
 ```
-session-five/
+session-05/
 ├── 01-multi-agent-mental-model.md
 │     How multiple agents communicate, what an orchestrator does,
 │     and when multi-agent is the right choice vs single-agent.

@@ -30,7 +30,7 @@ model. Both are real. Both need dedicated countermeasures.
 ## Planned Documents
 
 ```
-session-four/
+session-04/
 │
 ├── 01-agent-threat-model.md
 │     The complete attack surface map for an AI agent.

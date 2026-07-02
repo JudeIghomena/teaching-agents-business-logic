@@ -18,7 +18,7 @@ a problem that only appears once you leave the development environment.
 ## Planned Documents
 
 ```
-session-six/
+session-06/
 ├── 01-deployment-patterns.md
 │     How to host an agent backend: serverless functions, long-running
 │     servers, containers, managed platforms (Railway, AWS, GCP).
