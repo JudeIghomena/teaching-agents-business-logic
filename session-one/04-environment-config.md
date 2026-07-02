@@ -55,7 +55,7 @@ ANTHROPIC_API_KEY=sk-ant-...
 # Never hardcode. Never log. Never commit.
 
 AGENT_MODEL=claude-sonnet-5
-# Full pinned model ID. See 04-model-selection.md for valid values.
+# Full pinned model ID. See 03-model-selection.md for valid values.
 
 AGENT_MAX_TOKENS=4096
 # Maximum tokens in the model response. Always set this explicitly.
@@ -63,7 +63,7 @@ AGENT_MAX_TOKENS=4096
 
 AGENT_TEMPERATURE=0.0
 # 0.0 for deterministic business logic. Higher for creative tasks.
-# See 04-model-selection.md temperature guide.
+# See 03-model-selection.md temperature guide.
 
 AGENT_MAX_ITERATIONS=10
 # Maximum tool-call iterations per turn. Prevents infinite loops.
@@ -217,7 +217,7 @@ source code. The source code reads from the environment.
 # ── Required ──────────────────────────────────────────────────────────
 ANTHROPIC_API_KEY=
 
-# Model selection (see session-one/04-model-selection.md)
+# Model selection (see session-one/03-model-selection.md)
 # Options: claude-haiku-4-5-20251001 | claude-sonnet-5 | claude-opus-4-8 | claude-fable-5
 AGENT_MODEL=
 

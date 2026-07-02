@@ -108,12 +108,12 @@ leave the schemas and dispatcher in `tool_registry.py`, import from `tools/`.
 
 ---
 
-## What the Scaffold Already Shows You
+## What the Starter Code Already Shows You
 
-The `scaffold/` folder in this session demonstrates the `agent/` package.
+The `starter-code/` folder in this session demonstrates the `agent/` package.
 It intentionally omits `tools/` and `prompts/` because the project is small.
 
-When you customise the scaffold for a real project, your first structural
+When you customise the starter code for a real project, your first structural
 decision is: does this agent need more than 4 tools? If yes, create `tools/`
 from the start.
 
@@ -128,7 +128,7 @@ Copy this tree and replace the placeholders:
 │
 ├── agent/
 │   ├── __init__.py
-│   ├── infrastructure.py       # No changes needed, reuse as-is from scaffold
+│   ├── infrastructure.py       # No changes needed, reuse as-is from starter-code
 │   ├── model_config.py         # No changes needed, configure via .env
 │   ├── tool_registry.py        # CUSTOMISE: replace example tools with yours
 │   ├── context.py              # CUSTOMISE: adjust trim_history_if_needed threshold

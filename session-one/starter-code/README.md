@@ -26,12 +26,12 @@ Each file maps directly to a framework document:
 
 | File | Document |
 |---|---|
-| `infrastructure.py` | 02-internal-setup.md (Layer 5) |
-| `model_config.py` | 02-internal-setup.md (Layer 4) + 04-model-selection.md |
-| `tool_registry.py` | 02-internal-setup.md (Layer 3) + 07-tool-design.md |
-| `context.py` | 02-internal-setup.md (Layer 2) + 06-context-window-budget.md |
-| `runner.py` | 02-internal-setup.md (Layer 1) |
-| `.env.example` | 05-environment-config.md |
+| `infrastructure.py` | 08-internal-setup.md (Layer 5) |
+| `model_config.py` | 08-internal-setup.md (Layer 4) + 03-model-selection.md |
+| `tool_registry.py` | 08-internal-setup.md (Layer 3) + 06-tool-design.md |
+| `context.py` | 08-internal-setup.md (Layer 2) + 05-context-window-budget.md |
+| `runner.py` | 08-internal-setup.md (Layer 1) |
+| `.env.example` | 04-environment-config.md |
 
 ---
 
@@ -60,10 +60,10 @@ cp .env.example .env
 ### Step 4: Customise the two files that describe your agent
 
 **`agent/tool_registry.py`**: Replace the example tools with your own.
-Follow the tool design rules in `session-one/07-tool-design.md`.
+Follow the tool design rules in `session-one/06-tool-design.md`.
 
 **`main.py`**: Replace the system message with your agent's role.
-Use the template in `session-one/08-system-prompt-skeleton.md`.
+Use the template in `session-one/07-system-prompt-skeleton.md`.
 
 ### Step 5: Run it
 
