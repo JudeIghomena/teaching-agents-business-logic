@@ -8,8 +8,8 @@
 
 ## Why Structure Matters Before Code
 
-Most agent tutorials give you one file: `agent.py`. Everything — client setup,
-tool definitions, prompt, loop — lives in one place. That works for a demo.
+Most agent tutorials give you one file: `agent.py`. Everything, client setup,
+tool definitions, prompt, loop, lives in one place. That works for a demo.
 It collapses the moment you add a second tool, a second prompt variant, or a
 second developer.
 
@@ -25,13 +25,13 @@ Structure answers three questions before code is written:
 ```
 your-agent/
 │
-├── agent/                      # Core agent package — imported everywhere
+├── agent/                      # Core agent package, imported everywhere
 │   ├── __init__.py
 │   ├── infrastructure.py       # API client, logger, retry config
 │   ├── model_config.py         # Model ID, token budget, temperature
 │   ├── tool_registry.py        # Tool schemas + dispatcher + implementations
 │   ├── context.py              # Context dataclass, system message builder, history
-│   └── runner.py               # Agentic loop — the only place that calls the API
+│   └── runner.py               # Agentic loop, the only place that calls the API
 │
 ├── tools/                      # Complex tool implementations (if tool_registry grows large)
 │   ├── __init__.py
@@ -39,7 +39,7 @@ your-agent/
 │   ├── billing.py              # apply_discount, process_refund
 │   └── inventory.py            # check_stock, reserve_item
 │
-├── prompts/                    # System message templates — one file per agent role
+├── prompts/                    # System message templates, one file per agent role
 │   ├── customer_support.py
 │   ├── sales_assistant.py
 │   └── operations_monitor.py
@@ -49,11 +49,11 @@ your-agent/
 │   ├── test_context.py
 │   └── test_runner.py
 │
-├── .env                        # Secrets — never committed to git
+├── .env                        # Secrets, never committed to git
 ├── .env.example                # Template showing required var names (no values)
 ├── .gitignore                  # Must include .env
 ├── requirements.txt            # Pinned dependencies
-└── main.py                     # Entry point — wires all modules together
+└── main.py                     # Entry point, wires all modules together
 ```
 
 ---
@@ -64,7 +64,7 @@ your-agent/
 
 `infrastructure.py` knows about the API client. It does not know about tools.
 `tool_registry.py` knows about tools. It does not know about the API client.
-`runner.py` is the only file that imports both — it is the wiring layer.
+`runner.py` is the only file that imports both, it is the wiring layer.
 
 If you find yourself importing `tool_registry` inside `infrastructure.py`,
 something has gone wrong. You are mixing concerns.
@@ -128,11 +128,11 @@ Copy this tree and replace the placeholders:
 │
 ├── agent/
 │   ├── __init__.py
-│   ├── infrastructure.py       # No changes needed — reuse as-is from scaffold
-│   ├── model_config.py         # No changes needed — configure via .env
+│   ├── infrastructure.py       # No changes needed, reuse as-is from scaffold
+│   ├── model_config.py         # No changes needed, configure via .env
 │   ├── tool_registry.py        # CUSTOMISE: replace example tools with yours
 │   ├── context.py              # CUSTOMISE: adjust trim_history_if_needed threshold
-│   └── runner.py               # No changes needed — the loop is universal
+│   └── runner.py               # No changes needed, the loop is universal
 │
 ├── tools/                      # Create this when you have 5+ tools
 │   ├── __init__.py
@@ -145,7 +145,7 @@ Copy this tree and replace the placeholders:
 │   └── test_tool_registry.py   # CUSTOMISE: test your tools
 │
 ├── .env                        # Fill in your ANTHROPIC_API_KEY and settings
-├── .env.example                # Commit this — shows required vars, no values
+├── .env.example                # Commit this, shows required vars, no values
 ├── requirements.txt
 └── main.py                     # CUSTOMISE: wire your prompt + start the session
 ```

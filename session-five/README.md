@@ -1,4 +1,4 @@
-# Session Five — Multi-Agent Systems
+# Session Five: Multi-Agent Systems
 
 > One agent can reason. A team of agents can coordinate, specialise, check each
 > other's work, and handle workflows too large for a single context window.

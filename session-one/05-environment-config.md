@@ -1,7 +1,7 @@
 # Framework 05: Environment Configuration
 
 > Your agent is only as secure and reliable as its configuration layer.
-> Environment setup is not a one-time task — it is a discipline.
+> Environment setup is not a one-time task, it is a discipline.
 
 ---
 
@@ -48,7 +48,7 @@ Cheaper model = faster iteration = lower bill during development.
 Every agent project needs at minimum:
 
 ```bash
-# ── Core (required — agent will not start without these) ──────────────
+# ── Core (required: agent will not start without these) ──────────────
 
 ANTHROPIC_API_KEY=sk-ant-...
 # The Anthropic API key. Loaded once at client init.
@@ -59,7 +59,7 @@ AGENT_MODEL=claude-sonnet-5
 
 AGENT_MAX_TOKENS=4096
 # Maximum tokens in the model response. Always set this explicitly.
-# Leaving it unset defaults to the model maximum — expensive and slow.
+# Leaving it unset defaults to the model maximum: expensive and slow.
 
 AGENT_TEMPERATURE=0.0
 # 0.0 for deterministic business logic. Higher for creative tasks.
@@ -89,7 +89,7 @@ RATE_LIMIT_REQUESTS_PER_MINUTE=60
 ### What .env contains (never committed)
 
 ```bash
-# .env  — local secrets and config — DO NOT COMMIT
+# .env : local secrets and config: DO NOT COMMIT
 ANTHROPIC_API_KEY=sk-ant-your-actual-key-here
 AGENT_MODEL=claude-haiku-4-5-20251001    # cheap model for local dev
 AGENT_MAX_TOKENS=2048
@@ -99,10 +99,10 @@ LOG_LEVEL=DEBUG
 APP_ENV=development
 ```
 
-### What .env.example contains (committed — no values)
+### What .env.example contains (committed: no values)
 
 ```bash
-# .env.example  — copy this to .env and fill in your values
+# .env.example : copy this to .env and fill in your values
 ANTHROPIC_API_KEY=
 AGENT_MODEL=
 AGENT_MAX_TOKENS=
@@ -138,7 +138,7 @@ load_dotenv()  # Loads .env file into os.environ at startup
 def require_env(key: str) -> str:
     """
     Reads a required environment variable.
-    Raises immediately at startup if missing — not silently at runtime.
+    Raises immediately at startup if missing, not silently at runtime.
 
     This is called "fail fast." Better to crash on startup with a clear
     error than to fail 30 seconds into an agent run with a cryptic message.
@@ -191,19 +191,19 @@ If you see results: remove the key immediately, rotate it at console.anthropic.c
 ## Deployment-Specific Config
 
 When deploying to a hosting platform, environment variables are set through
-the platform's UI or CLI — not through `.env` files, which stay on your machine.
+the platform's UI or CLI, not through `.env` files, which stay on your machine.
 
 ```bash
 # Railway
 railway variables set ANTHROPIC_API_KEY=sk-ant-...
 railway variables set AGENT_MODEL=claude-sonnet-5
 
-# AWS / ECS — use Parameter Store or Secrets Manager, not hardcoded task definitions
+# AWS / ECS: use Parameter Store or Secrets Manager, not hardcoded task definitions
 
 # Docker
 docker run -e ANTHROPIC_API_KEY=sk-ant-... your-agent-image
 
-# Kubernetes — use a Secret manifest, not a ConfigMap
+# Kubernetes: use a Secret manifest, not a ConfigMap
 ```
 
 The pattern is always the same: secrets come from the environment, never from

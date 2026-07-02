@@ -1,8 +1,8 @@
-# Session Six — Production
+# Session Six: Production
 
 > Getting an agent working locally is 20% of the work. Getting it running
-> reliably in production — at scale, with real users, real costs, and real
-> failures — is the other 80%. Session Six covers that gap.
+> reliably in production, at scale, with real users, real costs, and real
+> failures, is the other 80%. Session Six covers that gap.
 
 **Status: Coming after Session Five**
 

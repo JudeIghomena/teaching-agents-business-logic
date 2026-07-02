@@ -1,6 +1,6 @@
 # Business Case Logic with AI Coding Agents
 
-A practical course on building AI agents that do real work — not demos,
+A practical course on building AI agents that do real work, not demos,
 not chatbots, not toys. Agents that make decisions, enforce business rules,
 coordinate workflows, and run in production.
 
@@ -19,7 +19,7 @@ thousands of users, enforces role-based permissions, validates every tool call,
 logs every decision, resists manipulation through natural language, and recovers
 gracefully when things go wrong.
 
-This course covers that gap — from the first line of setup code to a deployed,
+This course covers that gap, from the first line of setup code to a deployed,
 monitored, and secured multi-agent system.
 
 ---
@@ -31,7 +31,7 @@ fit for production. You do not need prior experience with AI or the Anthropic SD
 You do need to be comfortable reading and writing Python.
 
 It is also designed for teams building agent-powered products on top of platforms
-like Janna AI Research Labs — where agents handle business logic, approvals,
+like Janna AI Research Labs, where agents handle business logic, approvals,
 data workflows, and customer-facing decisions at scale.
 
 ---
@@ -57,36 +57,36 @@ Six sessions, each building on the last. Read them in order.
 
 Every session contains explanation documents and starter code you can run
 and customise immediately. The documents explain the why. The starter code
-is the how — working Python you copy into your own project.
+is the how, working Python you copy into your own project.
 
-**Session One — Frameworks**
+**Session One: Frameworks**
 The internal foundation every agent is built on. Covers the 5-layer agent
 model, project structure, model selection, environment setup, context budgeting,
 tool design, system prompt anatomy, memory tiers, observability, and the
 minimum security baseline.
 
-**Session Two — Security**
-A dedicated session on agent security — the one topic most courses treat as
+**Session Two: Security**
+A dedicated session on agent security, the one topic most courses treat as
 an afterthought. Covers the full agent threat model, prompt injection attacks
 and defences, tool permission scoping, authentication, data privacy, output
 sanitisation, secrets management, abuse prevention, adversarial testing,
 and incident response.
 
-**Session Three — Task Design, Prompt Engineering, and Evaluation**
+**Session Three: Task Design, Prompt Engineering, and Evaluation**
 How to define what the agent should do, write prompts that do it consistently,
 and build evaluation methods that tell you whether it is working.
 
-**Session Four — Business Case Logic**
+**Session Four: Business Case Logic**
 Concrete implementations of the most common agent-driven business patterns:
 approval workflows, pricing engines, routing and triage, document extraction,
 and decision audit trails. Every document includes runnable code.
 
-**Session Five — Multi-Agent Systems**
+**Session Five: Multi-Agent Systems**
 Orchestrators, specialist agents, human-in-the-loop gates, agent-to-agent trust,
 and parallel execution. How to coordinate a team of agents on tasks too complex
 for a single agent turn.
 
-**Session Six — Production**
+**Session Six: Production**
 Deployment patterns, cost management, rate limiting, production error handling,
 prompt versioning, and monitoring. Everything that only matters once real users
 and real money are involved.
@@ -97,7 +97,7 @@ and real money are involved.
 
 An agent is only as good as the infrastructure it runs on.
 Most developers write the prompt first. This course teaches you to build everything
-else first — and write the prompt last.
+else first, and write the prompt last.
 
 ---
 

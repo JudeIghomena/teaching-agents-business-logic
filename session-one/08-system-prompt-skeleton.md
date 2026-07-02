@@ -1,6 +1,6 @@
 # Framework 08: System Prompt Skeleton
 
-> The system message is not where you explain the task — it is where you define
+> The system message is not where you explain the task, it is where you define
 > the agent's identity, authority, and constraints. Those three things exist
 > before any task is described.
 
@@ -10,7 +10,7 @@
 
 The system message is persistent context that applies to every single turn of the
 conversation. Think of it as the agent's job description, rules of engagement,
-and operating manual — all in one.
+and operating manual, all in one.
 
 It answers:
 - Who is this agent? (role)
@@ -32,14 +32,14 @@ Every production system message has exactly five sections, in this order:
 
 ```
 1. ROLE          Who the agent is and what it is responsible for
-2. SCOPE         What it is authorised to do — and what it is not
+2. SCOPE         What it is authorised to do, and what it is not
 3. RULES         Explicit constraints on behaviour, numbered for clarity
 4. FORMAT        How responses must be structured
 5. ESCALATION    What to do when the request is outside scope or uncertain
 ```
 
 Each section serves a purpose. None are optional for a production agent.
-You may expand each section — do not remove any.
+You may expand each section, do not remove any.
 
 ---
 
@@ -48,26 +48,26 @@ You may expand each section — do not remove any.
 ```
 You are [role title] for [organisation or product name].
 [One to two sentences describing what this agent is responsible for and
-who it serves. Be specific — "customer support" is vague, "post-purchase
+who it serves. Be specific, "customer support" is vague, "post-purchase
 support for B2B SaaS accounts" is specific.]
 
 SCOPE:
 You are authorised to:
-- [Action 1 — specific and bounded]
-- [Action 2 — specific and bounded]
-- [Action 3 — specific and bounded]
+- [Action 1, specific and bounded]
+- [Action 2, specific and bounded]
+- [Action 3, specific and bounded]
 
 You are not authorised to:
-- [Out-of-scope action 1 — things users will try to ask for]
+- [Out-of-scope action 1, things users will try to ask for]
 - [Out-of-scope action 2]
 - [Sensitive area to avoid]
 
 RULES:
-1. [Most important rule — usually an identity verification or safety check]
-2. [Second rule — usually a constraint on a high-stakes action]
-3. [Third rule — usually a data handling or confidentiality rule]
-4. [Fourth rule — usually a communication standard]
-5. [Add more as needed — keep each rule to one sentence]
+1. [Most important rule, usually an identity verification or safety check]
+2. [Second rule, usually a constraint on a high-stakes action]
+3. [Third rule, usually a data handling or confidentiality rule]
+4. [Fourth rule, usually a communication standard]
+5. [Add more as needed, keep each rule to one sentence]
 
 FORMAT:
 - Respond in plain, clear language
@@ -81,7 +81,7 @@ FORMAT:
 ESCALATION:
 - If the user's request is outside your authorised scope, say:
   "[Exact scripted handoff phrase]" and do not attempt to help further
-- If you are uncertain whether an action is authorised, do not take it —
+- If you are uncertain whether an action is authorised, do not take it ,
   ask a clarifying question instead
 - If a tool returns an error you cannot resolve, tell the user what happened
   in plain language and provide [contact method or next step]
@@ -142,7 +142,7 @@ ESCALATION:
 ### Mistake 1: Writing rules that overlap with each other
 
 ```
-# Bad — overlapping rules create contradiction when edge cases arise
+# Bad: overlapping rules create contradiction when edge cases arise
 Rule 1: Always be helpful to the customer.
 Rule 4: Never do anything outside your authorised scope.
 ```
@@ -153,7 +153,7 @@ The model will guess. Your rules should be mutually consistent.
 ### Mistake 2: Putting dynamic data in the system message
 
 ```
-# Bad — this data becomes stale immediately
+# Bad: this data becomes stale immediately
 You are helping customer Amara Osei (Gold tier, 14 purchases this year).
 ```
 
@@ -164,10 +164,10 @@ user turn or tool result instead.
 ### Mistake 3: Vague scope boundaries
 
 ```
-# Bad — what counts as "relevant"?
+# Bad: what counts as "relevant"?
 You can help with anything relevant to the customer's account.
 
-# Good — explicit boundaries leave no room for guessing
+# Good: explicit boundaries leave no room for guessing
 You are authorised to: look up records, apply credits up to 20%, update
 contact info. You are not authorised to: process refunds, access payment
 details, discuss roadmap.

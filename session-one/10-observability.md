@@ -70,7 +70,7 @@ Every turn of an agent session should emit at minimum these structured events:
             },
         ],
 
-        # Final response (length only — never log the full content if it contains PII)
+        # Final response (length only, never log the full content if it contains PII)
         "response_length_chars": 284,
         "response_preview": "I have applied a 15% discount...",  # First 80 chars only
     }
@@ -163,7 +163,7 @@ def emit_turn(trace: TurnTrace, response_preview: str = "") -> None:
 ## Integrating Observability into the Runner
 
 ```python
-# agent/runner.py — with observability integrated
+# agent/runner.py: with observability integrated
 
 from agent.observability import start_turn, record_iteration, record_tool_call, emit_turn
 import time
@@ -239,11 +239,11 @@ Set up alerts on these log patterns. These indicate something is wrong in produc
 
 | Condition | Alert threshold | What it means |
 |---|---|---|
-| `iterations` > 8 | Any occurrence | Agent is looping — check tool return values |
-| `total_input_tokens` > 100,000 | Any occurrence | Context budget not respected — check history trimming |
-| `error = "max_iterations_reached"` | > 1% of turns | Agent cannot complete tasks — check tool schemas |
-| `tool_calls_count` = 0 and `iterations` > 1 | Any occurrence | Model is re-calling itself without tools — prompt issue |
-| `duration_ms` > 30,000 | Any occurrence | Turn taking > 30s — check for hanging tool calls |
+| `iterations` > 8 | Any occurrence | Agent is looping, check tool return values |
+| `total_input_tokens` > 100,000 | Any occurrence | Context budget not respected, check history trimming |
+| `error = "max_iterations_reached"` | > 1% of turns | Agent cannot complete tasks, check tool schemas |
+| `tool_calls_count` = 0 and `iterations` > 1 | Any occurrence | Model is re-calling itself without tools, prompt issue |
+| `duration_ms` > 30,000 | Any occurrence | Turn taking > 30s, check for hanging tool calls |
 | Any `success: false` in `tool_calls` | > 5% of tool calls | Tool implementation errors |
 
 ---
@@ -279,7 +279,7 @@ SAFE TO LOG:
 ## Sample: Observability Config Checklist
 
 ```
-OBSERVABILITY CHECKLIST — [YOUR AGENT NAME]
+OBSERVABILITY CHECKLIST: [YOUR AGENT NAME]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 [ ] Structured logger configured (not print statements)

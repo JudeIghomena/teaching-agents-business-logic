@@ -1,4 +1,4 @@
-# Session Two — Security
+# Session Two: Security
 
 > Security for AI agents is not a feature you add at the end.
 > It is a discipline you apply from the first line of code.
@@ -10,7 +10,7 @@
 
 ## Why Security Gets Its Own Session
 
-Session One's document 11 covers the security baseline — the minimum controls
+Session One's document 11 covers the security baseline, the minimum controls
 every agent needs before it runs. This session goes much further.
 
 Agent systems have an attack surface that does not exist in traditional software:
@@ -37,7 +37,7 @@ session-two/
 │     How to draw a threat model for your specific agent before building it.
 │
 ├── 02-prompt-injection-deep-dive.md
-│     The most important agent-specific attack — in full detail.
+│     The most important agent-specific attack, in full detail.
 │     Direct injection (user manipulates the model in their turn).
 │     Indirect injection (malicious content in retrieved data poisons context).
 │     Real attack examples. Defence at every layer: system message, input
@@ -54,7 +54,7 @@ session-two/
 ├── 04-authentication-and-authorisation.md
 │     Who is allowed to talk to your agent, and what are they allowed to ask it to do?
 │     API key and JWT patterns for agent endpoints.
-│     Role-based tool access — not all users get all tools.
+│     Role-based tool access, not all users get all tools.
 │     Session validation: verifying identity before every high-stakes tool call.
 │
 ├── 05-data-handling-and-privacy.md
@@ -111,18 +111,18 @@ session-two/
 
 ## How This Session Relates to Others
 
-Every other session touches security — but from the angle of making a feature
+Every other session touches security, but from the angle of making a feature
 work. This session focuses entirely on making the system resistant to failure
 and attack. The two perspectives are complementary.
 
 | Session | Security angle covered |
 |---|---|
-| Session One | Security baseline (doc 11) — the minimum controls |
-| Session Two | Deep-dive security — threat model, attack patterns, testing |
-| Session Three | Secure business logic — input validation, audit trails |
-| Session Four | Multi-agent trust — what agents should and should not trust from each other |
-| Session Five | Multi-agent security boundaries — privilege separation across agents |
-| Session Six | Production security — monitoring, alerting, incident response at scale |
+| Session One | Security baseline (doc 11), the minimum controls |
+| Session Two | Deep-dive security, threat model, attack patterns, testing |
+| Session Three | Secure business logic, input validation, audit trails |
+| Session Four | Multi-agent trust, what agents should and should not trust from each other |
+| Session Five | Multi-agent security boundaries, privilege separation across agents |
+| Session Six | Production security, monitoring, alerting, incident response at scale |
 
 ---
 
@@ -130,7 +130,7 @@ and attack. The two perspectives are complementary.
 
 Complete Session One before starting Session Two.
 Specifically, the starter-code agent should be running with your own tools
-and system message. Session Two will attack that running agent — you need
+and system message. Session Two will attack that running agent, you need
 something to attack before you can learn to defend it.
 
 ---

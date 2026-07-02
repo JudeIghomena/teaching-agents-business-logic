@@ -1,6 +1,6 @@
 # Framework 04: Model Selection
 
-> Choosing a model is not a preference — it is an engineering decision with
+> Choosing a model is not a preference, it is an engineering decision with
 > measurable consequences for cost, latency, and correctness. Make it
 > deliberately before you write the first line of code.
 
@@ -20,13 +20,13 @@ Every model sits somewhere on two axes:
   LOW LATENCY           │              HIGH LATENCY
                          │
               Haiku 4.5  │   Sonnet 5
-              (fast/cheap)│  (balanced — default choice)
+              (fast/cheap)│  (balanced, default choice)
                          │
                     LOW CAPABILITY
 ```
 
 No model is universally best. The right model is the one whose capability
-ceiling matches your task's requirements — and no higher.
+ceiling matches your task's requirements, and no higher.
 
 ---
 
@@ -40,7 +40,7 @@ ceiling matches your task's requirements — and no higher.
 | Fable 5 | `claude-fable-5` | Creative generation, narrative, style-sensitive writing | Medium | Medium |
 
 Always pin the full model ID in your `.env`. Do not use shorthand aliases like
-`"claude-sonnet"` — these resolve to different snapshots over time and produce
+`"claude-sonnet"`, these resolve to different snapshots over time and produce
 inconsistent behaviour.
 
 ---
@@ -76,22 +76,22 @@ support. Only diverge when the decision tree above gives you a clear signal.
 ## Multi-Model Pipelines
 
 Some agent workflows benefit from using different models at different stages.
-This is called a multi-model pipeline and it is a legitimate pattern — not over-engineering.
+This is called a multi-model pipeline and it is a legitimate pattern, not over-engineering.
 
 **Example: Document Processing Pipeline**
 
 ```
-Stage 1 — Extract raw data from 500 documents
+Stage 1: Extract raw data from 500 documents
   Model: claude-haiku-4-5-20251001
   Why: Cheap, fast, extraction is straightforward
   Cost saving: ~70% cheaper than Sonnet for this stage
 
-Stage 2 — Reason about extracted data, apply business rules
+Stage 2: Reason about extracted data, apply business rules
   Model: claude-sonnet-5
   Why: This is where accuracy matters most
   No cost saving sacrificed here
 
-Stage 3 — Write final summary report for executive audience
+Stage 3: Write final summary report for executive audience
   Model: claude-fable-5 (or claude-sonnet-5)
   Why: Polished prose matters here, Fable excels at tone
 ```
@@ -142,7 +142,7 @@ In your `.env`, set the model for your specific use case:
 ```bash
 # For a high-volume document classifier
 AGENT_MODEL=claude-haiku-4-5-20251001
-AGENT_MAX_TOKENS=512           # Short output — just the classification label
+AGENT_MAX_TOKENS=512           # Short output, just the classification label
 AGENT_TEMPERATURE=0.0          # Must be deterministic
 
 # For a business logic reasoning agent

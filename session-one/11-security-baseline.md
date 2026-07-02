@@ -9,21 +9,21 @@
 ## The Agent-Specific Attack Surface
 
 Traditional web apps worry about SQL injection, XSS, CSRF, and broken auth.
-Agents share all of those concerns — and add new ones:
+Agents share all of those concerns, and add new ones:
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
 │  TRADITIONAL ATTACKS (still apply)                                  │
 │  SQL injection via tool inputs                                       │
-│  Broken auth — routes without middleware                             │
+│  Broken auth: routes without middleware                             │
 │  Excessive data exposure in API responses                            │
 ├─────────────────────────────────────────────────────────────────────┤
 │  AGENT-SPECIFIC ATTACKS                                              │
-│  Prompt injection — user input hijacking the system message          │
-│  Tool abuse — model calling a tool outside its intended scope        │
-│  Context poisoning — malicious data in retrieved content             │
-│  Jailbreaking — user manipulating the model to ignore its rules      │
-│  Information extraction — user tricking the agent to reveal internals│
+│  Prompt injection: user input hijacking the system message          │
+│  Tool abuse: model calling a tool outside its intended scope        │
+│  Context poisoning: malicious data in retrieved content             │
+│  Jailbreaking: user manipulating the model to ignore its rules      │
+│  Information extraction: user tricking the agent to reveal internals│
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -46,7 +46,7 @@ turn as instruction-like content by default.
 
 ```python
 # The system message defines the agent's identity and constraints
-# User input NEVER modifies the system message — not even partially
+# User input NEVER modifies the system message: not even partially
 
 # Bad: injecting user content into the system message
 def build_system_message(user_name: str) -> str:
@@ -61,7 +61,7 @@ def build_system_message(user_name: str) -> str:
 def build_system_message() -> str:
     return """
     You are a support agent for Janna AI Research Labs.
-    [Rules remain static — no user content interpolated here]
+    [Rules remain static, no user content interpolated here]
     """
 
 def build_user_turn_prefix(user_name: str) -> str:
@@ -98,8 +98,8 @@ the current context. Registering all tools for all agents is over-permissive.
 ALL_TOOLS = [
     get_customer_record_schema,
     apply_discount_schema,
-    process_refund_schema,        # High-privilege — finance only
-    delete_customer_account_schema,  # Destructive — admin only
+    process_refund_schema,        # High-privilege, finance only
+    delete_customer_account_schema,  # Destructive, admin only
 ]
 
 # Role-specific subsets
@@ -162,7 +162,7 @@ def sanitise_response(text: str) -> str:
     Removes forbidden patterns and formatting violations from agent output
     before it is returned to the user.
 
-    This is a safety net — the system message already instructs the model
+    This is a safety net, the system message already instructs the model
     not to include these. The sanitiser catches anything that slips through.
     """
     # Remove forbidden patterns
@@ -222,7 +222,7 @@ def _validate_tool_input(tool_name: str, tool_input: dict) -> None:
             raise ValueError(
                 f"Discount of {discount}% exceeds maximum of 50%."
             )
-        # Paranoid check — the JSON schema should catch this, but we verify
+        # Paranoid check, the JSON schema should catch this, but we verify
         valid_reasons = {"loyalty", "complaint_resolution", "promotional", "error_correction"}
         if tool_input.get("reason") not in valid_reasons:
             raise ValueError(f"Invalid discount reason: '{tool_input.get('reason')}'")
@@ -281,18 +281,18 @@ AGENT SECURITY CHECKLIST
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 SECRETS
-[ ] grep -r "sk-ant-" . --include="*.py" — zero results
-[ ] grep -rE "password\s*=\s*['\"][^'\"]{4}" . — zero results
+[ ] grep -r "sk-ant-" . --include="*.py", zero results
+[ ] grep -rE "password\s*=\s*['\"][^'\"]{4}" ., zero results
 [ ] .env is in .gitignore and not committed
 [ ] API key loaded from env, not hardcoded anywhere
 
 PROMPT INJECTION
 [ ] System message contains explicit rule blocking instruction override
 [ ] User input is never interpolated into the system message
-[ ] User input goes into user turn only — never system or assistant role
+[ ] User input goes into user turn only, never system or assistant role
 
 TOOL SECURITY
-[ ] Tools are role-scoped — not all tools registered for all roles
+[ ] Tools are role-scoped, not all tools registered for all roles
 [ ] dispatch_tool uses an allowlist (TOOL_DISPATCH dict)
 [ ] Input validation in dispatcher covers all high-risk parameters
 [ ] Tool implementations use parameterised queries for any DB access
@@ -300,7 +300,7 @@ TOOL SECURITY
 
 OUTPUT
 [ ] sanitise_response() applied to all model output before returning to user
-[ ] Error messages returned to user are generic — no stack traces
+[ ] Error messages returned to user are generic, no stack traces
 [ ] Tool results containing PII are not echoed verbatim in responses
 
 RATE LIMITING

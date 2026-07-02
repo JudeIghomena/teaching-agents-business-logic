@@ -1,4 +1,4 @@
-# Session Three — Task Design, Prompt Engineering, and Evaluation
+# Session Three: Task Design, Prompt Engineering, and Evaluation
 
 > Before you write prompts, you need to know what task you are actually solving,
 > whether your prompts are working, and how to measure improvement.
@@ -11,7 +11,7 @@
 
 Session Three picks up where Sessions One and Two end. Session One built the
 internal infrastructure. Session Two hardened it against attack. Session Three
-builds the intelligence layer — the prompts, task definitions, and evaluation
+builds the intelligence layer, the prompts, task definitions, and evaluation
 methods that make the agent perform reliably.
 
 ---

@@ -1,4 +1,4 @@
-# Framework 02: Internal Setup — The Five Layers in Code
+# Framework 02: Internal Setup: The Five Layers in Code
 
 > This document translates the mental model from `01-agent-mental-model.md` into
 > working Python code using the Anthropic SDK. Build each layer in order.
@@ -41,7 +41,7 @@ load_dotenv()
 
 def build_logger(name: str) -> logging.Logger:
     """
-    Structured logger — every agent run emits structured lines.
+    Structured logger, every agent run emits structured lines.
     Never use print() in production agent code. You cannot search or
     alert on print() output.
     """
@@ -85,7 +85,7 @@ client = build_client()
 ```
 
 **What to notice:**
-- `max_retries=3` is built into the SDK client, not a try/except in your loop. This handles the network layer — your business logic stays clean.
+- `max_retries=3` is built into the SDK client, not a try/except in your loop. This handles the network layer, your business logic stays clean.
 - `timeout=60.0` is a hard ceiling. Without it, a stalled model response can block your entire process indefinitely.
 - The logger name `"agent"` lets you filter all agent logs independently in any log aggregator.
 
@@ -93,7 +93,7 @@ client = build_client()
 
 ## Layer 4: Model Configuration
 
-Model configuration is a named, versioned data structure — not a bag of keyword
+Model configuration is a named, versioned data structure, not a bag of keyword
 arguments scattered through your codebase. Centralise it here.
 
 ```python
@@ -140,7 +140,7 @@ def load_model_config() -> ModelConfig:
     )
 
 
-# Temperature reference guide (do not guess — choose deliberately):
+# Temperature reference guide (do not guess: choose deliberately):
 #
 # 0.0   Deterministic. Same input always produces same output.
 #       Use for: data extraction, classification, routing, business logic,
@@ -165,7 +165,7 @@ def load_model_config() -> ModelConfig:
 ## Layer 3: Tool Registry
 
 A tool in the Anthropic API is a JSON schema that describes a function the model
-can request to call. The model does not call the function — it emits a structured
+can request to call. The model does not call the function, it emits a structured
 request, and your code calls the function and returns the result.
 
 This distinction matters: the model has no direct access to your system.
@@ -242,7 +242,7 @@ TOOLS: list[dict[str, Any]] = [
 
 # Step 2: Implement the actual functions
 # These are the real functions your code runs when the model requests a tool call.
-# They must match the schema above exactly — same parameter names, same types.
+# They must match the schema above exactly: same parameter names, same types.
 
 def get_customer_record(customer_id: str) -> dict[str, Any]:
     """
@@ -303,7 +303,7 @@ def dispatch_tool(tool_name: str, tool_input: dict[str, Any]) -> Any:
 ```
 
 **What to notice:**
-- The `enum` on `reason` in `apply_discount` constrains the model to four valid values. Without this, the model might pass `"goodwill"` or `"VIP"` — valid English, invalid for your system.
+- The `enum` on `reason` in `apply_discount` constrains the model to four valid values. Without this, the model might pass `"goodwill"` or `"VIP"`, valid English, invalid for your system.
 - The `dispatch_tool` function is a security chokepoint. The model cannot call any function that is not in `TOOL_DISPATCH`, even if that function exists in your codebase.
 
 ---
@@ -336,18 +336,18 @@ class ConversationContext:
     or returned to the user.
     """
 
-    # The system message — built once per session, not per turn
+    # The system message, built once per session, not per turn
     system_message: str = ""
 
-    # Conversation history — grows with each turn
+    # Conversation history, grows with each turn
     messages: list[dict[str, Any]] = field(default_factory=list)
 
     # Dynamic session data injected for this specific user/request
-    # This does NOT go into conversation history — it is injected into
+    # This does NOT go into conversation history, it is injected into
     # the system message or as a tool result only
     session_metadata: dict[str, Any] = field(default_factory=dict)
 
-    # Running token count — used to decide when to trim history
+    # Running token count, used to decide when to trim history
     estimated_tokens_used: int = 0
 
 
@@ -407,7 +407,7 @@ def trim_history_if_needed(
 ```
 
 **What to notice:**
-- `session_metadata` is kept separate from `messages`. This is where you put the user's account ID, their auth tier, or their feature flags. It is injected into the system message, never into the conversation history — so it is not echoed back in the response or stored in your chat log.
+- `session_metadata` is kept separate from `messages`. This is where you put the user's account ID, their auth tier, or their feature flags. It is injected into the system message, never into the conversation history, so it is not echoed back in the response or stored in your chat log.
 - `trim_history_if_needed` keeps the first exchange deliberately. Losing the original user intent is the single most common cause of "the agent went off-topic halfway through."
 
 ---
@@ -442,7 +442,7 @@ def run_agent(user_message: str, context: ConversationContext) -> str:
     Executes one full agent turn: receives a user message, runs the
     agentic loop until a final text response is produced, returns it.
 
-    This function does not know what the agent does — that is the prompt's job.
+    This function does not know what the agent does, that is the prompt's job.
     It only knows how to run the loop correctly.
     """
     add_user_turn(context, user_message)
@@ -475,7 +475,7 @@ def run_agent(user_message: str, context: ConversationContext) -> str:
         context.estimated_tokens_used += response.usage.input_tokens + response.usage.output_tokens
 
         if response.stop_reason == "end_turn":
-            # The model produced a final text response — return it
+            # The model produced a final text response, return it
             final_text = next(
                 block.text for block in response.content if hasattr(block, "text")
             )
@@ -527,7 +527,7 @@ from agent.runner import run_agent
 def start_agent_session(user_role: str) -> ConversationContext:
     """
     Creates a fully initialised context for a new agent session.
-    Call this once per session — not once per message.
+    Call this once per session, not once per message.
     """
     config = load_model_config()
     logger.info("session_start", extra={"model": config.model_id, "role": user_role})
@@ -552,14 +552,14 @@ def start_agent_session(user_role: str) -> ConversationContext:
 if __name__ == "__main__":
     context = start_agent_session(user_role="customer_support")
 
-    # First message — the user initiates
+    # First message, the user initiates
     response = run_agent(
         user_message="Hi, my customer ID is CUS-00042891. I had an issue last week and I think I deserve a discount.",
         context=context,
     )
     print(response)
 
-    # Second message — same context, history is preserved
+    # Second message, same context, history is preserved
     response = run_agent(
         user_message="Can you apply 15% off? The issue was a billing error on your side.",
         context=context,
@@ -575,11 +575,11 @@ At this point, before writing a single word of task-specific prompt, you have:
 
 | Layer | File | What it gives you |
 |---|---|---|
-| 5 — Infrastructure | `agent/infrastructure.py` | Authenticated client, retry logic, structured logging |
-| 4 — Model Config | `agent/model_config.py` | Pinned model, capped token budget, deliberate temperature |
-| 3 — Tool Registry | `agent/tool_registry.py` | Registered tools with schemas, secure dispatcher |
-| 2 — Context Arch | `agent/context.py` | System message builder, history management, token tracking |
-| 1 — Runner | `agent/runner.py` | Agentic loop with tool execution and iteration cap |
+| 5, Infrastructure | `agent/infrastructure.py` | Authenticated client, retry logic, structured logging |
+| 4, Model Config | `agent/model_config.py` | Pinned model, capped token budget, deliberate temperature |
+| 3, Tool Registry | `agent/tool_registry.py` | Registered tools with schemas, secure dispatcher |
+| 2, Context Arch | `agent/context.py` | System message builder, history management, token tracking |
+| 1, Runner | `agent/runner.py` | Agentic loop with tool execution and iteration cap |
 
 The prompt (in `build_system_message`) is about 8 lines. Everything else is infrastructure.
 This is the correct ratio.

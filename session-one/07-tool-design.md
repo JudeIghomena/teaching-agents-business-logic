@@ -1,7 +1,7 @@
 # Framework 07: Tool Design
 
 > A tool the model cannot understand is a tool that will be called incorrectly.
-> Tool design is not code — it is communication between you and the model.
+> Tool design is not code, it is communication between you and the model.
 
 ---
 
@@ -28,33 +28,33 @@ This separation is what makes agents safe and testable.
 ## The Most Important Field: description
 
 The `description` field is read by the model every time it reasons about
-whether to call a tool. It is not documentation for humans — it is an
+whether to call a tool. It is not documentation for humans, it is an
 instruction to the model.
 
 A bad description produces bad tool calls. A good description produces
 precisely correct tool calls.
 
 ```python
-# Bad — too vague: when should the model call this?
+# Bad: too vague: when should the model call this?
 {
     "name": "get_data",
     "description": "Gets data.",
 }
 
-# Bad — too literal: tells the model WHAT it does, not WHEN to use it
+# Bad: too literal: tells the model WHAT it does, not WHEN to use it
 {
     "name": "get_customer_record",
     "description": "Queries the customers table in the database by customer ID.",
 }
 
-# Good — tells the model WHEN to call it, with context about what follows
+# Good: tells the model WHEN to call it, with context about what follows
 {
     "name": "get_customer_record",
     "description": (
         "Retrieves a customer's profile including account status, loyalty tier, "
         "and purchase history. Call this before making any decision that depends "
         "on the customer's eligibility, tier, or history. Do not guess customer "
-        "details — always retrieve them."
+        "details, always retrieve them."
     ),
 }
 ```
@@ -62,8 +62,8 @@ precisely correct tool calls.
 **Rules for writing good descriptions:**
 - State the WHEN, not just the WHAT
 - Name what decisions this tool enables
-- Add a negative instruction when misuse is likely ("Do not guess — always retrieve")
-- Keep under 100 words — longer descriptions introduce noise
+- Add a negative instruction when misuse is likely ("Do not guess, always retrieve")
+- Keep under 100 words, longer descriptions introduce noise
 
 ---
 
@@ -126,7 +126,7 @@ Optional parameters go in `properties` but not in `required`.
         },
     },
     "required": ["customer_id"],
-    # include_history is optional — model passes it only when needed
+    # include_history is optional, model passes it only when needed
 }
 ```
 
@@ -137,12 +137,12 @@ Optional parameters go in `properties` but not in `required`.
 How your tool returns errors shapes how the model recovers.
 
 ```python
-# Bad: raises an exception — the loop crashes, no recovery possible
+# Bad: raises an exception: the loop crashes, no recovery possible
 def get_customer_record(customer_id: str) -> dict:
     if not customer_id.startswith("CUS-"):
         raise ValueError("Invalid customer ID format")
 
-# Good: returns a structured error — the model reads it and decides what to do
+# Good: returns a structured error: the model reads it and decides what to do
 def get_customer_record(customer_id: str) -> dict:
     if not customer_id.startswith("CUS-"):
         return {
@@ -155,9 +155,9 @@ def get_customer_record(customer_id: str) -> dict:
 ```
 
 A structured error return gives the model:
-- What went wrong (`error` field — machine-readable)
-- Why it went wrong (`message` field — human-readable)
-- What to try next (`suggestion` field — agent-readable)
+- What went wrong (`error` field, machine-readable)
+- Why it went wrong (`message` field, human-readable)
+- What to try next (`suggestion` field, agent-readable)
 
 The model will incorporate this into its next response naturally.
 
@@ -174,7 +174,7 @@ Tools are not always the answer. Some tasks should stay in the prompt.
 | The operation has side effects (write, send, update) | You are just formatting or classifying |
 | You need fresh data at query time | The model can reason about it from context |
 
-**Example — wrong use of a tool:**
+**Example: wrong use of a tool:**
 
 ```python
 # This tool retrieves data that never changes and could be in the system message
@@ -186,7 +186,7 @@ Tools are not always the answer. Some tasks should stay in the prompt.
 # A tool call costs tokens and latency. A system message costs only tokens.
 ```
 
-**Example — correct use of a tool:**
+**Example: correct use of a tool:**
 
 ```python
 # This tool retrieves data that is different for every customer
@@ -194,7 +194,7 @@ Tools are not always the answer. Some tasks should stay in the prompt.
     "name": "get_customer_discount_eligibility",
     "description": "Checks whether this specific customer is currently eligible for a discount.",
 }
-# This must be a tool — you cannot know the answer without querying live data.
+# This must be a tool: you cannot know the answer without querying live data.
 ```
 
 ---
@@ -217,7 +217,7 @@ def dispatch_tool(tool_name: str, tool_input: dict) -> any:
     The only place in the codebase where tool names map to functions.
 
     If tool_name is not in TOOL_DISPATCH, we raise immediately.
-    The model cannot call functions that are not registered here —
+    The model cannot call functions that are not registered here ,
     even if those functions exist in the codebase.
 
     This is an allowlist, not a blocklist.

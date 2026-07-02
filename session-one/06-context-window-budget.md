@@ -9,35 +9,35 @@
 ## What the Context Window Actually Contains
 
 Most developers think the context window holds "the conversation." It holds
-much more — and every byte costs money and affects reasoning quality.
+much more, and every byte costs money and affects reasoning quality.
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │                    CONTEXT WINDOW (200,000 tokens)              │
 │                                                                  │
 │  ┌─────────────────────────────────────────────────────────┐    │
-│  │  SYSTEM MESSAGE                          ~500–2,000 tok │    │
+│  │  SYSTEM MESSAGE                          ~500,2,000 tok │    │
 │  │  Role, rules, format instructions, escalation policy    │    │
 │  └─────────────────────────────────────────────────────────┘    │
 │                                                                  │
 │  ┌─────────────────────────────────────────────────────────┐    │
-│  │  TOOL SCHEMAS                            ~200–1,500 tok │    │
+│  │  TOOL SCHEMAS                            ~200,1,500 tok │    │
 │  │  JSON schemas for every registered tool                 │    │
 │  └─────────────────────────────────────────────────────────┘    │
 │                                                                  │
 │  ┌─────────────────────────────────────────────────────────┐    │
-│  │  DYNAMIC INJECTION                       ~100–2,000 tok │    │
+│  │  DYNAMIC INJECTION                       ~100,2,000 tok │    │
 │  │  Retrieved data, session state, user profile            │    │
 │  └─────────────────────────────────────────────────────────┘    │
 │                                                                  │
 │  ┌─────────────────────────────────────────────────────────┐    │
-│  │  CONVERSATION HISTORY                   ~1,000–50,000+  │    │
+│  │  CONVERSATION HISTORY                   ~1,000,50,000+  │    │
 │  │  User turns + assistant turns + tool results            │    │
 │  └─────────────────────────────────────────────────────────┘    │
 │                                                                  │
 │  ┌─────────────────────────────────────────────────────────┐    │
 │  │  RESPONSE BUDGET                          set by you    │    │
-│  │  max_tokens — what the model is allowed to generate     │    │
+│  │  max_tokens: what the model is allowed to generate     │    │
 │  └─────────────────────────────────────────────────────────┘    │
 └─────────────────────────────────────────────────────────────────┘
 ```
@@ -86,7 +86,7 @@ Model: claude-sonnet-5 (200,000 token context limit)
 System message:          800 tokens   (role + 8 rules + format block)
 Tool schemas (3 tools):  600 tokens   (~200 tokens per tool schema)
 Dynamic injection:       400 tokens   (customer record + session flags)
-History window:        5,000 tokens   (last 10 exchanges — enough for continuity)
+History window:        5,000 tokens   (last 10 exchanges, enough for continuity)
 Response budget:       2,048 tokens   (support replies are rarely longer than this)
                       ─────────────
 Total:                 8,848 tokens   well within the 200,000 limit
@@ -143,7 +143,7 @@ When your budget is tight, cut in this order:
 4. Never cut the response budget
    ──────────────────────────────────────────────────────
    Cutting max_tokens truncates the response mid-sentence. The model
-   has no warning this is about to happen — it just stops. The user
+   has no warning this is about to happen, it just stops. The user
    receives a broken output. This is the last lever, not the first.
 ```
 
@@ -198,7 +198,7 @@ The customer-specific data is fresh every session.
 ## Sample: Budget Worksheet (Customisable)
 
 ```
-CONTEXT BUDGET — [YOUR AGENT NAME]
+CONTEXT BUDGET: [YOUR AGENT NAME]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Date: ____________
 Model: ____________

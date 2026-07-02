@@ -58,7 +58,7 @@ Layer 1 (innermost):  The Prompt
                       The actual instructions you write for the specific task
 ```
 
-When an agent underperforms, the bug is almost always in Layers 3, 4, or 5 —
+When an agent underperforms, the bug is almost always in Layers 3, 4, or 5 ,
 not Layer 1. Most developers only look at Layer 1.
 
 ---
@@ -73,21 +73,21 @@ and then the response is dropped, corrupted, or retried at cost.
 
 Infrastructure includes:
 - API client initialisation (timeouts, retries, connection pooling)
-- Secret management (never hardcoded — loaded from env at runtime)
+- Secret management (never hardcoded, loaded from env at runtime)
 - Rate limit awareness (requests per minute, tokens per minute)
 - Structured logging (you cannot debug what you cannot observe)
 
 ### Layer 4: Model Configuration
 
 The model you choose sets a hard ceiling on what the agent can do.
-This is not about "better" or "worse" — it is about matching capability
+This is not about "better" or "worse", it is about matching capability
 to task. Sending a simple classification task to the most capable model
 wastes money and increases latency. Sending a multi-step reasoning task
 to a fast-but-small model produces wrong answers confidently.
 
 Configuration decisions made here:
-- Model ID (pinned, not dynamic — prevents surprise behaviour on model updates)
-- `max_tokens` (controls cost and response length — never leave this uncapped)
+- Model ID (pinned, not dynamic, prevents surprise behaviour on model updates)
+- `max_tokens` (controls cost and response length, never leave this uncapped)
 - `temperature` (0.0 for deterministic business logic, higher for creative tasks)
 - Stop sequences (where the model should stop generating)
 
@@ -113,8 +113,8 @@ inefficiently degrades reasoning quality. Context architecture means:
 
 ### Layer 1: The Prompt
 
-Only now — with infrastructure stable, model configured, tools registered,
-and context shaped — do you write the prompt.
+Only now, with infrastructure stable, model configured, tools registered,
+and context shaped, do you write the prompt.
 
 This is the layer that most tutorials start with. You now understand why
 starting here is like writing dialogue for a film before designing the set,
@@ -148,7 +148,7 @@ Once all five layers are in place, the agent runs in a loop:
 ```
 
 Notice that step 3 may repeat multiple times before step 6. This is the
-"agentic loop." It is not magic — it is the model requesting tool execution
+"agentic loop." It is not magic, it is the model requesting tool execution
 until it has enough information to give a final answer.
 
 Your infrastructure (Layer 5) must handle this loop correctly:

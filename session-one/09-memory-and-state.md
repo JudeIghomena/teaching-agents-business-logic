@@ -13,25 +13,25 @@ a different cost, and a different appropriate use case.
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
-│  TIER 1 — IN-CONTEXT MEMORY                                         │
+│  TIER 1: IN-CONTEXT MEMORY                                         │
 │  Lifetime: one conversation session                                 │
 │  Storage: the context window (tokens)                               │
 │  What belongs here: the current conversation, tool results,         │
 │                     session-specific injected data                  │
 │  Cost: tokens per turn                                              │
 └─────────────────────────────────────────────────────────────────────┘
-           ↕ (session ends — tier 1 is lost)
+           ↕ (session ends, tier 1 is lost)
 ┌─────────────────────────────────────────────────────────────────────┐
-│  TIER 2 — SESSION MEMORY                                            │
+│  TIER 2: SESSION MEMORY                                            │
 │  Lifetime: one server session (minutes to hours)                    │
 │  Storage: in-memory dict / Redis / server-side cache                │
 │  What belongs here: user preferences set this session, intermediate │
 │                     results, workflow state across multiple turns   │
 │  Cost: server RAM or cache cost                                     │
 └─────────────────────────────────────────────────────────────────────┘
-           ↕ (session expires — tier 2 is lost unless promoted)
+           ↕ (session expires, tier 2 is lost unless promoted)
 ┌─────────────────────────────────────────────────────────────────────┐
-│  TIER 3 — PERSISTENT MEMORY                                         │
+│  TIER 3: PERSISTENT MEMORY                                         │
 │  Lifetime: indefinite (until explicitly deleted)                    │
 │  Storage: database (PostgreSQL, SQLite, vector DB, etc.)            │
 │  What belongs here: user profile, past decisions, learned           │
@@ -46,20 +46,20 @@ has not changed since last session.
 
 ---
 
-## Tier 1: In-Context Memory — What Goes Here
+## Tier 1: In-Context Memory: What Goes Here
 
 ```python
-# context.py — ConversationContext holds all Tier 1 memory
+# context.py: ConversationContext holds all Tier 1 memory
 
 @dataclass
 class ConversationContext:
-    # The system message — built once, persists through the session
+    # The system message, built once, persists through the session
     system_message: str = ""
 
-    # The conversation history — grows each turn
+    # The conversation history, grows each turn
     messages: list[dict] = field(default_factory=list)
 
-    # Session data injected at start — resolved fresh from DB, not stored here
+    # Session data injected at start, resolved fresh from DB, not stored here
     # This is Tier 3 data that has been "lifted" into Tier 1 for this session
     session_metadata: dict = field(default_factory=dict)
 ```
@@ -80,7 +80,7 @@ class ConversationContext:
 
 ---
 
-## Tier 2: Session Memory — Pattern
+## Tier 2: Session Memory: Pattern
 
 Session memory lives server-side and survives multiple turns without being
 re-injected into context each time.
@@ -96,20 +96,20 @@ from datetime import datetime
 class SessionState:
     """
     Server-side session memory. Not injected into the context window
-    every turn — retrieved only when needed.
+    every turn, retrieved only when needed.
     """
     session_id: str
     user_id: str
     started_at: datetime = field(default_factory=datetime.utcnow)
 
-    # Workflow state — where is the user in a multi-step process?
+    # Workflow state, where is the user in a multi-step process?
     workflow_step: str = "initial"
     workflow_data: dict = field(default_factory=dict)
 
     # Preferences set during this session (not yet persisted to DB)
     pending_preferences: dict = field(default_factory=dict)
 
-    # Actions taken this session — for audit trail
+    # Actions taken this session, for audit trail
     actions_taken: list[str] = field(default_factory=list)
 
 
@@ -144,7 +144,7 @@ def record_action(session_id: str, action: str) -> None:
 
 ---
 
-## Tier 3: Persistent Memory — Pattern
+## Tier 3: Persistent Memory: Pattern
 
 Persistent memory lives in a database and survives across sessions.
 It is loaded at session start, selectively injected into Tier 1.
@@ -158,7 +158,7 @@ from dataclasses import dataclass
 @dataclass
 class UserMemory:
     """
-    Persistent memory for a user — retrieved from DB at session start,
+    Persistent memory for a user, retrieved from DB at session start,
     injected selectively into the system message or conversation.
     """
     user_id: str
@@ -172,7 +172,7 @@ class UserMemory:
 def load_user_memory(user_id: str) -> UserMemory:
     """
     Load from DB. Replace with your ORM or query layer.
-    Use a parameterised query — never string concatenation.
+    Use a parameterised query, never string concatenation.
     """
     # cursor.execute("SELECT * FROM user_memory WHERE user_id = %s", (user_id,))
     # row = cursor.fetchone()
@@ -225,7 +225,7 @@ def promote_session_to_persistent(session: SessionState, db_cursor) -> None:
     Promotes relevant session data to persistent memory.
     Called at session end or after high-value actions.
 
-    Not everything is promoted — only what future sessions need to know.
+    Not everything is promoted, only what future sessions need to know.
     """
     if not session.actions_taken:
         return
@@ -277,10 +277,10 @@ Will future sessions need this without being told again?
 ## Sample: Memory Layer Checklist
 
 ```
-MEMORY DESIGN CHECKLIST — [YOUR AGENT NAME]
+MEMORY DESIGN CHECKLIST: [YOUR AGENT NAME]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-TIER 1 — IN-CONTEXT
+TIER 1: IN-CONTEXT
 [ ] What user data is injected into the system message at session start?
     Answer: ________________________________________________
 [ ] How is conversation history trimmed when it grows large?
@@ -288,7 +288,7 @@ TIER 1 — IN-CONTEXT
 [ ] What is never allowed in the context window?
     Answer: (secrets, auth tokens, raw PII, unvalidated user input in system role)
 
-TIER 2 — SESSION STATE
+TIER 2: SESSION STATE
 [ ] What workflow steps need to be tracked across turns?
     Answer: ________________________________________________
 [ ] What temporary preferences or selections should survive this session?
@@ -296,7 +296,7 @@ TIER 2 — SESSION STATE
 [ ] What is your session store? (in-memory dict / Redis / other)
     Answer: ________________________________________________
 
-TIER 3 — PERSISTENT
+TIER 3: PERSISTENT
 [ ] What does the next session need to know without being told again?
     Answer: ________________________________________________
 [ ] When does promotion from Tier 2 to Tier 3 happen?

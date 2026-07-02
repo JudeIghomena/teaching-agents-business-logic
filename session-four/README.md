@@ -1,8 +1,8 @@
-# Session Four — Business Case Logic
+# Session Four: Business Case Logic
 
 > This is where frameworks become features. Session Four implements real business
 > logic patterns: approval workflows, pricing engines, routing rules, and
-> data validation — all driven by an agent.
+> data validation, all driven by an agent.
 
 **Status: Coming after Session Three**
 
@@ -60,7 +60,7 @@ session-four/
 
 Complete Sessions One through Three.
 Session Four assumes you can write, run, evaluate, and secure a basic agent.
-The code here is more complex — it builds on everything in sessions one through three.
+The code here is more complex, it builds on everything in sessions one through three.
 
 ---
 
