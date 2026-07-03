@@ -11,7 +11,8 @@ This code is the *how*, a complete, runnable Python agent you copy, customise, a
 
 ```
 starter-code/
-├── CLAUDE.md               Template coding agent brief, copy to your project root
+├── CLAUDE.md               Template: copy to your project root and fill in section by section
+├── CLAUDE-sample.md        Fully populated example: reference this while filling in the template
 ├── agent/
 │   ├── infrastructure.py   Layer 5, API client, logger, retry config
 │   ├── model_config.py     Layer 4, Model ID, token limits, temperature
@@ -27,7 +28,8 @@ Each file maps directly to a framework document:
 
 | File | Document |
 |---|---|
-| `CLAUDE.md` | All 11 framework docs, filled in section by section |
+| `CLAUDE.md` | Template: all 11 framework docs, one section per doc |
+| `CLAUDE-sample.md` | Fully populated example for a Procurement Approval Agent |
 | `infrastructure.py` | 08-internal-setup.md (Layer 5) |
 | `model_config.py` | 08-internal-setup.md (Layer 4) + 03-model-selection.md |
 | `tool_registry.py` | 08-internal-setup.md (Layer 3) + 06-tool-design.md |
