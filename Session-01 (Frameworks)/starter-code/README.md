@@ -29,9 +29,9 @@ Each file maps directly to a framework document:
 | `infrastructure.py` | 08-internal-setup.md (Layer 5) |
 | `model_config.py` | 08-internal-setup.md (Layer 4) + 03-model-selection.md |
 | `tool_registry.py` | 08-internal-setup.md (Layer 3) + 06-tool-design.md |
-| `context.py` | 08-internal-setup.md (Layer 2) + 05-context-window-budget.md |
+| `context.py` | 08-internal-setup.md (Layer 2) + 04-context-window-budget.md |
 | `runner.py` | 08-internal-setup.md (Layer 1) |
-| `.env.example` | 04-environment-config.md |
+| `.env.example` | 05-environment-config.md |
 
 ---
 

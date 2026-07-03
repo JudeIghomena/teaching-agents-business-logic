@@ -1,4 +1,4 @@
-# Framework 04: Environment Configuration
+# Framework 05: Environment Configuration
 
 > Your agent is only as secure and reliable as its configuration layer.
 > Environment setup is not a one-time task, it is a discipline.
