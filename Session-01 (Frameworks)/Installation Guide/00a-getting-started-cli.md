@@ -97,7 +97,7 @@ You will build this file step by step across the eleven Framework documents
 in Session One. By the time you finish Framework 11, you will have a
 complete, structured CLAUDE.md that any coding agent can use as a brief.
 
-A starter template is provided in `starter-code/CLAUDE.md`. Copy it into
+A starter template is provided in `../starter-code/CLAUDE.md`. Copy it into
 your project root and fill in the placeholder values as you work through
 each Framework doc.
 
@@ -112,7 +112,7 @@ It is a functioning five-layer agent you customise for your use case.
 Copy the whole folder to your project location:
 
 ```bash
-cp -r "starter-code/" ~/my-agent-project/
+cp -r "../starter-code/" ~/my-agent-project/
 cd ~/my-agent-project
 ```
 
@@ -164,14 +164,14 @@ is needed. You just place the files in the right location and run `claude`.
 1. Copy the starter code into your project folder:
 
 ```bash
-cp -r "starter-code/" ~/my-agent-project/
+cp -r "../starter-code/" ~/my-agent-project/
 cd ~/my-agent-project
 ```
 
 2. Copy the CLAUDE.md template to the project root:
 
 ```bash
-cp starter-code/CLAUDE.md ./CLAUDE.md
+cp ../starter-code/CLAUDE.md ./CLAUDE.md
 ```
 
 3. Start Claude Code in that folder:
@@ -198,7 +198,7 @@ The content is the same as your CLAUDE.md.
 3. Create the `.cursorrules` file at the project root:
 
 ```bash
-cp starter-code/CLAUDE.md .cursorrules
+cp ../starter-code/CLAUDE.md .cursorrules
 ```
 
 4. Cursor reads `.cursorrules` automatically when the workspace opens.
@@ -220,14 +220,14 @@ settings, not from a file on disk. You paste your CLAUDE.md content there.
 
 1. Open your Codex workspace or create a new one
 2. Go to Settings, then find the "System Prompt" or "Instructions" field
-3. Open your `starter-code/CLAUDE.md` template in a text editor
+3. Open your `../starter-code/CLAUDE.md` template in a text editor
 4. Copy the entire contents
 5. Paste it into the System Prompt field in Codex settings
 6. Save the settings
 
 Upload the Python starter files to the Codex workspace:
 1. In the Codex file panel, click Upload or use the file import option
-2. Upload each file from `starter-code/agent/`: `infrastructure.py`,
+2. Upload each file from `../starter-code/agent/`: `infrastructure.py`,
    `model_config.py`, `tool_registry.py`, `context.py`, `runner.py`
 3. Upload `main.py` and `requirements.txt` as well
 
@@ -242,7 +242,7 @@ Framework docs, paste the updated content into the system prompt again.
 Once `claude --version` and `claude --print "Say hello in one word"` both
 work, you are ready to start Framework 01.
 
-Start here: [01-agent-mental-model.md](01-agent-mental-model.md)
+Start here: [01-agent-mental-model.md](../01-agent-mental-model.md)
 
 ---
 

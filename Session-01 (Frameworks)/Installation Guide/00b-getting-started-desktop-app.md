@@ -67,7 +67,7 @@ from this session as your project.
 
 1. In the Claude Code home screen, click "Open Project" or "Open Folder"
 2. Navigate to where you copied the `starter-code` folder
-   (see Step 5 in [starter-code/README.md](starter-code/README.md) for how to copy it)
+   (see Step 5 in [starter-code/README.md](../starter-code/README.md) for how to copy it)
 3. Select the folder and click Open
 4. Claude Code loads the project. You will see the files listed in the sidebar
 
@@ -268,7 +268,7 @@ read and write access to the project folder to function.
 
 Once `python main.py` runs and you get a response, you are fully set up.
 
-Start here: [01-agent-mental-model.md](01-agent-mental-model.md)
+Start here: [01-agent-mental-model.md](../01-agent-mental-model.md)
 
 Fill in your CLAUDE.md one section at a time as you read each Framework doc.
 
