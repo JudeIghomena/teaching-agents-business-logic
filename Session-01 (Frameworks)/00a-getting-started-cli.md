@@ -1,8 +1,12 @@
-# Getting Started: Install Claude Code and Prepare Your Environment
+# Getting Started: Install Claude Code CLI
 
-Read this before Framework 01. It gets everything installed and verified
-so you can follow along with the starter code and build your CLAUDE.md
-file as you work through the eleven Framework documents.
+This guide is for students who prefer working in a terminal. It covers
+installing the Claude Code command-line interface, connecting your API key,
+and running the starter code from a terminal window.
+
+If you prefer a graphical application with a built-in file panel and
+integrated terminal, use the desktop app guide instead:
+[00b-getting-started-desktop-app.md](00b-getting-started-desktop-app.md)
 
 ---
 
