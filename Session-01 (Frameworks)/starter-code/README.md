@@ -11,6 +11,7 @@ This code is the *how*, a complete, runnable Python agent you copy, customise, a
 
 ```
 starter-code/
+├── CLAUDE.md               Template coding agent brief, copy to your project root
 ├── agent/
 │   ├── infrastructure.py   Layer 5, API client, logger, retry config
 │   ├── model_config.py     Layer 4, Model ID, token limits, temperature
@@ -26,6 +27,7 @@ Each file maps directly to a framework document:
 
 | File | Document |
 |---|---|
+| `CLAUDE.md` | All 11 framework docs, filled in section by section |
 | `infrastructure.py` | 08-internal-setup.md (Layer 5) |
 | `model_config.py` | 08-internal-setup.md (Layer 4) + 03-model-selection.md |
 | `tool_registry.py` | 08-internal-setup.md (Layer 3) + 06-tool-design.md |
@@ -57,15 +59,26 @@ cp .env.example .env
 # Open .env and fill in your ANTHROPIC_API_KEY and settings
 ```
 
-### Step 4: Customise the two files that describe your agent
+### Step 4: Copy CLAUDE.md to your project root
 
-**`agent/tool_registry.py`**: Replace the example tools with your own.
+```bash
+cp CLAUDE.md ../CLAUDE.md
+# Open CLAUDE.md and fill in the placeholder values as you read each framework doc
+```
+
+Claude Code reads CLAUDE.md automatically at session start.
+Fill it in progressively: one section per framework document.
+By the time you finish Framework 11, it will be complete.
+
+### Step 6: Customise the two files that describe your agent
+
+`agent/tool_registry.py`: Replace the example tools with your own.
 Follow the tool design rules in `Session-01 (Frameworks)/06-tool-design.md`.
 
-**`main.py`**: Replace the system message with your agent's role.
+`main.py`: Replace the system message with your agent's role.
 Use the template in `Session-01 (Frameworks)/07-system-prompt-skeleton.md`.
 
-### Step 5: Run it
+### Step 7: Run it
 
 ```bash
 python main.py
