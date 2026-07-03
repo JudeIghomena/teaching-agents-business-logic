@@ -1,4 +1,4 @@
-# Framework 07: Tool Design
+# Framework 06: Tool Design
 
 > A tool the model cannot understand is a tool that will be called incorrectly.
 > Tool design is not code, it is communication between you and the model.

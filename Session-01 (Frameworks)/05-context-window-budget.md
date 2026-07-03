@@ -1,4 +1,4 @@
-# Framework 06: Context Window Budget
+# Framework 05: Context Window Budget
 
 > The context window is a fixed resource. Every token you spend is unavailable
 > for something else. Budgeting it before you write the prompt prevents the most

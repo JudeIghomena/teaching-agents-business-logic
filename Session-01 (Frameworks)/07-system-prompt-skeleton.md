@@ -1,4 +1,4 @@
-# Framework 08: System Prompt Skeleton
+# Framework 07: System Prompt Skeleton
 
 > The system message is not where you explain the task, it is where you define
 > the agent's identity, authority, and constraints. Those three things exist

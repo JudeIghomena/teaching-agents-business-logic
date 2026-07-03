@@ -1,4 +1,4 @@
-# Framework 04: Model Selection
+# Framework 03: Model Selection
 
 > Choosing a model is not a preference, it is an engineering decision with
 > measurable consequences for cost, latency, and correctness. Make it

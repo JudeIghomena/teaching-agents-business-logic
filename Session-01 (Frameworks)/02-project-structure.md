@@ -1,4 +1,4 @@
-# Framework 03: Project Structure
+# Framework 02: Project Structure
 
 > The way you organise files before writing code determines how easy the agent
 > is to extend, debug, and hand to another developer. Structure is a decision,

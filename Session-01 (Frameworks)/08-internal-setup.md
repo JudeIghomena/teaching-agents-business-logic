@@ -1,4 +1,4 @@
-# Framework 02: Internal Setup: The Five Layers in Code
+# Framework 08: Internal Setup: The Five Layers in Code
 
 > This document translates the mental model from `01-agent-mental-model.md` into
 > working Python code using the Anthropic SDK. Build each layer in order.
