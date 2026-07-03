@@ -171,6 +171,63 @@ add them to the global file.
 
 ---
 
+## Importing the Starter Files Into Other Coding Agents
+
+If you are using Cursor or OpenAI Codex alongside or instead of the Claude
+Code desktop app, follow the steps below to load the starter code and your
+CLAUDE.md into those agents.
+
+---
+
+### Cursor
+
+Cursor reads a file called `.cursorrules` from the root of your workspace.
+The content is your CLAUDE.md.
+
+1. Open Cursor and go to File, Open Folder, then select your project folder
+2. Open the built-in terminal in Cursor (View, Terminal)
+3. Create the `.cursorrules` file from the CLAUDE.md template:
+
+```bash
+cp CLAUDE.md .cursorrules
+```
+
+4. Cursor picks up `.cursorrules` immediately. No restart needed.
+
+To confirm it is working, open a Cursor chat and ask: "What rules are you
+following for this project?" It should describe the contents of your file.
+
+As you fill in more sections of your CLAUDE.md throughout the Framework docs,
+copy the updated content into `.cursorrules` to keep Cursor in sync:
+
+```bash
+cp CLAUDE.md .cursorrules
+```
+
+---
+
+### OpenAI Codex
+
+Codex reads its instructions from a system prompt you paste into workspace
+settings, not from a file on disk.
+
+1. Open your Codex workspace or create a new one for this course
+2. Go to workspace Settings and find the "System Prompt" or "Instructions" field
+3. Open `CLAUDE.md` in any text editor, select all, and copy the contents
+4. Paste into the System Prompt field and save
+
+Upload the Python starter files so Codex can read and edit them:
+1. In the Codex file panel, click Upload or use the import option
+2. Upload each file from the `agent/` folder:
+   `infrastructure.py`, `model_config.py`, `tool_registry.py`, `context.py`, `runner.py`
+3. Upload `main.py` and `requirements.txt`
+
+Each time you fill in more of your CLAUDE.md as you read the Framework docs,
+return to workspace Settings and paste the updated content into the system
+prompt again to keep Codex in sync.
+
+---
+
 ## How This Differs From the CLI
 
 | Capability | CLI | Desktop App |

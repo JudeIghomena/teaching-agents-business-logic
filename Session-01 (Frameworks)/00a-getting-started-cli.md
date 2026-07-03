@@ -148,21 +148,92 @@ the two conflict.
 
 ---
 
-## How to Import Into Your Coding Agent
+## How to Import the Starter Files Into Your Coding Agent
 
-Once you have filled in your CLAUDE.md:
+The starter code and CLAUDE.md template need to land in the right place
+for each agent to pick them up automatically. Follow the steps for the
+agent you are using.
 
-**Claude Code (recommended for this course)**
-Place `CLAUDE.md` in your project root. Claude Code reads it automatically.
-No import step needed.
+---
 
-**Cursor**
-Create a file called `.cursorrules` in your project root and paste the
-same content. Cursor reads this file at the start of every session.
+### Claude Code CLI (this guide)
 
-**OpenAI Codex**
-Paste the content into the "System Prompt" field in the workspace settings.
-Codex does not read files from disk, so the content must be pasted directly.
+Claude Code reads files directly from your project folder. No import step
+is needed. You just place the files in the right location and run `claude`.
+
+1. Copy the starter code into your project folder:
+
+```bash
+cp -r "starter-code/" ~/my-agent-project/
+cd ~/my-agent-project
+```
+
+2. Copy the CLAUDE.md template to the project root:
+
+```bash
+cp starter-code/CLAUDE.md ./CLAUDE.md
+```
+
+3. Start Claude Code in that folder:
+
+```bash
+claude
+```
+
+Claude Code reads `CLAUDE.md` automatically before the first message.
+It also reads the Python files in `agent/` when you ask it to work on them.
+
+To confirm it read your CLAUDE.md, ask: "What project are you working on
+and what rules are you following?" It should answer from your file.
+
+---
+
+### Cursor
+
+Cursor reads a file called `.cursorrules` from the root of your workspace.
+The content is the same as your CLAUDE.md.
+
+1. Open Cursor and open your project folder (File, Open Folder)
+2. Copy the starter code into the project folder the same way as above
+3. Create the `.cursorrules` file at the project root:
+
+```bash
+cp starter-code/CLAUDE.md .cursorrules
+```
+
+4. Cursor reads `.cursorrules` automatically when the workspace opens.
+   You do not need to configure anything else.
+
+To confirm it is working, open a Cursor chat panel and ask: "What rules
+are you following for this project?" It should describe what is in your file.
+
+Note: Cursor also supports a `CLAUDE.md` file directly in newer versions.
+If your version of Cursor supports it, you can use either name. The
+`.cursorrules` approach works across all versions.
+
+---
+
+### OpenAI Codex
+
+Codex reads its instructions from the system prompt field in the workspace
+settings, not from a file on disk. You paste your CLAUDE.md content there.
+
+1. Open your Codex workspace or create a new one
+2. Go to Settings, then find the "System Prompt" or "Instructions" field
+3. Open your `starter-code/CLAUDE.md` template in a text editor
+4. Copy the entire contents
+5. Paste it into the System Prompt field in Codex settings
+6. Save the settings
+
+Upload the Python starter files to the Codex workspace:
+1. In the Codex file panel, click Upload or use the file import option
+2. Upload each file from `starter-code/agent/`: `infrastructure.py`,
+   `model_config.py`, `tool_registry.py`, `context.py`, `runner.py`
+3. Upload `main.py` and `requirements.txt` as well
+
+Codex will use the system prompt every time you open a conversation in
+that workspace. When you update your CLAUDE.md as you work through the
+Framework docs, paste the updated content into the system prompt again.
 
 ---
 
