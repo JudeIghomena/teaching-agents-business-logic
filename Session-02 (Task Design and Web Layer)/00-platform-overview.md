@@ -1,8 +1,40 @@
-# The Platform You Are Building
+# Session 02: The Platform and What You Are Building
 
-> Before you write a single line of code, you need a clear picture of what you
-> are building, who it serves, and what each agent is responsible for.
+> Before you write a single line of code in this session, you need a clear picture
+> of what you are building, who it serves, and what each agent is responsible for.
 > Every technical decision in Sessions 02 through 06 connects back to this document.
+
+---
+
+## What This Session Covers
+
+Session 02 has two parts. First, the web layer: the Express server, database,
+and authentication that make the agents accessible from a browser. Second, the
+intelligence layer: task definitions, prompt engineering, few-shot examples,
+output format control, evaluation, and iteration.
+
+| Document | What it builds |
+|---|---|
+| 00-platform-overview.md (this file) | The platform, the agents, the student journey |
+| 01-web-integration-layer.md | Express route, SSE streaming, Python agent wiring |
+| 02-database-schema-design.md | Sessions table, conversation history storage |
+| 03-jwt-and-authentication.md | Login route, JWT signing, role guards |
+| 04-task-decomposition.md | Precise job definitions for Matteo, Juli, and Tedd |
+| 05-prompt-engineering-principles.md | Five principles applied to Matteo's system prompt |
+| 06-few-shot-examples.md | Examples added to Matteo and Tedd's prompts |
+| 07-output-format-control.md | Enforced output formats for all three agents |
+| 08-evaluation-methods.md | Golden dataset, LLM-as-judge, format validators |
+| 09-iteration-workflow.md | Versioned prompts, iteration log, pre-commit gate |
+
+**What you will have at the end of Session 02:**
+A working web API with authenticated agent endpoints, a database storing
+conversation history, precise task definitions for all three agents, and
+a system prompt for Matteo that has been evaluated and iterated at least once.
+
+**Previous session:** [Session 01 - The Frameworks](../Session-01%20(Frameworks)/00-session-overview.md)
+**Next session:** Session 03 - Building Matteo, Juli, and Tedd
+
+---
 
 ---
 
