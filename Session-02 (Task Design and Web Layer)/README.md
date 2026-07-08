@@ -1,29 +1,48 @@
-# Session Two: Task Design, Web Layer, and Prompt Engineering
+# Session Two: Applying the Frameworks to a Real Web Application
 
-> An agent that cannot be reached by a user is not an agent. Before you
-> design tasks or write production prompts, you need to wire your agent
-> into a web application, protect it with authentication, and persist
-> conversation state. This session covers the web layer first, then the
-> intelligence layer on top of it.
+> Session One gave you eleven frameworks. Session Two is where you apply them.
+> The SCQ platform is the build thread. Matteo, Juli, and Tedd are the agents
+> you are wiring in. Every document in this session takes a framework from
+> Session One and shows you exactly what it looks like in production code.
 
 ---
 
-## What This Session Covers
+## The Principle
 
-Session Two picks up where Session One ends. Session One built the internal
-infrastructure: the five layers, the project structure, the model config,
-the tool registry, and the system message skeleton. Session Two adds two things:
+In Session One you built a standalone agent running in a Python file.
+That is a valid starting point but it is not how agents work in the real world.
+In the real world:
 
-1. The web layer that makes the agent accessible from a browser. This includes
-   the Express route, SSE streaming, JWT authentication, and the database schema
-   that stores conversation history.
+- The agent lives inside a web application
+- Every request must be authenticated before the agent sees it
+- Conversation history must be stored in a database, not held in memory
+- Responses stream to the browser token by token, not returned all at once
+- The coding agent (Claude Code, Cursor, or Codex) that works on this project
+  needs a clear CLAUDE.md that maps the architecture so it can operate without confusion
 
-2. The prompt intelligence layer. Once the agent is reachable, you need to know
-   exactly what task it is solving, how to write prompts that produce consistent
-   output, and how to measure and improve that output without breaking what works.
+Session Two does not introduce new frameworks. It applies the eleven you already
+know to a live Express server and a real database. The SCQ platform is the context
+that makes every decision concrete.
 
-The three web layer documents come first because they are prerequisites for
-everything else. You cannot evaluate an agent you cannot reach.
+---
+
+## Framework Mapping
+
+Each document in this session maps directly to one or more frameworks from Session One.
+That mapping is intentional. When you build something in Session Two, you should
+be able to point back to the framework that governs it.
+
+| Session-02 Document | Applies These Frameworks |
+|---|---|
+| 01-web-integration-layer.md | Framework 08 (Internal Setup) + Framework 02 (Project Structure) |
+| 02-database-schema-design.md | Framework 09 (Memory and State) |
+| 03-jwt-and-authentication.md | Framework 11 (Security Baseline) + Framework 05 (Environment Config) |
+| 04-task-decomposition.md | Framework 01 (Agent Mental Model) |
+| 05-prompt-engineering-principles.md | Framework 07 (System Prompt Skeleton) + Framework 04 (Context Window Budget) |
+| 06-few-shot-examples.md | Framework 07 (System Prompt Skeleton) |
+| 07-output-format-control.md | Framework 07 (System Prompt Skeleton) + Framework 03 (Model Selection) |
+| 08-evaluation-methods.md | Framework 10 (Observability) |
+| 09-iteration-workflow.md | Framework 10 (Observability) + Framework 04 (Context Window Budget) |
 
 ---
 
@@ -33,91 +52,122 @@ everything else. You cannot evaluate an agent you cannot reach.
 Session-02 (Task Design and Web Layer)/
 |
 |-- 01-web-integration-layer.md
-|       The journey of one user message from browser to agent and back.
-|       Express route anatomy, SSE setup, Python agent stdin/stdout wiring,
-|       and the boundary between web layer and agent layer.
+|       Frameworks 08 and 02 applied to the SCQ platform.
+|       The five-layer agent from Session One now lives inside an Express server.
+|       Express route, SSE streaming, Python agent wiring, and the boundary
+|       between what the web layer owns and what the agent owns.
 |
 |-- 02-database-schema-design.md
-|       The sessions table that stores conversation history.
-|       Schema design, query patterns, and why the web layer owns the DB,
-|       not the agent.
+|       Framework 09 (Memory and State) applied to the SCQ platform.
+|       The JSON file from Session One becomes a real database table.
+|       Sessions table schema, conversation history query pattern, and
+|       why the web layer owns the database, not the agent.
 |
 |-- 03-jwt-and-authentication.md
-|       How to issue and verify JSON Web Tokens.
-|       Login route, token signing, algorithm pinning, and role guards.
-|       What the agent can trust from the token and what it cannot.
+|       Framework 11 (Security Baseline) + Framework 05 (Environment Config).
+|       Every agent endpoint must be protected before any agent logic runs.
+|       Login route, JWT signing with HS256, algorithm pinning, and role guards
+|       for student vs professor access on the SCQ platform.
 |
 |-- 04-task-decomposition.md
-|       Breaking a business requirement into agent-sized tasks.
-|       What one agent should and should not try to do in a single turn.
-|       Applied to Matteo, Juli, and Tedd on the SCQ platform.
+|       Framework 01 (Agent Mental Model) applied to Matteo, Juli, and Tedd.
+|       What exactly is each agent's job? What does a single turn look like?
+|       Where does one agent stop and the next one start?
+|       Breaking the SCQ coaching task into agent-sized pieces.
 |
 |-- 05-prompt-engineering-principles.md
-|       How to write prompts that produce consistent, correct output.
-|       Instruction clarity, chain-of-thought, and the five-section skeleton
-|       from Session One applied to a real coaching task.
+|       Framework 07 (System Prompt Skeleton) + Framework 04 (Context Budget).
+|       The five-section skeleton from Session One applied to a real coaching task.
+|       How to write prompts that produce consistent output without consuming
+|       the entire context window.
 |
 |-- 06-few-shot-examples.md
-|       When and how to include examples in the prompt.
-|       How many examples, what format, and what makes a good example
-|       for each of the three SCQ agents.
+|       Framework 07 (System Prompt Skeleton) - the examples section.
+|       When to include examples, how many, what format, and what makes
+|       a good example for Matteo's SCQ coaching style vs Tedd's peer review rubric.
 |
 |-- 07-output-format-control.md
-|       Controlling what the agent returns: plain text, JSON, structured
-|       fields, constrained vocabulary. When to use each and how to enforce it.
+|       Framework 07 + Framework 03 (Model Selection).
+|       Controlling what the agent returns: coaching questions vs structured
+|       rubric scores vs plain narrative. When each format is right and
+|       how to enforce it without adding tokens.
 |
 |-- 08-evaluation-methods.md
-|       How to measure whether your agent is working.
-|       Human eval, LLM-as-judge, regression suites, and golden datasets.
+|       Framework 10 (Observability) applied to agent quality.
+|       How to measure whether Matteo is asking the right questions.
+|       LLM-as-judge, regression suites, and golden datasets for the SCQ platform.
 |
 |-- 09-iteration-workflow.md
-|       How to improve prompts systematically without breaking what works.
-|       Version-controlled prompts, test suites, and diff-driven changes.
+|       Framework 10 (Observability) + Framework 04 (Context Window Budget).
+|       How to improve a prompt without breaking what already works.
+|       Version-controlled prompts, test suites, and diff-driven iteration.
 |
 |-- assignments/
 |       One assignment per document. Self-contained, step-by-step.
+|       Each assignment produces working code that extends the SCQ platform.
 |       Start with 01-build-your-agent-route.md.
 |
 `-- starter-code/
-        Per-topic code folders matching each document.
+        Per-topic code folders. One folder per document.
         starter-code/01-web-integration/
         starter-code/02-database-schema/
         starter-code/03-jwt-auth/
-        Prompt templates, evaluation harness, and golden test dataset template.
+        starter-code/04-task-decomposition/
+        starter-code/05-prompt-engineering/
+        starter-code/06-few-shot-examples/
+        starter-code/07-output-format/
+        starter-code/08-evaluation/
+        starter-code/09-iteration/
 ```
+
+---
+
+## CLAUDE.md Evolves With the Build
+
+Your CLAUDE.md from Session One described a standalone Python agent.
+By the end of Session Two it must describe the full SCQ platform: the Express
+server, the database, the JWT flow, and the three agent files.
+
+Every coding agent working on this project reads CLAUDE.md first. If the
+architecture grows in Session Two but CLAUDE.md does not, the next coding agent
+session will work from an incomplete picture and make incorrect assumptions.
+
+Update your CLAUDE.md as you complete each document. The starter-code folder
+for this session includes a running CLAUDE.md diff that shows what to add at
+each step.
 
 ---
 
 ## Prerequisites
 
-Complete Session One before starting Session Two. Specifically:
+Complete all eleven assignments in Session One before starting here.
+Specifically:
 
-- The five-layer agent must be running locally with `python main.py`
-- You must have a working tool in `tool_registry.py`
-- Your `agent/context.py` must have a real system prompt in all five sections
-- Your `.env` file must have `ANTHROPIC_API_KEY` set
+- Your five-layer agent runs with `python main.py`
+- You have at least one working tool in `tool_registry.py`
+- Your `agent/context.py` has a real five-section system prompt
+- Your `.env` has `ANTHROPIC_API_KEY` set and is gitignored
+- You have run the Session One security audit
 
-Session Two does not revisit the agent loop, tool registry, or system prompt
-skeleton. Those are Session One topics. The focus here is on making the agent
-accessible from a web application and making it behave correctly and consistently.
+Session Two assumes the foundation works. It does not revisit the agent loop,
+tool registry, or system prompt skeleton. Those are Session One topics.
 
 ---
 
-## The Build Arc
+## What You Will Have Built by the End
 
-By the end of Session Two, you will have:
+A working SCQ platform web layer:
+- Express server with authenticated `/api/agent1/chat` route
+- JWT login route with HS256 signing and role fields
+- Sessions table storing full conversation history
+- Three decomposed task definitions: one per agent (Matteo, Juli, Tedd)
+- A system prompt for Matteo that applies all five prompt engineering principles
+- Few-shot examples for at least one agent
+- A scoring function that measures output quality
+- One documented iteration cycle with a measurable improvement
+- An updated CLAUDE.md that describes the full platform architecture
 
-- An Express server with a working `/api/agent1/chat` route
-- JWT authentication protecting every agent endpoint
-- A sessions table storing conversation history in a database
-- A well-decomposed task definition for your agent
-- A system prompt that applies all five prompt engineering principles
-- At least two few-shot examples in your prompt
-- A scoring function that measures your agent's output quality
-- A documented iteration log showing one measurable improvement
-
-All of this builds directly on the SCQ platform. Matteo, Juli, and Tedd are
-the agents you are wiring in. Session Three implements their full logic.
+Session Three implements the full logic of all three agents on top of this foundation.
 
 ---
 
