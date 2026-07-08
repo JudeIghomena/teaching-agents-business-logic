@@ -34,6 +34,7 @@ be able to point back to the framework that governs it.
 
 | Session-02 Document | Applies These Frameworks |
 |---|---|
+| 00-platform-overview.md | Read first. Introduces the SCQ Simulation Portal, Matteo, Juli, and Tedd. |
 | 01-web-integration-layer.md | Framework 08 (Internal Setup) + Framework 02 (Project Structure) |
 | 02-database-schema-design.md | Framework 09 (Memory and State) |
 | 03-jwt-and-authentication.md | Framework 11 (Security Baseline) + Framework 05 (Environment Config) |
@@ -50,6 +51,12 @@ be able to point back to the framework that governs it.
 
 ```
 Session-02 (Task Design and Web Layer)/
+|
+|-- 00-platform-overview.md
+|       Read this first. Describes the SCQ Simulation Portal: what it is,
+|       who it serves, and what Matteo, Juli, and Tedd each do.
+|       The student's journey through all three stages explained.
+|       Maps every Session-01 framework to where it lives in this platform.
 |
 |-- 01-web-integration-layer.md
 |       Frameworks 08 and 02 applied to the SCQ platform.
