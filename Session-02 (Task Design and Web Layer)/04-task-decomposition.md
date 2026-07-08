@@ -262,15 +262,21 @@ into your CLAUDE.md so every future coding session starts with it.
 
 ## Starter Code
 
-Working task definition files in `starter-code/04-task-decomposition/`:
+This document produces no implementation files - the output is a Task Definitions
+section written into your CLAUDE.md. The `starter-code/` folder has what you need:
 
 ```
-04-task-decomposition/
-├── task-definitions.md     Full definitions for all three agents (reference)
-├── matteo-task.json        Structured task definition for Matteo
-├── juli-task.json          Structured task definition for Juli
-└── tedd-task.json          Structured task definition for Tedd
+starter-code/
+├── CLAUDE.md           Already has a Task Definitions section as a template -
+│                       Claude Code will fill it in with your specific definitions
+├── package.json        Node dependencies
+├── requirements.txt    Python dependencies
+└── .env.example        Environment variable reference
 ```
+
+Use the Claude Code Desktop App prompt above. Claude Code will work through
+the definitions with you in conversation, then update the Task Definitions
+section of your CLAUDE.md with the agreed content.
 
 ---
 

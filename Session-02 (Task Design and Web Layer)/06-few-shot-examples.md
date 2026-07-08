@@ -237,14 +237,21 @@ examples, save as v2, and run the token count.
 
 ## Starter Code
 
-Example sets and updated system prompts in `starter-code/06-few-shot-examples/`:
+The output of this document is `agent/prompts/matteo_v2.txt` - an updated
+version of your system prompt with examples added. Claude Code generates it
+from the prompt above using your specific SCQ case context.
 
 ```
-06-few-shot-examples/
-├── matteo_prompt_with_examples.py    Full system prompt with two examples
-├── tedd_prompt_with_examples.py      Full system prompt with JSON example
-└── example_quality_guide.md          What makes a strong vs weak example
+starter-code/
+├── CLAUDE.md           Claude Code reads this to understand Matteo's task
+│                       and FORMAT rules before writing the examples
+├── package.json        Node dependencies
+├── requirements.txt    Python dependencies
+└── .env.example        Environment variable reference
 ```
+
+The examples Claude Code writes will be specific to your case context, which
+is why they cannot be pre-written. Generic examples produce generic coaching.
 
 ---
 

@@ -339,15 +339,20 @@ the CLAUDE.md security rules, and register the auth route in index.js.
 
 ## Starter Code
 
-Working implementation in `starter-code/03-jwt-auth/`:
+The `starter-code/` folder contains the four files you need to get started:
 
 ```
-03-jwt-auth/
-├── routes/auth.js        Login route
-├── middleware/auth.js    JWT verification middleware
-├── middleware/roleGuard.js  Role-based access control
-└── db-init-users.js      Users table creation script
+starter-code/
+├── CLAUDE.md           The platform operating brief - Claude Code reads this first
+├── package.json        Node dependencies including jsonwebtoken and bcrypt
+├── requirements.txt    Python dependencies
+└── .env.example        Includes JWT_SECRET and JWT_EXPIRY with placeholder values
 ```
+
+Use the Claude Code Desktop App prompt above to generate `routes/auth.js`,
+`middleware/auth.js`, and `middleware/roleGuard.js`. The security rules in
+CLAUDE.md (HS256 algorithm pinning, async bcrypt, identical error messages)
+are already in context when Claude Code generates these files.
 
 ---
 

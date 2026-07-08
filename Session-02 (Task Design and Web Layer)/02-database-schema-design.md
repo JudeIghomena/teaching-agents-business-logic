@@ -304,14 +304,20 @@ database connection or query result.
 
 ## Starter Code
 
-Working implementation in `starter-code/02-database-schema/`:
+The `starter-code/` folder contains the four files you need before Claude Code
+can generate anything:
 
 ```
-02-database-schema/
-├── db.js           getOrCreateSession, appendTurn, db singleton
-├── db-init.js      Schema creation script
-└── schema.sql      Raw SQL for reference and migration tooling
+starter-code/
+├── CLAUDE.md           The platform operating brief - Claude Code reads this first
+├── package.json        Node dependencies (express, better-sqlite3, bcrypt, jsonwebtoken)
+├── requirements.txt    Python dependencies (anthropic, python-dotenv)
+└── .env.example        All required environment variables with placeholder values
 ```
+
+Copy these four files to your project root, run `npm install`, copy `.env.example`
+to `.env` and fill in your values, then use the Claude Code Desktop App prompt
+above to generate `server/src/db.js` and `server/src/db-init.js`.
 
 ---
 
