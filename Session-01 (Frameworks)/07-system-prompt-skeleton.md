@@ -325,4 +325,46 @@ bar as your products.
 
 ---
 
+## Using Claude Code Desktop App
+
+Open your project folder in the Claude Code desktop app. Claude Code reads
+your CLAUDE.md and already knows your agent's task definition from Framework 04.
+Use it to write the five-section system prompt and implement it in context.py.
+
+**Prompt to write your system prompt:**
+
+```
+Write the five-section system prompt for my agent and implement it in
+agent/context.py as the build_system_message() function.
+
+My agent's task from CLAUDE.md: [paste your task definition]
+
+Write each section:
+  ROLE: who the agent is, who it serves, what its single purpose is (2-4 sentences)
+  SCOPE: what it handles and what it explicitly does not handle
+  RULES: 4-8 constraints using Never/Always/If - no vague rules like "be professional"
+  FORMAT: specific measurable output constraints (word limits, structure, style)
+  ESCALATION: exactly what triggers a hand-off and what the agent says when escalating
+
+After writing the prompt, count its tokens:
+  python -c "import anthropic; c=anthropic.Anthropic(); from agent.context import build_system_message; r=c.messages.count_tokens(model='[your model]', system=build_system_message(), messages=[{'role':'user','content':'test'}]); print(r.input_tokens, 'tokens')"
+
+The prompt must be under [your system prompt budget from Framework 04] tokens.
+```
+
+**What Claude Code will do:**
+Write each section applying the specificity standard from Framework 07, implement
+`build_system_message()` in context.py, and run the token counter to verify it
+fits within your budget.
+
+**Tips for this framework:**
+- After Claude Code writes the RULES section, ask: "Read each rule and tell me
+  if a model could misinterpret it. Rewrite any ambiguous rule as a clearer constraint."
+  This typically improves 2-3 rules before you test with a real message.
+- Test the SCOPE section by sending an out-of-scope message to your agent and
+  confirming it redirects cleanly. Tell Claude Code the result and ask it to
+  strengthen the SCOPE if the agent was confused.
+
+---
+
 Copyright Janna AI Research Labs

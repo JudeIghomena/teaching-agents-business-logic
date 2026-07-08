@@ -293,6 +293,50 @@ Full auth flow for a student starting a session:
 
 ---
 
+## Using Claude Code Desktop App
+
+Open your project folder in the Claude Code desktop app. Claude Code reads
+your CLAUDE.md which lists JWT_SECRET and JWT_EXPIRY as environment variables
+and states that JWT verify must use `algorithms: ['HS256']`. It will apply
+both rules automatically from that context.
+
+**Prompt to implement JWT authentication:**
+
+```
+Implement JWT authentication for the SCQ platform.
+
+1. server/src/routes/auth.js - POST /api/auth/login
+   - Destructure only email and password from req.body
+   - Query users table by email using a parameterised query
+   - Use bcrypt.compare (async, never compareSync) to check the password
+   - Return the same error message whether email or password is wrong
+   - Sign the token with jwt.sign using algorithm: 'HS256' and include
+     user_id, role, and cohort_id in the payload
+   - Read JWT_SECRET and JWT_EXPIRY from process.env
+
+2. server/src/middleware/auth.js - JWT verification
+   - Verify with algorithms: ['HS256'] in the options object
+   - Attach payload to req.user
+   - Return 401 with a generic message on any failure, never send err.message
+
+3. server/src/middleware/roleGuard.js - requireRole(...roles) factory
+   - Returns middleware that checks req.user.role against the allowed list
+
+Wire auth routes into server/src/index.js at /api/auth.
+```
+
+**What Claude Code will do:**
+Implement all three files, enforce async bcrypt and algorithm pinning from
+the CLAUDE.md security rules, and register the auth route in index.js.
+
+**Tips for this document:**
+- Test the login route first with a manually inserted user before testing the full flow:
+  `sqlite3 data/scq.db "INSERT INTO users VALUES ('u01', 'test@test.com', '[hash]', 'student', 'cohort-a', datetime('now'));"`
+- To generate a bcrypt hash for testing: `node -e "const b=require('bcrypt'); b.hash('password123', 12).then(console.log)"`
+- If Claude Code uses `compareSync`, paste the security rule from CLAUDE.md and ask it to fix it
+
+---
+
 ## Starter Code
 
 Working implementation in `starter-code/03-jwt-auth/`:

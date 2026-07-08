@@ -402,4 +402,63 @@ is reviewed against these rules before it declares the task complete.
 
 ---
 
+## Using Claude Code Desktop App
+
+Open your project folder in the Claude Code desktop app. Claude Code reads
+the Security Non-Negotiables section of your CLAUDE.md and runs the pre-commit
+checklist automatically when asked. Use it to run the full security audit
+from this framework before your first commit.
+
+**Prompt to run your security audit:**
+
+```
+Run the five-check security audit on my agent code and fix anything you find.
+
+Check 1 - Secret scan:
+  grep -rn "sk-ant" agent/ main.py
+  grep -rn "ANTHROPIC_API_KEY\s*=\s*['\"]" agent/ main.py
+  Any hit in a .py file is a critical failure. Fix it before continuing.
+
+Check 2 - .gitignore verification:
+  git check-ignore -v .env
+  git check-ignore -v data/
+  Both must return a path. If either does not, add the missing line to .gitignore.
+
+Check 3 - Tool dispatch allowlist:
+  python -c "
+  from agent.tool_registry import TOOLS, TOOL_DISPATCH
+  schema_names = set(t['name'] for t in TOOLS)
+  dispatch_names = set(TOOL_DISPATCH.keys())
+  print('Missing from dispatch:', schema_names - dispatch_names)
+  print('Extra in dispatch:', dispatch_names - schema_names)
+  "
+  Both sets must be empty.
+
+Check 4 - Environment variable completeness:
+  grep -rn "os.getenv\|os.environ" agent/ main.py
+  Every variable name found must appear in .env.example.
+
+Check 5 - Error handler check:
+  Confirm run_agent_loop() has a top-level try/except that returns a clean
+  string to the caller on exception, not a traceback.
+
+Report the result of each check. Fix all failures before declaring the audit done.
+Then update the Security Non-Negotiables section of CLAUDE.md with today's audit results.
+```
+
+**What Claude Code will do:**
+Run all five checks in sequence, fix each failure it finds, and update your
+CLAUDE.md security section with the audit date and results. It treats any
+secret found in source code as a critical failure requiring immediate fix.
+
+**Tips for this framework:**
+- Ask Claude Code to run Check 1 (secret scan) at the start of every session:
+  "Before we start today, run the secret scan." It takes 5 seconds and catches
+  the most damaging class of mistake.
+- After the audit, ask: "Is there any code path in my agent where a user message
+  could influence the system prompt?" This checks for prompt injection, which
+  Check 5 does not catch automatically.
+
+---
+
 Copyright Janna AI Research Labs

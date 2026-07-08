@@ -218,6 +218,48 @@ what each agent is supposed to do before touching any agent file.
 
 ---
 
+## Using Claude Code Desktop App
+
+Open your project folder in the Claude Code desktop app. This document is
+design-heavy before it is code-heavy. Use Claude Code as a thinking partner
+first to sharpen your task definitions, then to write them into your CLAUDE.md.
+
+**Prompt to define and record your task definitions:**
+
+```
+Help me define the task boundaries for the three SCQ platform agents.
+For each agent answer these questions precisely:
+  - Job statement: one sentence
+  - Input: what does it receive from the web layer?
+  - Output: what does it return and in what format?
+  - Trigger: what kind of student message activates this agent?
+  - Boundary: what is explicitly outside its scope?
+  - One-turn definition: what does a single successful turn look like?
+
+The three agents are:
+  Matteo - Issue Analysis coaching using the SCQ framework
+  Juli   - Monroe's Motivated Sequence coaching for recommendations
+  Tedd   - 5 Cs peer review evaluation of completed deliverables
+
+Once we have agreed on the definitions, add a Task Definitions section
+to my CLAUDE.md following the format shown in document 04.
+```
+
+**What Claude Code will do:**
+Work through the definitions with you in conversation, push back where the
+scope is unclear or overlapping, and then write the Task Definitions section
+into your CLAUDE.md so every future coding session starts with it.
+
+**Tips for this document:**
+- Before asking Claude Code to write anything, spend 5 minutes answering
+  the questions yourself. The definitions get much sharper when you draft first.
+- Ask Claude Code: "Where do Matteo and Juli overlap? How does a student move
+  from one to the other?" This exposes handoff gaps before they become bugs.
+- After Claude Code updates your CLAUDE.md, read the Task Definitions section
+  back to yourself. If you cannot read it aloud in 30 seconds, it is too vague.
+
+---
+
 ## Starter Code
 
 Working task definition files in `starter-code/04-task-decomposition/`:

@@ -242,6 +242,53 @@ Pre-commit gate: golden dataset must pass at 90% or above before any prompt comm
 
 ---
 
+## Using Claude Code Desktop App
+
+Open your project folder in the Claude Code desktop app. Claude Code can both
+build the evaluation tooling and help you write the golden dataset. The golden
+records are the most important output of this document.
+
+**Prompt to build the evaluation suite:**
+
+```
+Build the evaluation suite for Matteo in the evaluation/ folder.
+
+1. evaluation/golden/matteo_golden.json - 10 golden records.
+   Each record: { "id", "student_message", "must_contain", "must_not_contain",
+   "format_checks": { "max_words", "ends_with_question_mark", "question_count" }, "quality_note" }
+   
+   The 10 student messages should cover:
+   - 3 messages with a weak Situation (missing specificity)
+   - 3 messages with a weak Complication (describing a symptom, not an implication)
+   - 2 messages with a vague Question (not decision-focused)
+   - 2 messages where the student has mixed SCQ elements together
+   
+   must_not_contain for all records: ["you should", "the answer is", "correct", "wrong", "great"]
+
+2. evaluation/run_golden.py - runs all 10 records through run_agent_loop(),
+   checks must_contain, must_not_contain, and format_checks, prints pass rate.
+
+3. evaluation/llm_judge.py - judge_matteo_response(student_message, coach_response)
+   calls claude-haiku-4-5 to score on scq_targeting, socratic_method, specificity (1-5 each).
+   Returns JSON scores only.
+
+Run the golden suite after building it: python evaluation/run_golden.py
+```
+
+**What Claude Code will do:**
+Create the golden dataset with realistic SCQ student messages, build the runner
+and LLM judge, then run the initial evaluation to give you a baseline score.
+
+**Tips for this document:**
+- The golden records are the most valuable thing in this document. Spend time
+  reviewing them. Ask Claude Code: "For golden record 3, what is the specific
+  SCQ weakness? Would a real student write this?" Adjust until they feel real.
+- After the first run, ask Claude Code: "Which format rules are failing most?
+  What change to the system prompt would fix the most common failure?"
+- The LLM judge costs API tokens. Run it on 5 records, not all 10, to start.
+
+---
+
 ## Starter Code
 
 Full evaluation suite in `starter-code/08-evaluation/`:

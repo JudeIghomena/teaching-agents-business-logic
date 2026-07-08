@@ -234,6 +234,55 @@ Model routing:
 
 ---
 
+## Using Claude Code Desktop App
+
+Open your project folder in the Claude Code desktop app. Claude Code reads
+the Output Formats section of your CLAUDE.md which already lists the three
+format specifications. It will implement validators that match those specs exactly.
+
+**Prompt to implement output format validators:**
+
+```
+Implement output format validators for all three SCQ agents.
+
+1. server/src/routes/agent1.js - add validateMatteoOutput(text) that checks:
+   - word count <= 120
+   - exactly one question mark
+   - no bullet points (lines starting with - or *)
+   - no markdown bold (**) or headers (##)
+   - returns { pass: bool, wordCount, questionCount, hasBullets, hasMarkdown }
+   Wire it to log a warning in development when the check fails.
+   Do not block the student response on failure.
+
+2. server/src/routes/agent2.js - add parseJuliOutput(text) that:
+   - extracts the [STAGE: Name] tag using a regex
+   - removes the tag from the text the student sees
+   - returns { content, stage } where stage is null if no valid tag found
+
+3. server/src/routes/agent3.js - add parseTeddOutput(text) that:
+   - parses raw JSON (no markdown fences)
+   - validates all five C keys exist with score (1-5) and observation fields
+   - on any parse or validation failure: logs the raw text server-side,
+     returns { valid: false, error: 'Evaluation format error. Please try submitting again.' }
+   - on success: returns { valid: true, data: parsed }
+
+Reference the Output Formats section of CLAUDE.md for the exact field names.
+```
+
+**What Claude Code will do:**
+Implement all three parsers/validators wired into the correct route files,
+with clean client-facing error messages that never expose raw JSON or parse errors.
+
+**Tips for this document:**
+- After implementing, test Tedd's parser by deliberately sending malformed JSON:
+  `parseTeddOutput("not json at all")` - it should return the clean error, not throw.
+- Ask Claude Code to write a `format_test.js` file that calls each validator
+  with sample inputs so you can run `node format_test.js` to verify them locally.
+- If Tedd keeps returning JSON wrapped in markdown fences (```json), add this
+  to Tedd's system prompt RULES: "Return raw JSON only. Do not wrap in code fences."
+
+---
+
 ## Starter Code
 
 Format validators and parsers in `starter-code/07-output-format/`:

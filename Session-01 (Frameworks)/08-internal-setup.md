@@ -657,4 +657,54 @@ is the only safe entry point for all tool calls in this project.
 
 ---
 
+## Using Claude Code Desktop App
+
+Open your project folder in the Claude Code desktop app. By this framework,
+all five layers have been defined. Claude Code reads the Layer Ownership table
+in your CLAUDE.md and knows exactly which file owns which responsibility.
+Use it to wire everything together into a running agent loop.
+
+**Prompt to wire the five layers:**
+
+```
+Implement the agent loop in agent/runner.py by wiring all five layers together.
+
+The function signature: run_agent_loop(user_message: str, history: list = None) -> str
+
+It must:
+1. Call build_system_message() from agent/context.py
+2. Call trim_history(history) from agent/context.py
+3. Use MODEL and MAX_TOKENS from agent/model_config.py
+4. Create the client with get_client() from agent/infrastructure.py
+5. Pass TOOLS from agent/tool_registry.py to the API call
+6. Implement the agentic loop:
+   - Call the API with system, tools, and messages
+   - If stop_reason == "tool_use": extract tool calls, dispatch via TOOL_DISPATCH,
+     build tool result messages, call the API again
+   - If stop_reason == "end_turn": return response.content[0].text
+   - Never loop more than 5 times (safety limit)
+
+Then implement main.py as a simple input loop that calls run_agent_loop()
+and accumulates history across turns.
+
+Verify with: python main.py
+Send three messages: one that requires no tool, one that triggers a tool, one that
+references the first message (history check).
+```
+
+**What Claude Code will do:**
+Implement the full agentic loop respecting the layer boundaries from CLAUDE.md,
+wire main.py, and run a three-turn verification test to confirm each layer
+communicates correctly.
+
+**Tips for this framework:**
+- After the loop is running, ask Claude Code: "Add temporary [TRACE] print statements
+  showing stop_reason, tool name called, and history length on each turn. We will
+  remove them after verifying everything works."
+- If the agent loops without stopping, tell Claude Code: "The loop is not terminating.
+  Add logging of stop_reason on each iteration and show me what is happening."
+- Once verified, ask Claude Code to remove all [TRACE] prints before moving to Framework 09.
+
+---
+
 Copyright Janna AI Research Labs

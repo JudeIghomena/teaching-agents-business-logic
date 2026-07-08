@@ -335,4 +335,51 @@ trim order, and it will never suggest reducing `max_tokens` as a first move.
 
 ---
 
+## Using Claude Code Desktop App
+
+Open your project folder in the Claude Code desktop app. Claude Code reads
+your model choice from CLAUDE.md and can calculate the budget allocation
+for your specific model and use case.
+
+**Prompt to implement your context window budget:**
+
+```
+Implement the context window budget for my agent in agent/context.py.
+
+My model is: [from model_config.py]
+My context limit for this model is: [token limit]
+
+Allocate the budget across four consumers:
+  System prompt: [your estimate or "help me estimate"]
+  Tool schemas: [number of tools x ~200 tokens each, or 0 if no tools]
+  Working space: [buffer for the API response]
+  History: [everything remaining]
+
+Implement in agent/context.py:
+  MAX_HISTORY_TURNS = [number]
+  def trim_history(messages: list) -> list:
+      - keep the last MAX_HISTORY_TURNS * 2 messages
+      - never trim the system message
+      - if over budget: remove tool results first, then old assistant, then old user
+
+Then count my current system prompt tokens so we know the actual budget:
+  python -c "import anthropic; c=anthropic.Anthropic(); from agent.context import build_system_message; r=c.messages.count_tokens(model='[model]', system=build_system_message(), messages=[{'role':'user','content':'test'}]); print(r.input_tokens)"
+
+Add the budget allocation table to the Context Window Budget section of CLAUDE.md.
+```
+
+**What Claude Code will do:**
+Calculate the allocation for your specific model, implement `trim_history()` with
+the correct cut order, measure your system prompt's actual token cost, and update
+your CLAUDE.md budget table with real numbers.
+
+**Tips for this framework:**
+- Run the token counter command after every significant change to your system
+  prompt. Claude Code can run it for you: "Count my current system prompt tokens."
+- If Claude Code suggests reducing MAX_TOKENS as a way to control cost, reject
+  that suggestion. MAX_TOKENS limits the response length, not the context consumed.
+  The Framework 04 section of your CLAUDE.md should say this explicitly.
+
+---
+
 Copyright Janna AI Research Labs

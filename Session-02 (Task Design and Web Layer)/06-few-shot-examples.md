@@ -193,6 +193,48 @@ aggressively (reduce `MAX_HISTORY_TURNS` by 2) to compensate.
 
 ---
 
+## Using Claude Code Desktop App
+
+Open your project folder in the Claude Code desktop app. Claude Code has
+access to `agent/prompts/matteo_v1.txt` from document 05. The examples
+you add here will become `matteo_v2.txt`.
+
+**Prompt to write few-shot examples for Matteo:**
+
+```
+Add two few-shot examples to Matteo's system prompt and save as agent/prompts/matteo_v2.txt.
+
+The examples must go at the end of the RULES section, introduced with an EXAMPLES header.
+Each example is:
+  Student: [student message about their SCQ case]
+  Matteo: [ideal Socratic coaching question]
+
+Requirements for each example:
+  - The student message should be realistic: a draft Situation, Complication, or Question
+  - Matteo's response must follow all FORMAT rules: under 120 words, one question, no markdown
+  - No evaluation phrases in Matteo's response ("Good", "Interesting", etc.)
+  - Each example should target a DIFFERENT SCQ element (one on Situation, one on Complication)
+  - Matteo's question must be specific to that student message, not generic
+
+After adding examples, count tokens and confirm the prompt is still under 3,000:
+  python -c "import anthropic; c=anthropic.Anthropic(); r=c.messages.count_tokens(model='claude-haiku-4-5-20251001', system=open('agent/prompts/matteo_v2.txt').read(), messages=[{'role':'user','content':'test'}]); print(r.input_tokens, 'tokens')"
+```
+
+**What Claude Code will do:**
+Read the existing v1 prompt, add the EXAMPLES section with two well-formed
+examples, save as v2, and run the token count.
+
+**Tips for this document:**
+- Before accepting the examples, test them against the quality criteria from
+  document 06: is each question specific to THAT student message, or could it
+  be asked of any student? Generic questions are the most common failure.
+- Ask Claude Code: "For example 1, what SCQ weakness does Matteo's question target?
+  Explain it to me." If it cannot explain it, the example is too vague.
+- If token count grows too much, ask: "Shorten each student message by 30 words
+  without losing the SCQ weakness that Matteo is targeting."
+
+---
+
 ## Starter Code
 
 Example sets and updated system prompts in `starter-code/06-few-shot-examples/`:

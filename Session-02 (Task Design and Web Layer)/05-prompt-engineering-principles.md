@@ -231,6 +231,47 @@ covers this). The RULES specify that Tedd never coaches, only evaluates.
 
 ---
 
+## Using Claude Code Desktop App
+
+Open your project folder in the Claude Code desktop app. Claude Code already
+knows Matteo's task definition from the Task Definitions section you added to
+CLAUDE.md in document 04. Use that as the starting context for writing the prompt.
+
+**Prompt to write Matteo's system prompt:**
+
+```
+Write Matteo's system prompt and save it as agent/prompts/matteo_v1.txt.
+
+Apply these five principles from document 05:
+1. Instructions over descriptions - tell the model what to DO, not just what it IS
+2. Constraints over explanations - use Never/Always/If rules, not paragraphs
+3. Specific format rules - measurable constraints, not "be concise"
+4. Chain-of-thought in the rules - three reasoning steps before the visible response
+5. Budget awareness - the prompt must be under 3,000 tokens for haiku
+
+Use the five-section skeleton from Framework 07 (ROLE, SCOPE, RULES, FORMAT, ESCALATION).
+Reference the Task Definitions section of CLAUDE.md for Matteo's job statement,
+scope, and boundary.
+
+After writing the file, count its tokens:
+  python -c "import anthropic; c=anthropic.Anthropic(); r=c.messages.count_tokens(model='claude-haiku-4-5-20251001', system=open('agent/prompts/matteo_v1.txt').read(), messages=[{'role':'user','content':'test'}]); print(r.input_tokens, 'tokens')"
+```
+
+**What Claude Code will do:**
+Write matteo_v1.txt applying all five principles, and run the token counter
+to confirm it fits within the context budget.
+
+**Tips for this document:**
+- Read the generated prompt out loud before accepting it. If it sounds like
+  marketing copy rather than engineering constraints, ask Claude Code to
+  replace all descriptive sentences with direct instructions.
+- Ask Claude Code: "Which rules in this prompt could the model misinterpret?
+  Make them more specific." This usually reveals two or three rules that need tightening.
+- If the token count is above 3,000, ask Claude Code: "Trim this prompt to
+  under 2,500 tokens. Keep all rules. Cut all explanations."
+
+---
+
 ## Starter Code
 
 Working system prompts for all three agents in `starter-code/05-prompt-engineering/`:

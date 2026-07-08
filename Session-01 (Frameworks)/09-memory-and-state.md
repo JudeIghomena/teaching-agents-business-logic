@@ -393,4 +393,53 @@ clean. Session context stays relevant. You do not repeat yourself every session.
 
 ---
 
+## Using Claude Code Desktop App
+
+Open your project folder in the Claude Code desktop app. Claude Code already
+knows the three-tier memory model from your CLAUDE.md Memory Rules section.
+Use it to implement the Tier 2 session store and Tier 3 persistent store.
+
+**Prompt to implement three-tier memory:**
+
+```
+Add Tier 2 and Tier 3 memory to my agent.
+
+Tier 2 - agent/session_store.py:
+  - SessionStore class with set(key, value), get(key, default), clear()
+  - Module-level singleton: session = SessionStore()
+  - Use it to cache: [what your agent should cache across turns]
+
+Tier 3 - agent/persistent_store.py:
+  - STORE_PATH = Path("data/agent_store.json")
+  - load() -> dict, save(data: dict), get(key, default), set(key, value)
+  - STORE_PATH.parent.mkdir(parents=True, exist_ok=True) before writing
+  - Use it to persist: [what your agent must remember across restarts]
+
+Add data/ to .gitignore if it is not already there.
+
+Connect Tier 2 to at least one tool in agent/tool_registry.py:
+  - Check session.get(cache_key) before doing the real lookup
+  - Cache the result with session.set(cache_key, result) after
+
+Verify Tier 3 works across restarts:
+  python -c "from agent.persistent_store import set; set('test_key', 'test_value'); print('Written')"
+  python -c "from agent.persistent_store import get; print(get('test_key'))"
+  (stop and restart Python between the two commands)
+
+Update the Memory Rules section of CLAUDE.md with what is stored in each tier.
+```
+
+**What Claude Code will do:**
+Implement both store files, wire the session store into one of your tools,
+run the persistence test, and update your CLAUDE.md Memory Rules section
+with the specific values each tier holds.
+
+**Tips for this framework:**
+- Tell Claude Code specifically what to cache in Tier 2 and what to persist in
+  Tier 3 before asking it to implement. Generic stores produce generic code.
+- Ask Claude Code: "What should never be stored in any tier?" The answer (secrets,
+  PII, raw API responses) should go into the Memory Rules section of CLAUDE.md.
+
+---
+
 Copyright Janna AI Research Labs

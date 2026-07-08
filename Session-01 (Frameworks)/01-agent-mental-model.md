@@ -246,4 +246,40 @@ coding agent know exactly which layer to inspect first.
 
 ---
 
+## Using Claude Code Desktop App
+
+Open the `starter-code/` folder in the Claude Code desktop app. Claude Code
+reads `CLAUDE.md` from the project root before doing anything else. Before
+writing any code, use it to map the five-layer model to your agent.
+
+**Prompt to apply this framework:**
+
+```
+I am starting a new AI agent project. My agent is: [one sentence description].
+It serves: [who uses it].
+
+Apply the five-layer mental model to my project:
+  Layer 1 (The Prompt): which file owns the system prompt?
+  Layer 2 (Context Architecture): which file manages conversation history?
+  Layer 3 (Tool Registry): which file defines TOOLS and TOOL_DISPATCH?
+  Layer 4 (Model Config): which file sets MODEL, MAX_TOKENS, TEMPERATURE?
+  Layer 5 (Infrastructure): which file initialises the Anthropic client?
+
+Then add a Layer Ownership table to CLAUDE.md with: Layer, File, Responsibility, Boundary.
+```
+
+**What Claude Code will do:**
+Map the five layers to concrete file names in your project, define what each
+owns and what it must never do, and write the Layer Ownership table into your
+CLAUDE.md so every future coding session inherits that structure.
+
+**Tips for this framework:**
+- Describe your agent in one sentence before asking Claude Code to map the layers.
+  Vague descriptions produce vague layer definitions.
+- After Claude Code writes the Layer Ownership table, ask: "Which boundary is
+  most likely to be violated as this project grows?" The answer tells you where
+  to put your strongest guardrails.
+
+---
+
 Copyright Janna AI Research Labs

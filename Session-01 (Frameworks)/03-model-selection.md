@@ -249,4 +249,44 @@ guesses based on what sounds better.
 
 ---
 
+## Using Claude Code Desktop App
+
+Open your project folder in the Claude Code desktop app. Claude Code reads
+your CLAUDE.md and sees your agent's task definition and constraints. Use
+this to make the model decision and record it before writing any agent code.
+
+**Prompt to make your model decision:**
+
+```
+Help me choose the right Anthropic model for my agent and implement it in
+agent/model_config.py.
+
+My agent's task: [one sentence from your CLAUDE.md Layer Ownership table]
+Latency requirement: [streaming to a user in real time / batch processing / no preference]
+Tool use: [yes, the agent calls tools / no tools]
+Output complexity: [short conversational replies / structured JSON / long analysis]
+
+Answer the three decision questions from Framework 03:
+  1. Does this task require deep reasoning or fast pattern matching?
+  2. Will responses stream to a user in real time?
+  3. Does the task involve tool use and multi-step reasoning?
+
+Then write agent/model_config.py with MODEL, MAX_TOKENS, and TEMPERATURE.
+Add a Model Routing section to CLAUDE.md with the chosen model and the reason.
+```
+
+**What Claude Code will do:**
+Apply the three decision questions to your specific task, recommend a model
+with justification, implement `model_config.py`, and update CLAUDE.md with
+the model routing decision and the conditions for switching.
+
+**Tips for this framework:**
+- Start with `claude-haiku-4-5-20251001` unless you have a specific reason not to.
+  You can always upgrade. Upgrading later is easier than debugging slow responses now.
+- After Claude Code writes model_config.py, ask: "What would have to be true
+  about my agent's output quality for us to switch to Sonnet?" Record the answer
+  in CLAUDE.md so you have a clear upgrade trigger.
+
+---
+
 Copyright Janna AI Research Labs

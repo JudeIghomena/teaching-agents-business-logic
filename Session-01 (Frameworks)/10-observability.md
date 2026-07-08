@@ -376,4 +376,55 @@ this document. You spend less time reading and more time reviewing what changed.
 
 ---
 
+## Using Claude Code Desktop App
+
+Open your project folder in the Claude Code desktop app. Claude Code reads
+your CLAUDE.md which includes the logging rules from this framework. Use it
+to add structured turn tracing to your running agent loop.
+
+**Prompt to add observability:**
+
+```
+Add structured observability to my agent in agent/infrastructure.py and
+update agent/runner.py to log a trace for every turn.
+
+1. In agent/infrastructure.py, add a TurnTrace dataclass:
+   Fields: turn_id (str), started_at (ISO string), message_length (int),
+   model (str), input_tokens (int), output_tokens (int),
+   tool_calls (list of {name, success}), stop_reason (str),
+   error (Optional[str]), duration_ms (int)
+   
+   Add a log() method that prints structured JSON to stderr.
+
+2. In agent/runner.py, update run_agent_loop():
+   - Create TurnTrace at the start with turn_id = uuid4()[:8]
+   - Record start = time.time() before the try block
+   - Populate input_tokens, output_tokens, stop_reason from response.usage
+   - Append {name, success} to tool_calls for each tool call
+   - Set trace.error = str(e) in the except block
+   - In the finally block: trace.duration_ms = int((time.time()-start)*1000), trace.log()
+
+3. Test with: python main.py 2>&1 | grep turn_id
+   You should see one JSON line per turn.
+
+Logging rules from CLAUDE.md apply:
+   - Never log full user messages
+   - Never log secret environment variable values
+   - Never log raw API responses from external services
+```
+
+**What Claude Code will do:**
+Implement the TurnTrace dataclass, instrument the runner loop with proper
+`try/finally` to guarantee logging even on error, and run a test to confirm
+one JSON log line per turn appears.
+
+**Tips for this framework:**
+- After Claude Code adds the logging, send a message that triggers a tool and
+  check that the log shows the tool name and success status. Ask Claude Code:
+  "Show me the log output for a turn that calls a tool."
+- If you want to see logs without the `2>&1` redirect, ask Claude Code to
+  configure the logger to write to a file in `data/agent.log` instead.
+
+---
+
 Copyright Janna AI Research Labs

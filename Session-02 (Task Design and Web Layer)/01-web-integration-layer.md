@@ -369,4 +369,48 @@ Codex settings. Update it each time you add a new agent route.
 
 ---
 
+## Using Claude Code Desktop App
+
+Open your project folder in the Claude Code desktop app. Claude Code reads
+your CLAUDE.md automatically and already knows your layer ownership boundary:
+Express owns HTTP and auth, the Python agent owns reasoning.
+
+**Prompt to build the web integration layer:**
+
+```
+Set up the Express web layer for the SCQ platform. Create three files:
+
+1. server/src/index.js - Express app on PORT from process.env, mounts /api/agent1
+2. server/src/middleware/auth.js - reads Authorization header, verifies JWT
+   with algorithms: ['HS256'], attaches payload to req.user, returns 401 on failure
+3. server/src/routes/agent1.js - POST /api/agent1/chat route that:
+   - applies authMiddleware
+   - validates req.body.message exists
+   - sets SSE headers: Content-Type text/event-stream, Cache-Control no-cache,
+     Connection keep-alive, then calls res.flushHeaders()
+   - spawns Python agent/runner.py via child_process.spawn
+   - writes agentInput as JSON to python.stdin
+   - on each python.stdout data chunk: res.write("data: " + JSON.stringify({token}) + "\n\n")
+   - on python.stdout end: res.write("data: " + JSON.stringify({done:true}) + "\n\n"), res.end()
+
+The Python agent is called via stdin/stdout only. No imports from server/ into agent/.
+```
+
+**What Claude Code will do:**
+Create all three files, wire them into the Express app, and respect the
+layer boundary your CLAUDE.md defines. It will not put database calls or
+HTTP imports into the Python agent files.
+
+**Tips for this document:**
+- After Claude Code creates the files, test immediately with the curl command
+  from the assignment. If nothing streams, the most common cause is missing
+  `res.flushHeaders()`. Ask Claude Code to verify it is present.
+- If the Python agent is not being reached, ask Claude Code to add a
+  `console.log('[agent1] spawning python')` before the spawn call so you
+  can confirm the route is being hit.
+- Tell Claude Code: "Do not add any try/catch inside the SSE stream loop.
+  Only add error handling that returns a clean message to the client."
+
+---
+
 Copyright Janna AI Research Labs

@@ -339,4 +339,53 @@ before it can happen.
 
 ---
 
+## Using Claude Code Desktop App
+
+Open your project folder in the Claude Code desktop app. Claude Code reads
+the Secrets section of your CLAUDE.md which lists the environment variables
+your project uses. Use it to verify your environment is complete and safe.
+
+**Prompt to configure and verify your environment:**
+
+```
+Audit my project environment configuration.
+
+1. Search every .py file and main.py for os.getenv() and os.environ calls.
+   List every variable name found.
+
+2. Compare that list to my .env.example. Are any variables missing from .env.example?
+   If so, add them with a placeholder value.
+
+3. Check my .gitignore. Does it include .env? If not, add it.
+
+4. Run this verification check:
+   python -c "
+   import os
+   from dotenv import load_dotenv
+   load_dotenv()
+   required = ['ANTHROPIC_API_KEY']  # add your other variables here
+   missing = [v for v in required if not os.getenv(v)]
+   print('Missing:', missing if missing else 'None - all variables loaded')
+   "
+
+5. Run: grep -rn "sk-ant" . --include="*.py" --include="*.js"
+   This must return zero hits. If any hit appears, tell me immediately.
+
+Update the Secrets section of CLAUDE.md to list every variable with a description.
+```
+
+**What Claude Code will do:**
+Scan all source files for environment variable usage, cross-check against
+`.env.example`, run the verification script, run the secret scan, and update
+your CLAUDE.md Secrets section. It will flag any missing or potentially
+hardcoded values immediately.
+
+**Tips for this framework:**
+- Run the secret scan (`grep -rn "sk-ant"`) every session before committing.
+  Ask Claude Code: "Run the secret scan before we commit anything today."
+- If you add a new external service during development, ask Claude Code:
+  "What environment variables will this service need? Add them to .env.example."
+
+---
+
 Copyright Janna AI Research Labs

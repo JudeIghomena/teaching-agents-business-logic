@@ -369,4 +369,49 @@ additions.
 
 ---
 
+## Using Claude Code Desktop App
+
+Open your project folder in the Claude Code desktop app. Claude Code reads
+the Registered Tools table in your CLAUDE.md and the Layer Ownership rule
+that tool_registry.py owns all tools. It will add tools in the right file
+and never scatter tool definitions across other layers.
+
+**Prompt to design and implement your first tool:**
+
+```
+Add a tool to agent/tool_registry.py. The tool should:
+  Name: [snake_case verb_noun, e.g. get_order_status]
+  Purpose: [what it does]
+  When to use it: [the trigger condition the model needs to know]
+  Parameters: [name, type, description for each]
+  Returns: [dict with the fields it will return]
+
+Add it in three places:
+1. TOOLS list - full JSON schema with name, description (including WHEN to use it),
+   and input_schema with all parameters marked required if needed
+2. Implementation function below TOOLS - accepts the parameters, returns a dict,
+   catches all exceptions and returns {"error": str(e)} never raises
+3. TOOL_DISPATCH dict - maps the tool name string to the function
+
+Then test the function directly:
+  python -c "from agent.tool_registry import [tool_name]; print([tool_name]([test_args]))"
+
+Finally, add a row to the Registered Tools table in my CLAUDE.md.
+```
+
+**What Claude Code will do:**
+Write the schema, implementation, and dispatcher entry in the correct file,
+test the function directly from the command line, and update your CLAUDE.md
+Registered Tools table so the next session knows this tool exists.
+
+**Tips for this framework:**
+- Tell Claude Code the WHEN condition explicitly: "The model should call this tool
+  when the user asks about [specific trigger]." Claude Code writes this into the
+  schema description, which directly determines how reliably the model calls the tool.
+- After Claude Code implements the tool, ask: "What would happen if the external
+  API this tool calls returns a 500 error? Show me that the error is caught and
+  returned as a dict, not raised."
+
+---
+
 Copyright Janna AI Research Labs

@@ -225,4 +225,43 @@ place the first time, and the project stays navigable as it grows.
 
 ---
 
+## Using Claude Code Desktop App
+
+Open the `starter-code/` folder in the Claude Code desktop app. Claude Code
+will verify the structure exists, create any missing files, and update the
+Project Structure section of your CLAUDE.md to match.
+
+**Prompt to create your project structure:**
+
+```
+Create the standard five-layer project structure for my agent:
+
+agent/
+  runner.py          (empty - will implement in Framework 08)
+  context.py         (empty - will implement in Framework 07)
+  model_config.py    (empty - will implement in Framework 03)
+  tool_registry.py   (empty - will implement in Framework 06)
+  infrastructure.py  (empty - will implement in Framework 05)
+
+main.py              (simple CLI entry point: input loop calling runner.py)
+requirements.txt     (anthropic, python-dotenv)
+.env.example         (ANTHROPIC_API_KEY=your-key-here)
+.gitignore           (.env, __pycache__/, data/, *.pyc)
+
+Then update the Project Structure section of CLAUDE.md to list each file
+with a one-line description of what it will do when implemented.
+```
+
+**What Claude Code will do:**
+Create the folder and files, write a minimal `.gitignore`, create `.env.example`,
+and update your CLAUDE.md Project Structure section so it reflects the real layout.
+
+**Tips for this framework:**
+- After Claude Code creates the structure, run `find . -type f` to confirm
+  every file is in the right place before moving to Framework 03.
+- If Claude Code creates a file you did not ask for, ask it to explain why
+  before keeping it. The structure should match your CLAUDE.md exactly.
+
+---
+
 Copyright Janna AI Research Labs

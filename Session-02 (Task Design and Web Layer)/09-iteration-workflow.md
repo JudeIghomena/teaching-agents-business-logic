@@ -210,6 +210,60 @@ Before committing any change to agent/prompts/:
 
 ---
 
+## Using Claude Code Desktop App
+
+Open your project folder in the Claude Code desktop app. Claude Code can run
+your golden suite, interpret the failure patterns, and suggest a targeted prompt
+change. This is the document where you use Claude Code most interactively.
+
+**Prompt to run your first iteration cycle:**
+
+```
+Run the evaluation golden suite and help me do one iteration cycle.
+
+Step 1: Run the golden suite
+  python evaluation/run_golden.py
+
+Step 2: Show me which records failed and what the failure pattern is.
+  Group failures by type: format failures vs content failures.
+
+Step 3: Identify the single most common failure type and hypothesise
+  one change to agent/prompts/matteo_current.txt that would fix it.
+  Show me exactly what you would change and why.
+
+Step 4: Make that one change and save as agent/prompts/matteo_v2.txt.
+  Do not make any other changes.
+
+Step 5: Run the golden suite again pointing at v2:
+  MATTEO_PROMPT_VERSION=v2 python evaluation/run_golden.py
+
+Step 6: Compare the scores. Did the target failure go down?
+  Did any other check regress?
+
+Step 7: Write one entry in agent/PROMPT_ITERATIONS.md documenting:
+  - The baseline score
+  - The hypothesis
+  - The change made
+  - The new score
+  - The decision (keep or revert) and why
+```
+
+**What Claude Code will do:**
+Run the full iteration cycle, interpret results, make one targeted change,
+re-measure, and write the iteration log entry. You review the change before
+it updates the prompt file.
+
+**Tips for this document:**
+- Do not let Claude Code make more than one change at a time, even if it spots
+  multiple issues. Tell it: "One change only this cycle. We will do the rest next."
+- After the cycle completes, check the token count: the change should not have
+  added more than 100 tokens. Ask Claude Code to confirm.
+- If the score is exactly the same after the change, ask Claude Code: "What does
+  this tell us about the failure? Is it a prompt issue or a model behaviour issue?"
+  Sometimes the answer is to add a few-shot example, not another rule.
+
+---
+
 ## Starter Code
 
 Full iteration tooling in `starter-code/09-iteration/`:

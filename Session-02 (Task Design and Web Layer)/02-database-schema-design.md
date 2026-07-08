@@ -261,6 +261,47 @@ stop. Move that code to the Express route.
 
 ---
 
+## Using Claude Code Desktop App
+
+Open your project folder in the Claude Code desktop app. Claude Code reads
+your CLAUDE.md automatically and already knows your layer ownership rules:
+the database belongs to the web layer, not the agent.
+
+**Prompt to implement the database schema:**
+
+```
+Implement the database layer for the SCQ platform using better-sqlite3.
+Create two files:
+
+1. server/src/db.js - singleton db instance, getOrCreateSession(userId, cohortId, agentId)
+   and appendTurn(sessionId, userMessage, agentResponse)
+2. server/src/db-init.js - creates the agent_sessions and users tables,
+   run with: npm run db:init
+
+The agent_sessions table needs: id, user_id, cohort_id, agent_id, messages (JSON string),
+quality_score (nullable), finalised (0 or 1), created_at, updated_at.
+Add an index on (user_id, agent_id).
+
+Then update routes/agent1.js to call getOrCreateSession before the agent
+and appendTurn after the stream ends. The agent receives history as a parsed
+list, not a raw database object.
+```
+
+**What Claude Code will do:**
+Create both files, wire the DB functions into the existing agent route, and
+keep the boundary clean: the agent receives a plain Python list, not a
+database connection or query result.
+
+**Tips for this document:**
+- If Claude Code adds a DB import to the Python agent files, ask it to remove it.
+  The layer ownership section of your CLAUDE.md makes this explicit.
+- Run `npm run db:init` before testing. If the table already exists the script
+  is safe to re-run because the schema uses `CREATE TABLE IF NOT EXISTS`.
+- To inspect the database: `sqlite3 data/scq.db ".tables"` and
+  `sqlite3 data/scq.db "SELECT * FROM agent_sessions LIMIT 5;"`
+
+---
+
 ## Starter Code
 
 Working implementation in `starter-code/02-database-schema/`:
