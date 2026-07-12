@@ -43,7 +43,7 @@ All three agents running on the platform. A student can start a conversation
 with Matteo, progress to Juli, submit to Tedd, and receive a scored rubric.
 Every turn is stored in the database. Every agent follows its defined scope.
 
-**Previous session:** [Session 02 - The Web Layer](../Session-02%20(Task%20Design%20and%20Web%20Layer)/00-platform-overview.md)
+**Previous session:** [Session 02 - Web Layer and Prompt Engineering](../Session-02%20(Web%20Layer%20and%20Prompt%20Engineering)/00-platform-overview.md)
 **Next session:** Session 04 - Security
 
 ---

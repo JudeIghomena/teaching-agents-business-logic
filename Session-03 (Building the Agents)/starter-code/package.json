@@ -8,7 +8,8 @@
   "scripts": {
     "start": "node server/src/index.js",
     "dev": "nodemon server/src/index.js",
-    "db:init": "node server/src/db-init.js"
+    "db:init": "node server/src/db-init.js",
+    "test": "vitest run"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
