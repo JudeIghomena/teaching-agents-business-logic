@@ -1,0 +1,4 @@
+# SCQ Platform - Python dependencies (End of Session 03)
+anthropic>=0.40.0
+python-dotenv>=1.0.0
+requests>=2.31.0

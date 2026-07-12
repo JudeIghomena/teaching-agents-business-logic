@@ -1,24 +1,14 @@
 # Session-03 Assignments
 
-Session-03 is where you build the three agents: Matteo (SCQ Issue Analysis), Juli (Monroe's Motivated Sequence), and Tedd (5 Cs peer review). These assignments will be added as Session-03 documents are written.
+Five assignments. One per document. Complete each before moving to the next.
 
-Each assignment will follow the same format as Sessions 01 and 02:
-- What you are building and why it matters
-- Step-by-step instructions with code
-- A done checklist
-- Troubleshooting for the most common problems
-
-Planned assignments for this session:
-
-| Assignment | What you build |
-|---|---|
-| 01-build-matteo.md | Matteo agent: SCQ framework coaching with Socratic method |
-| 02-build-juli.md | Juli agent: Monroe's Motivated Sequence guidance |
-| 03-build-tedd.md | Tedd agent: 5 Cs peer review with structured rubric |
-| 04-wire-agents-to-platform.md | Connect all three agents to the web layer from Session-02 |
-| 05-test-end-to-end.md | Full platform test with all three agents running |
-
-Come back to this folder when you start Session-03.
+| Assignment | Document | What you build |
+|---|---|---|
+| [01-build-matteo.md](01-build-matteo.md) | Build 01 | SCQ tools, stage injection, complete system prompt |
+| [02-build-juli.md](02-build-juli.md) | Build 02 | Monroe's Sequence prompt, stage progression logic |
+| [03-build-tedd.md](03-build-tedd.md) | Build 03 | 5 Cs rubric prompt, evaluation tool, DB persistence |
+| [04-wire-agents-to-platform.md](04-wire-agents-to-platform.md) | Build 04 | Rate limiting, professor routes, error handler |
+| [05-test-end-to-end.md](05-test-end-to-end.md) | Build 05 | Full student journey test and turn trace verification |
 
 ---
 
