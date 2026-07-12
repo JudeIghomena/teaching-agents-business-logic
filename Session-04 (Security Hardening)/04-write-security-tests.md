@@ -319,6 +319,77 @@ If a test fails:
 
 ---
 
+## Using Claude Code Desktop App
+
+Open your project folder in the Claude Code desktop app. Claude Code already
+knows from your CLAUDE.md that the test suite lives in `server/tests/` and
+runs with `npm test`. It also knows `authMiddleware` and `requireRole` are
+in `server/src/middleware/`.
+
+**Prompt to build the security test suite:**
+
+```
+Add a security test suite to the SCQ platform.
+
+1. In server/src/db.js, add a setTestDb(db) export that stores the injected
+   database instance and makes all existing db functions use it when present.
+   Add a getDb() internal function that returns the test db if set, otherwise
+   returns the production singleton.
+
+2. In server/src/app.js (create if it does not exist), export a buildApp()
+   function that creates and configures the Express app and returns it without
+   calling app.listen. Move the app setup from index.js into buildApp. Have
+   index.js call buildApp() and then app.listen.
+
+3. Create server/tests/helpers/testDb.js with two async exports:
+   - initTestDb(): creates a new Database(':memory:'), calls setTestDb,
+     runs CREATE TABLE statements for users and agent_sessions, then seeds
+     three users with bcrypt.hash at cost 12:
+     student@test.edu / TestPass123! / role=student / cohort_id=cohort-A
+     student2@test.edu / TestPass123! / role=student / cohort_id=cohort-A
+     professor@test.edu / ProfPass123! / role=professor / cohort_id=cohort-A
+   - teardownTestDb(): closes the in-memory database
+
+4. Create server/tests/security.test.js with three describe blocks:
+
+   Authentication (5 tests):
+   - No Authorization header on POST /api/agent1/chat returns 401
+   - 'Bearer notajwt' on POST /api/agent1/chat returns 401
+   - Token signed with wrong secret on POST /api/agent1/chat returns 401
+   - POST /api/auth/login with correct credentials returns 200 with token
+   - POST /api/auth/login with wrong password returns 401
+
+   Role guards (2 tests):
+   - Student JWT on GET /api/professor/sessions returns 403
+   - Professor JWT on GET /api/professor/sessions returns 200
+
+   IDOR prevention (1 test):
+   - Student A chats with agent1 and gets a sessionId back
+   - Student B requests that sessionId from GET /api/agent1/session/:id
+   - Response is 404
+
+Use vitest and supertest. Use beforeAll(async () => { await initTestDb(); app = buildApp(); }).
+```
+
+**What Claude Code will do:**
+Add `setTestDb` to db.js, create or update `app.js` with a `buildApp` export,
+create the test helper and the test file, then run `npm test` to confirm all
+tests pass.
+
+**Tips for this document:**
+- After Claude Code generates the files, run `npm test` yourself and read
+  the output carefully. If tests pass but you are not sure they are testing
+  the right thing, ask Claude Code: "Temporarily remove authMiddleware from
+  the agent1 route. Run npm test. Do the auth tests fail?" If they still
+  pass, the tests are not wired to the real app correctly.
+- If `initTestDb` fails with a bcrypt async error, tell Claude Code: "The
+  initTestDb function must be async and must await bcrypt.hash calls before
+  inserting users into the database."
+- Tell Claude Code: "The IDOR test must expect status 404, not 403. Do not
+  change this to 403 even if it seems more intuitive."
+
+---
+
 **Next:** [05-run-the-security-audit.md](05-run-the-security-audit.md)
 
 ---

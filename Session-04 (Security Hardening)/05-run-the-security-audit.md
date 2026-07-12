@@ -350,6 +350,72 @@ builds the orchestration layer.
 
 ---
 
+## Using Claude Code Desktop App
+
+Open your project folder in the Claude Code desktop app. Claude Code can run
+the audit commands, interpret their output, and generate SECURITY.md from
+what it finds. This is one place where Claude Code's ability to read your
+whole codebase at once is particularly useful: it can produce a SECURITY.md
+that is genuinely specific to your platform rather than generic.
+
+**Prompt to run the audit and write SECURITY.md:**
+
+```
+Run the full Session-04 security audit on this platform and produce SECURITY.md.
+
+Step 1: Run npm audit in the server directory. Report the findings.
+If there are any high or critical findings, stop and describe each one
+with the fix before continuing.
+
+Step 2: Run these grep commands and report results:
+  grep -rn "sk-ant" server/src/
+  grep -rn "JWT_SECRET\s*=" server/src/
+  grep -rn "compareSync\|hashSync" server/src/
+  grep -rn "jwt.verify" server/src/
+  grep -rn "WHERE.*\+" server/src/
+The first four must return zero results. For jwt.verify, list each hit
+and confirm it includes { algorithms: ['HS256'] }.
+
+Step 3: Run npm test in the server directory. Report the result: how many
+tests passed, whether any failed or were skipped.
+
+Step 4: Create SECURITY.md at the project root (not inside server/).
+The file must have exactly these 10 sections:
+1. Threat Model - who the threat actors are for a multi-student coaching platform
+2. Attack Surface Map - table of every entry point with the control applied
+3. Active Security Controls - table of every control built in Session 04
+4. OWASP API Top 10 Status - table of all 10 risks with honest status
+5. Data Classification - what data is stored and who can access it
+6. Known Vulnerabilities and Accepted Risks - list every known gap honestly
+7. Dependency Vulnerability Log - one row with today's date and npm audit result
+8. Incident Response - playbooks for API key exposure, JWT secret exposure,
+   confirmed IDOR, and runaway agent
+9. Pre-Deploy Security Checklist - checklist reflecting controls actually built
+10. Future Hardening - HTTPS, Helmet CSP, and any other deferred items
+
+Make every section specific to this platform. Name the actual routes, actual
+files, actual users (MBA students, professors). Do not write generic content.
+```
+
+**What Claude Code will do:**
+Run all audit commands and report their output, then generate SECURITY.md
+by reading the actual codebase: your real routes, your real middleware, your
+real schema. The resulting SECURITY.md will reference actual file paths and
+actual controls rather than hypothetical ones.
+
+**Tips for this document:**
+- After Claude Code produces SECURITY.md, read Section 6 (Known Vulnerabilities)
+  carefully. If it is empty or says "none", ask Claude Code: "What security
+  controls are deferred to Session 05 or Session 06? List them in Section 6."
+  An honest SECURITY.md always has accepted risks.
+- If npm audit shows findings, do not ask Claude Code to run `npm audit fix
+  --force`. Tell it: "Show me the vulnerable package name and the recommended
+  safe version. I will add it to the overrides section in package.json."
+- Tell Claude Code: "SECURITY.md belongs at the project root, alongside
+  requirements.txt. Do not put it inside the server/ directory."
+
+---
+
 **Next session:** [Session 05 - Agent Coordination](../Session-05%20(Agent%20Coordination)/00-session-overview.md)
 
 ---

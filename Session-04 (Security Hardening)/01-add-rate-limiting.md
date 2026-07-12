@@ -201,6 +201,60 @@ Rate Limit Configuration:
 
 ---
 
+## Using Claude Code Desktop App
+
+Open your project folder in the Claude Code desktop app. Claude Code reads
+your CLAUDE.md automatically and already knows the middleware layer lives in
+`server/src/middleware/` and must not be bypassed by route handlers.
+
+**Prompt to add rate limiting:**
+
+```
+Add rate limiting to the SCQ platform Express server.
+
+1. Create server/src/middleware/rateLimiter.js with two named exports:
+
+   authLimiter: rateLimit with
+   - windowMs from parseInt(process.env.RATE_LIMIT_AUTH_WINDOW_MS || '900000')
+   - max from parseInt(process.env.RATE_LIMIT_AUTH_MAX || '10')
+   - standardHeaders: true, legacyHeaders: false
+   - message: { error: 'Too many login attempts. Try again in 15 minutes.' }
+   - keyGenerator: (req) => req.ip
+
+   agentLimiter: rateLimit with
+   - windowMs from parseInt(process.env.RATE_LIMIT_AGENT_WINDOW_MS || '60000')
+   - max from parseInt(process.env.RATE_LIMIT_AGENT_MAX || '30')
+   - standardHeaders: true, legacyHeaders: false
+   - message: { error: 'Too many requests. Slow down and try again.' }
+   - keyGenerator: (req) => req.user?.id || req.ip
+
+2. In server/src/index.js, import both limiters.
+   Apply authLimiter to /api/auth routes BEFORE the route handler.
+   Apply agentLimiter to /api/agent1, /api/agent2, /api/agent3 routes
+   AFTER authMiddleware and BEFORE each route handler.
+
+Do not apply agentLimiter globally. It must be per-route-group.
+Do not move authMiddleware - keep it before agentLimiter on agent routes.
+```
+
+**What Claude Code will do:**
+Create `rateLimiter.js` with both exports, import them in `index.js`, and
+wire them at the route level in the correct order. It will read the existing
+`index.js` structure from your project and add the limiters without
+restructuring the file.
+
+**Tips for this document:**
+- If the shell loop test shows 429 on request 1 instead of request 11, the
+  `RATE_LIMIT_AUTH_MAX` environment variable is likely 0 or empty. Ask Claude
+  Code to add a `console.log` that prints the parsed max value on startup.
+- If the agent limiter is not firing, ask Claude Code: "Show me the middleware
+  order for the agent1 route in index.js." Confirm agentLimiter appears after
+  authMiddleware.
+- Tell Claude Code: "Do not add a global rate limiter with `app.use`. Each
+  endpoint group needs its own limiter with its own key generator."
+
+---
+
 **Next:** [02-validate-all-inputs.md](02-validate-all-inputs.md)
 
 ---

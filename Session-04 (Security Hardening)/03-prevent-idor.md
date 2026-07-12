@@ -236,6 +236,59 @@ Every query on `agent_sessions` must include a scope condition:
 
 ---
 
+## Using Claude Code Desktop App
+
+Open your project folder in the Claude Code desktop app. Claude Code already
+knows from your CLAUDE.md that every query on `agent_sessions` must include a
+scope condition. Use Claude Code to perform the audit and apply the fixes.
+
+**Prompt to audit and fix IDOR vulnerabilities:**
+
+```
+Audit the SCQ platform for IDOR vulnerabilities in database queries.
+
+1. Search all files under server/src/ for queries that read, update, or delete
+   from agent_sessions.
+
+2. For each query found:
+   - If it is a SELECT or UPDATE/DELETE that uses a session ID from
+     req.body or req.params, confirm it includes AND user_id = ? (for student
+     routes) or AND cohort_id = ? (for professor routes).
+   - If the user_id or cohort_id scope condition is missing, add it.
+   - If a scoped query returns zero rows, the route must return 404 with
+     { error: 'Session not found.' } - not 403.
+
+3. In routes/professor.js, confirm the PATCH /sessions/:id/finalise route
+   updates with WHERE id = ? AND cohort_id = ? and checks result.changes === 0
+   to return 404.
+
+4. Run this grep after making changes and report the results:
+   grep -rn "WHERE id = ?" server/src/
+   Every result must be followed by AND user_id = ? or AND cohort_id = ?
+
+Do not change any query that obtains its session ID from the server's own
+INSERT (lastInsertRowid), only queries that receive an ID from the client.
+```
+
+**What Claude Code will do:**
+Read every file under `server/src/`, find all queries touching `agent_sessions`,
+add missing scope conditions, update route handlers to return 404 on empty
+results, and run the grep check to confirm no unscoped queries remain.
+
+**Tips for this document:**
+- Ask Claude Code: "Show me every place where agent_sessions is queried in
+  db.js and in the route files." Review the list before asking it to make
+  changes so you understand what is about to be touched.
+- If Claude Code returns 403 instead of 404 for an unowned resource, tell it:
+  "The correct response is 404, not 403. 403 reveals that the resource exists.
+  Change all IDOR guards to return 404."
+- Tell Claude Code: "Do not add user_id scoping to the INSERT in
+  getOrCreateSession or to the SELECT that reads the newly inserted row by
+  lastInsertRowid. Those do not need it. Only add scoping to queries where
+  the ID comes from the client request."
+
+---
+
 **Next:** [04-write-security-tests.md](04-write-security-tests.md)
 
 ---

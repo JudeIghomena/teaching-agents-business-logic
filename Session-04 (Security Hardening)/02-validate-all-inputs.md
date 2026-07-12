@@ -237,6 +237,62 @@ MAX_TEDD_MESSAGE_LENGTH=8000
 
 ---
 
+## Using Claude Code Desktop App
+
+Open your project folder in the Claude Code desktop app. Claude Code already
+knows from your CLAUDE.md that input validation middleware lives in
+`server/src/middleware/` and must be applied before agent calls in route handlers.
+
+**Prompt to add input validation:**
+
+```
+Add input validation middleware to the SCQ platform.
+
+1. Create server/src/middleware/validator.js with two named exports:
+
+   validateAgentMessage:
+   - If typeof req.body.message !== 'string', return 400 with
+     { error: 'Message must be a string.' }
+   - Trim the message
+   - If trimmed.length === 0, return 400 with
+     { error: 'Message must not be empty.' }
+   - If trimmed.length > parseInt(process.env.MAX_MESSAGE_LENGTH || '2000'),
+     return 400 with { error: 'Message must be 2000 characters or fewer.' }
+   - Set req.body.message = trimmed and call next()
+
+   validateTeddMessage:
+   - Same logic but uses MAX_TEDD_MESSAGE_LENGTH (default 8000)
+   - Error says 'Deliverable must be...' instead of 'Message must be...'
+
+2. In server/src/routes/agent1.js and agent2.js, import validateAgentMessage
+   and add it to the POST /chat middleware chain after authMiddleware.
+
+3. In server/src/routes/agent3.js, import validateTeddMessage and add it
+   to the POST /chat middleware chain after authMiddleware.
+
+The middleware chain order must be: authMiddleware, then validator, then handler.
+Do not add the validator before authMiddleware.
+```
+
+**What Claude Code will do:**
+Create `validator.js` with both exports, import the correct validator in each
+route file, and add it to the middleware chain. It will read the existing route
+files and insert the middleware without changing the handler logic.
+
+**Tips for this document:**
+- After Claude Code generates the file, ask: "Walk me through the order of
+  checks in validateAgentMessage." Confirm: type check, then trim, then empty,
+  then length. If trim comes after the empty check, it will not catch a message
+  of only whitespace characters.
+- If a valid message is being rejected, ask Claude Code: "What does
+  req.body.message look like before the type check? Is express.json() applied
+  in index.js?" The validator cannot read the body if the JSON body parser is
+  missing.
+- Tell Claude Code: "Do not add any keyword filtering or content checking.
+  The validator only checks message structure: type, emptiness, and length."
+
+---
+
 **Next:** [03-prevent-idor.md](03-prevent-idor.md)
 
 ---
