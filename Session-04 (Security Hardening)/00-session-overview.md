@@ -43,7 +43,7 @@ A hardened platform with rate limiting on all sensitive endpoints, validated
 inputs, no IDOR vulnerabilities, a passing security test suite, and a completed
 platform-wide security audit documented in SECURITY.md.
 
-**Previous session:** [Session 03 - Business Case Logic](../Session-03%20(Business%20Case%20Logic)/00-session-overview.md)
+**Previous session:** [Session 03 - Building the Agents](../Session-03%20(Building%20the%20Agents)/00-session-overview.md)
 **Next session:** Session 05 - Multi-Agent Coordination
 
 ---

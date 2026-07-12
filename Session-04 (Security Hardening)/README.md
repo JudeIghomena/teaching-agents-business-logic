@@ -1,98 +1,95 @@
-# Session Four: Security
+# Session Four: Security Hardening
 
-> You now have a working agent that handles real business logic, real tools,
-> and real data. Session Four attacks it systematically and teaches you to
-> defend it. Security studied on something real lands completely differently
-> from security studied on an abstract example.
-
-**Status: Coming after Session Three**
+> You now have three working agents on a real platform. Session Four attacks
+> that platform systematically and teaches you to defend it. Security studied
+> against something you built yourself lands completely differently from
+> security studied on an abstract example.
 
 ---
 
-## Why Security Gets Its Own Session Here
+## Framework Mapping
 
-Session One's document 11 covers the security baseline: the minimum controls
-every agent needs before it runs. That is enough to get started safely.
+Every document in this session applies Framework 11 (Security Baseline) from
+Session One at full depth. Each document also connects to a second framework
+that explains why the defence belongs in that layer.
 
-Session Four goes much further, and placing it here is deliberate. After three
-sessions of building, you have a concrete agent to model threats against. You
-know what data flows through it. You know which tools have write access. You
-know what a user can send and what the model might do with it. Every attack
-pattern in Session Four will map directly to something you have already built.
-
-Agent systems have an attack surface that does not exist in traditional software:
-a reasoning process that operates on natural language and can be manipulated
-through it. SQL injection targets your database. Prompt injection targets your
-model. Both are real. Both need dedicated countermeasures.
+| Session-04 Document | Applies These Frameworks |
+|---|---|
+| 00-session-overview.md | Read first. Build recap, session scope, prerequisites. |
+| 01-add-rate-limiting.md | Framework 11 (Security Baseline) + Framework 05 (Environment Config) |
+| 02-validate-all-inputs.md | Framework 11 (Security Baseline) + Framework 06 (Tool Design) |
+| 03-prevent-idor.md | Framework 11 (Security Baseline) + Framework 09 (Memory and State) |
+| 04-write-security-tests.md | Framework 11 (Security Baseline) + Framework 10 (Observability) |
+| 05-run-the-security-audit.md | Framework 11 (Security Baseline) + Framework 02 (Project Structure) |
 
 ---
 
-## Planned Documents
+## Documents in This Session
 
 ```
-Session-04 (Security)/
-│
-├── 01-agent-threat-model.md
-│     The complete attack surface map for an AI agent.
-│     Traditional threats (SQLi, auth bypass, IDOR) plus agent-specific
-│     threats (prompt injection, tool abuse, context poisoning, jailbreaking).
-│     How to draw a threat model for your specific agent.
-│
-├── 02-prompt-injection-deep-dive.md
-│     The most important agent-specific attack, in full detail.
-│     Direct injection (user manipulates the model in their turn).
-│     Indirect injection (malicious content in retrieved data poisons context).
-│     Real attack examples. Defence at every layer.
-│
-├── 03-tool-security.md
-│     Tool abuse, over-privileged tool registries, and insecure implementations.
-│     Principle of least privilege for tool registries.
-│     Input validation at the dispatcher level.
-│     Read-only vs write tool separation pattern.
-│
-├── 04-authentication-and-authorisation.md
-│     Who is allowed to talk to your agent and what are they allowed to ask?
-│     API key and JWT patterns for agent endpoints.
-│     Role-based tool access: not all users get all tools.
-│
-├── 05-data-handling-and-privacy.md
-│     What data flows through an agent and where it goes.
-│     PII in context: what to redact, what to tokenise, what never enters context.
-│     What gets logged, what must not.
-│
-├── 06-output-security.md
-│     What the agent returns can be as dangerous as what it receives.
-│     Sanitising model output before it reaches the user or downstream systems.
-│     Safe rendering: why agent output must never be injected into innerHTML raw.
-│
-├── 07-secrets-and-credential-management.md
-│     Where secrets live in an agent system and how they are accessed.
-│     Secret rotation without downtime. What to do when a key is leaked.
-│
-├── 08-rate-limiting-and-abuse-prevention.md
-│     Protecting your agent endpoint and your API spend from abuse.
-│     Per-user, per-session, and per-endpoint rate limits.
-│     Cost ceilings: hard stops when spend exceeds threshold.
-│
-├── 09-security-testing-for-agents.md
-│     How to test an agent's security posture before deploying.
-│     Adversarial prompt test suites: a library of injection attempts.
-│     Tool abuse test cases: inputs designed to trigger unintended tool calls.
-│     Running security tests as part of CI before every deployment.
-│
-├── 10-incident-response.md
-│     What to do when something goes wrong.
-│     Key exposure playbook: rotate immediately, audit, notify.
-│     Prompt injection confirmed: triage, contain, patch.
-│     Runaway agent: kill switch design.
-│
-└── starter-code/
-      adversarial-prompt-suite.py   100 injection test cases, runnable
-      sanitiser.py                  Production output sanitiser with tests
-      rate_limiter.py               Per-user rate limiter, drop-in module
-      auth_middleware.py            JWT validation for agent API endpoints
-      secrets_loader.py             Safe secret loading with rotation support
+Session-04 (Security Hardening)/
+|
+|-- 00-session-overview.md
+|       Read this first. What the platform looks like after Session 03,
+|       the four security risks this session targets, and what you will
+|       have when Session 04 is complete.
+|
+|-- 01-add-rate-limiting.md
+|       Framework 11 + 05. Two rate limiters: one for the auth endpoint
+|       (10 requests per 15 min per IP) and one for all three agent
+|       endpoints (30 requests per min per user). Configuration driven
+|       by environment variables. 429 response with Retry-After header.
+|
+|-- 02-validate-all-inputs.md
+|       Framework 11 + 06. Input validation middleware applied before any
+|       message reaches an agent. Max length enforcement, type checking,
+|       and whitespace normalisation. What validation is not: prompt
+|       injection detection belongs at the model layer, not here.
+|
+|-- 03-prevent-idor.md
+|       Framework 11 + 09. Insecure Direct Object Reference: a student
+|       changing a session ID to read another student's data. Every
+|       database query in the platform must include both the resource ID
+|       and the authenticated user's ID. Pattern, audit checklist, and
+|       why the safe response is 404, not 403.
+|
+|-- 04-write-security-tests.md
+|       Framework 11 + 10. The security test suite: auth tests (no token,
+|       bad token, expired token), role guard tests (student hitting
+|       professor route), and one IDOR probe per resource type. Using
+|       vitest and supertest. Tests that must pass before every deploy.
+|
+|-- 05-run-the-security-audit.md
+|       Framework 11 + 02. Running the full audit: npm audit, grep sweeps,
+|       security test suite, and writing SECURITY.md. The SECURITY.md
+|       format covers threat model, attack surface, active controls,
+|       OWASP status, data classification, and the incident response plan.
+|
+|-- assignments/
+|   |-- 01-add-rate-limiting.md
+|   |-- 02-validate-all-inputs.md
+|   |-- 03-prevent-idor.md
+|   |-- 04-write-security-tests.md
+|   |-- 05-run-the-security-audit.md
+|   `-- README.md
+|
+`-- starter-code/
+    |-- CLAUDE.md          Cumulative operating brief for end of Session 04
+    |-- .env.example       Environment variables including rate limit config
+    |-- package.json       Version 0.4.0, adds helmet
+    `-- requirements.txt   Python dependencies unchanged from Session 03
 ```
+
+---
+
+## What You Will Have at the End
+
+- Rate limiting on all auth and agent endpoints, driven by environment variables
+- Input validation middleware rejecting malformed messages before agents see them
+- Every database query scoped to both resource ID and authenticated user ID
+- A passing security test suite covering auth, role guards, and IDOR
+- A completed SECURITY.md documenting the full platform security posture
+- Zero high or critical findings from npm audit
 
 ---
 
@@ -100,21 +97,12 @@ Session-04 (Security)/
 
 | Session | Security angle covered |
 |---|---|
-| Session One | Security baseline (doc 11): minimum controls before first run |
-| Session Two | Secure prompt design: output format control, evaluation for edge cases |
-| Session Three | Secure business logic: input validation, decision audit trails |
-| Session Four | Full security deep-dive: threat model, attack patterns, hardening, testing |
-| Session Five | Multi-agent trust: privilege separation across agents |
-| Session Six | Production security: monitoring, alerting, incident response at scale |
-
----
-
-## Prerequisites
-
-Complete Sessions One through Three before starting Session Four. Specifically,
-have a working business-logic agent from Session Three. Session Four will build
-the threat model for that agent directly. The more concrete your agent, the more
-the attack patterns here will make immediate sense.
+| Session 01 | Framework 11: minimum security baseline before first run |
+| Session 02 | JWT authentication, bcrypt password hashing, secure routes |
+| Session 03 | Tool dispatch allowlist, parameterised queries, role guards |
+| Session 04 | Rate limiting, input validation, IDOR prevention, security tests, audit |
+| Session 05 | Multi-agent trust: privilege separation between agents |
+| Session 06 | Production security: HTTPS, monitoring, incident response at scale |
 
 ---
 

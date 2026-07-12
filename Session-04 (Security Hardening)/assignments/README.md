@@ -1,18 +1,14 @@
 # Session-04 Assignments
 
-Session-04 covers security hardening for the Business Case Logic platform: rate limiting, input validation, IDOR prevention, and the security test suite. These assignments will be added as Session-04 documents are written.
+Five assignments. One per document. Complete each before moving to the next.
 
-Planned assignments for this session:
-
-| Assignment | What you build |
-|---|---|
-| 01-add-rate-limiting.md | Rate limiting on auth and agent endpoints |
-| 02-validate-all-inputs.md | Input validation layer before any agent call |
-| 03-prevent-idor.md | Row-level security: queries scoped to the authenticated user |
-| 04-write-security-tests.md | Auth tests, role guard tests, IDOR probe per resource |
-| 05-run-the-security-audit.md | Full platform audit using the Session-01 checklist |
-
-Come back to this folder when you start Session-04.
+| Assignment | Document | What you build |
+|---|---|---|
+| [01-add-rate-limiting.md](01-add-rate-limiting.md) | Build 01 | Auth limiter (IP-based) and agent limiter (user-based), env-config driven |
+| [02-validate-all-inputs.md](02-validate-all-inputs.md) | Build 02 | Input validation middleware: type, empty, max length for Matteo/Juli and Tedd |
+| [03-prevent-idor.md](03-prevent-idor.md) | Build 03 | Audit and fix every database query to scope by user_id or cohort_id |
+| [04-write-security-tests.md](04-write-security-tests.md) | Build 04 | Security test suite: auth (5 tests), role guards (2 tests), IDOR probe |
+| [05-run-the-security-audit.md](05-run-the-security-audit.md) | Build 05 | Four-stage audit and completed SECURITY.md at project root |
 
 ---
 
