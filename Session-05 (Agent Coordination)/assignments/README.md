@@ -1,18 +1,18 @@
 # Session-05 Assignments
 
-Session-05 covers multi-agent coordination: how Matteo, Juli, and Tedd hand off work between each other, how you manage context across agent boundaries, and how you design the orchestration layer. These assignments will be added as Session-05 documents are written.
-
-Planned assignments for this session:
+Session-05 covers multi-agent coordination: the orchestrator that routes
+students to the right agent automatically, cross-agent context handoff from
+Matteo to Juli, and failure handling including the HITL hook.
 
 | Assignment | What you build |
 |---|---|
-| 01-design-the-handoff.md | Define what data passes between agents and when |
-| 02-build-the-orchestrator.md | Orchestrator that routes messages to the right agent |
-| 03-manage-cross-agent-context.md | Shared state that all three agents can read |
-| 04-test-agent-coordination.md | End-to-end test of a student moving through all three agents |
-| 05-handle-agent-failures.md | Fallback and retry when an agent fails mid-task |
+| [01-design-the-handoff.md](01-design-the-handoff.md) | stageManager module that derives stage from existing data |
+| [02-build-the-orchestrator.md](02-build-the-orchestrator.md) | POST /api/chat that routes to Matteo, Juli, or Tedd |
+| [03-manage-cross-agent-context.md](03-manage-cross-agent-context.md) | Matteo's SCQ injected into Juli's system prompt |
+| [04-test-agent-coordination.md](04-test-agent-coordination.md) | Orchestrator routing and context tests |
+| [05-handle-agent-failures.md](05-handle-agent-failures.md) | Retry on 529, clean error response, HITL flag |
 
-Come back to this folder when you start Session-05.
+Work through the assignments in order. Each one depends on the previous.
 
 ---
 

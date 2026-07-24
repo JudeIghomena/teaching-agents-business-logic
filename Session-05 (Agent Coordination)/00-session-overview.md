@@ -44,7 +44,7 @@ Monroe's stage, prior rubric scores) injected into each agent from a central
 state store. A student's full journey from Matteo to Tedd managed without
 them knowing which agent they are talking to at any point.
 
-**Previous session:** [Session 04 - Security](../Session-04%20(Security)/00-session-overview.md)
+**Previous session:** [Session 04 - Security Hardening](../Session-04%20(Security%20Hardening)/00-session-overview.md)
 **Next session:** Session 06 - Production
 
 ---
