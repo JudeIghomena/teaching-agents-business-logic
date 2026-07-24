@@ -137,6 +137,9 @@ higher than 0 with DESC ordering.
 
 ---
 
-**End of Session 05 assignments.**
+Session 05 is complete. The three agents work as a coordinated system:
+students send one message to one endpoint, the orchestrator routes to the
+right agent, Matteo's confirmed SCQ flows to Juli automatically, and agent
+failures are handled without exposing errors to the student.
 
-Next session: [Session 06 - Production and Deployment](../../Session-06%20(Production%20and%20Deployment)/00-session-overview.md)
+**Next session:** [Session 06 - Production and Deployment](../../Session-06%20(Production%20and%20Deployment)/00-session-overview.md)
