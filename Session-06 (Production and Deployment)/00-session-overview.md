@@ -45,7 +45,7 @@ any one student from consuming a disproportionate share of API cost. A final
 CLAUDE.md and HANDOFF.md that document the complete platform for any future
 developer or coding agent session that picks it up.
 
-**Previous session:** [Session 05 - Multi-Agent](../Session-05%20(Multi-Agent)/00-session-overview.md)
+**Previous session:** [Session 05 - Agent Coordination](../Session-05%20(Agent%20Coordination)/00-session-overview.md)
 **This is the final session.**
 
 ---
